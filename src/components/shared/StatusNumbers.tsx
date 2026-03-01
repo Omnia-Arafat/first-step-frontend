@@ -7,8 +7,8 @@ import { useHasRole } from "@/store/authStore";
 
 export const useStatusNumbers = () => {
   const t = useTranslations("shared.status");
-  const isAdmin = useHasRole('admin')
-  const isCenter = useHasRole("center");
+  const isAdmin = useHasRole("admin");
+  const isCenter = useHasRole(["center", "nursery"]);
 
   const { stats: centerStats } = useCenterStats(isCenter ? "center" : "branch");
   const { stats: adminStats } = useAdminStats();

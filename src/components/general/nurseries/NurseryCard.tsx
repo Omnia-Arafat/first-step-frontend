@@ -24,7 +24,7 @@ const NurseryCard = ({
   // Helper function to get translation by ID
   const getTranslationById = (
     id: string,
-    options: { id: string; label: string }[]
+    options: { id: string; label: string }[],
   ) => {
     return options.find((option) => option.id === id)?.label || id;
   };
@@ -35,7 +35,7 @@ const NurseryCard = ({
       ?.map((branch: any) =>
         branch.nursery_name === "Main Branch"
           ? "الفرع الرئيسي"
-          : branch.nursery_name
+          : branch.nursery_name,
       )
       .join("، ") || "الفرع الرئيسي";
 
@@ -64,10 +64,27 @@ const NurseryCard = ({
 
   // Determine establishment route segment
   // The backend returns role as 'nursery', 'center' or plural
-  const routeSegment = (nursery.role === 'center' || nursery.type === 'centers') ? 'centers' : 'nurseries';
+  const routeSegment =
+    nursery.role === "center" || nursery.type === "centers"
+      ? "centers"
+      : "nurseries";
+
+  // Get center_id from nested objects based on the establishment type
+  const centerId =
+    nursery.role === "center" || nursery.type === "centers"
+      ? nursery.center?.center_id
+      : nursery.nursery?.center_id;
+
+  // Use center_id if available, otherwise fallback to nursery.id
+  const displayId = centerId || nursery.id;
+
+  // console.log(nursery);
 
   return (
-    <Link href={`/establishments/${routeSegment}/${nursery.id}-${slug}`} className="block">
+    <Link
+      href={`/establishments/${routeSegment}/${displayId}-${slug}`}
+      className="block"
+    >
       <div className="bg-white rounded-lg transition-all duration-300 hover:border hover:border-gray-200 hover:shadow-lg group flex flex-col h-full min-h-80">
         {/* Logo section - takes up half the card */}
         <div className="flex-1 flex flex-col items-center justify-center py-8">
@@ -76,8 +93,8 @@ const NurseryCard = ({
               <Image
                 src={
                   typeof nursery.logo === "string" &&
-                    !nursery.logo.startsWith("/") &&
-                    !nursery.logo.startsWith("http")
+                  !nursery.logo.startsWith("/") &&
+                  !nursery.logo.startsWith("http")
                     ? `/${nursery.logo}`
                     : nursery.logo
                 }
@@ -114,7 +131,7 @@ const NurseryCard = ({
                   ? mainBranch.city.name[locale]
                   : mainBranch.city}
                 {typeof mainBranch.neighborhood === "object" &&
-                  mainBranch.neighborhood !== null
+                mainBranch.neighborhood !== null
                   ? ", " + mainBranch.neighborhood[locale]
                   : ", " + mainBranch.neighborhood}
               </span>

@@ -20,6 +20,7 @@ import { useAuthUser } from "@/store/authStore";
 
 // Section Components
 import { BasicInfoSection } from "./_components/BasicInfoSection";
+import { ServicesSection } from "./_components/ServicesSection";
 import { PlansSection } from "./_components/PlansSection";
 import { FacilitiesSection } from "./_components/FacilitiesSection";
 import { ActivitiesSection } from "./_components/ActivitiesSection";
@@ -44,6 +45,8 @@ export default function CenterProfilePage() {
     description: "",
     images_activities: [],
     delete_images_activities: [],
+    services: [],
+    delete_service_ids: [],
     admin_option_ids: [],
     delete_center_options: [],
     licenses: [],
@@ -52,7 +55,7 @@ export default function CenterProfilePage() {
       facebook: "",
       instagram: "",
       twitter: "",
-      linkedin: "",
+      linkedIn: "",
       website: "",
     },
   });
@@ -81,15 +84,13 @@ export default function CenterProfilePage() {
           facebook: p.contact_info?.facebook || p.facebook || "",
           instagram: p.contact_info?.instagram || p.instagram || "",
           twitter: p.contact_info?.twitter || p.twitter || "",
-          linkedin:
-            p.contact_info?.linkedin ||
-            p.contact_info?.linkedIn ||
-            p.linkedin ||
-            "",
+          linkedIn: p.contact_info?.linkedIn || p.linkedin || "",
           website: p.contact_info?.website || p.website || "",
         },
         images_activities: p.images_activities || [],
         delete_images_activities: [],
+        services: p.services || [],
+        delete_service_ids: [],
         admin_option_ids:
           (p.admin_options || p.options)?.map((o: any) => o.id) || [],
         licenses: p.licenses || [],
@@ -209,13 +210,17 @@ export default function CenterProfilePage() {
     if (formData.delete_images_activities?.length) {
       dirtyData.delete_images_activities = formData.delete_images_activities;
     }
+    if (formData.delete_service_ids?.length) {
+      dirtyData.delete_service_ids = formData.delete_service_ids;
+    }
 
     // If nothing dirty left after filtering, don't send
     if (
       Object.keys(dirtyData).length === 0 &&
       !formData.delete_license_ids?.length &&
       !formData.delete_center_options?.length &&
-      !formData.delete_images_activities?.length
+      !formData.delete_images_activities?.length &&
+      !formData.delete_service_ids?.length
     ) {
       setIsDirty(false);
       return;
@@ -235,6 +240,10 @@ export default function CenterProfilePage() {
     {
       id: "basicInfo",
       title: t("sections.basicInfo"),
+    },
+    {
+      id: "services",
+      title: t("sections.services"),
     },
     {
       id: "plans",
@@ -268,6 +277,14 @@ export default function CenterProfilePage() {
             errors={validationErrors}
             logoUrl={logoUrl}
             onLogoChange={(file: File) => logoMutation.mutate(file)}
+          />
+        );
+      case "services":
+        return (
+          <ServicesSection
+            data={formData}
+            onChange={updateFormData}
+            errors={validationErrors}
           />
         );
       case "plans":

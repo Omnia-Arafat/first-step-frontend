@@ -184,12 +184,12 @@ export function WalletPageClient() {
       const checkDate = new Date(
         paymentDate.getFullYear(),
         paymentDate.getMonth(),
-        paymentDate.getDate()
+        paymentDate.getDate(),
       );
       const fromDate = new Date(
         from.getFullYear(),
         from.getMonth(),
-        from.getDate()
+        from.getDate(),
       );
       const toDate = new Date(to.getFullYear(), to.getMonth(), to.getDate());
 
@@ -199,7 +199,7 @@ export function WalletPageClient() {
 
   const toggleView = () => {
     setActiveTab((prev) =>
-      prev === "balanceHistory" ? "withdrawRequests" : "balanceHistory"
+      prev === "balanceHistory" ? "withdrawRequests" : "balanceHistory",
     );
   };
 
@@ -236,7 +236,7 @@ export function WalletPageClient() {
 
           {/* Cumulative Balance Card */}
           <Card className="flex flex-col flex-1 justify-center p-6 bg-primary text-primary-foreground shadow-none border-none relative overflow-hidden">
-            <h3 className="text-lg font-medium mb-2 opacity-90">
+            <h3 className="relative z-60 text-lg font-medium mb-2 opacity-90">
               {t("cumulativeBalance")}
             </h3>
             <div className="text-3xl lg:text-5xl font-bold flex items-center gap-1">
@@ -250,7 +250,7 @@ export function WalletPageClient() {
               )}
             </div>
 
-            <div className="z-50 absolute left-0 top-1/2 -translate-y-1/2">
+            <div className="z-50 absolute rtl:left-0 ltr:right-0 ltr:rotate-y-180 top-1/2 -translate-y-1/2">
               <Image
                 src="/assets/illustrations/safe-money.png"
                 alt="wallet"
@@ -259,7 +259,7 @@ export function WalletPageClient() {
               />
             </div>
 
-            <div className="z-40 absolute w-full aspect-square right-[60%] top-1/2 -translate-y-1/2">
+            <div className="z-40 absolute w-full aspect-square rtl:right-[60%] ltr:left-[50%] ltr:rotate-y-180 top-1/2 -translate-y-1/2">
               <div className="rotate-90 absolute w-full h-full rounded-full blue-gradient" />
               <div className="rotate-45 absolute w-full h-full rounded-full blue-gradient -translate-x-[15px]" />
               <div className="absolute w-full h-full rounded-full blue-gradient -translate-x-[30px]" />
@@ -345,16 +345,16 @@ export function WalletPageClient() {
                               ? filter === "all"
                                 ? "bg-primary text-white"
                                 : filter === "accepted"
-                                ? "bg-success text-white"
-                                : filter === "pending"
-                                ? "bg-warning text-white"
-                                : "bg-danger text-white"
-                              : "border-gray-200 text-gray-500 hover:text-gray-700"
+                                  ? "bg-success text-white"
+                                  : filter === "pending"
+                                    ? "bg-warning text-white"
+                                    : "bg-danger text-white"
+                              : "border-gray-200 text-gray-500 hover:text-gray-700",
                           )}
                         >
                           {t(`filters.${filter}`)}
                         </Button>
-                      )
+                      ),
                     )}
                   </div>
                 ) : (

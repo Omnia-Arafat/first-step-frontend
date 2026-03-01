@@ -15,6 +15,7 @@ import {
   ParentRegisterPayloadv2,
   NurseryRegisterPayload,
   NurseryPlan,
+  CategoryService,
 } from "@/types";
 import axios from "axios";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
@@ -632,12 +633,12 @@ export const establishmentService = {
     try {
       const query = params
         ? "?" +
-        params
-          .map(
-            ({ key, value }) =>
-              `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
-          )
-          .join("&")
+          params
+            .map(
+              ({ key, value }) =>
+                `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+            )
+            .join("&")
         : "";
 
       let res: Response;
@@ -729,19 +730,18 @@ export const establishmentService = {
         data.nurseries.forEach((nursery: any) => {
           establishments.push({
             ...nursery,
-            // Map nested center object properties to top level if needed, or keep as is
-            // Given the structure 'center' inside 'nursery' seems odd but based on user request:
-            // "nurseries": [{ ..., "center": { "nursery_name": "test", ... } }]
-            // We might need to map some properties if components expect them at top level
-            nursery_name: nursery.center?.nursery_name || nursery.name,
-            logo: nursery.center?.logo,
-            city: nursery.center?.location, // Map location to city for now
+            // Map nested nursery object properties to top level if needed
+            nursery_name:
+              nursery.nursery?.nursery_name ||
+              nursery.nursery_name ||
+              nursery.name,
+            logo: nursery.nursery?.logo || nursery.logo,
+            city: nursery.nursery?.city || nursery.city,
             // Ensure ID is number
             id: Number(nursery.id),
-            user_id: nursery.id, // Assuming user_id is same as id or needed
-            // Add role if not present, though user said it's in the role field
-            role: nursery.role || 'nursery',
-            type: 'nurseries'
+            user_id: nursery.id,
+            role: nursery.role || "nursery",
+            type: "nurseries",
           });
         });
       }
@@ -750,20 +750,21 @@ export const establishmentService = {
         data.centers.forEach((center: any) => {
           establishments.push({
             ...center,
-            nursery_name: center.center?.nursery_name || center.name,
-            logo: center.center?.logo,
-            city: center.center?.location,
+            nursery_name:
+              center.center?.nursery_name || center.nursery_name || center.name,
+            logo: center.center?.logo || center.logo,
+            city: center.center?.city || center.city,
             id: Number(center.id),
             user_id: center.id,
-            role: center.role || 'center',
-            type: 'centers'
+            role: center.role || "center",
+            type: "centers",
           });
         });
       }
 
       console.log(
         "Mapped establishments (name, role): ",
-        establishments.map((e) => ({ name: e.nursery_name, role: e.role }))
+        establishments.map((e) => ({ name: e.nursery_name, role: e.role })),
       );
 
       return establishments;
@@ -783,7 +784,8 @@ export const establishmentService = {
   ): Promise<PortfolioResponse | null> => {
     try {
       // First, get all establishments to find the ID for the given name
-      const establishments = await establishmentService.getEstablishments(locale);
+      const establishments =
+        await establishmentService.getEstablishments(locale);
       const establishment = establishments.find((n) => {
         const dbName = n.nursery_name.toLowerCase().trim();
         const searchName = nurseryName.toLowerCase().trim();
@@ -799,9 +801,14 @@ export const establishmentService = {
       }
 
       // Use the establishment.id for the portfolio endpoint
-      console.log(`Establishment: ${establishment.nursery_name}, ID: ${establishment.id}`);
+      console.log(
+        `Establishment: ${establishment.nursery_name}, ID: ${establishment.id}`,
+      );
 
-      return await establishmentService.getEstablishmentPortfolioById(establishment.id, locale);
+      return await establishmentService.getEstablishmentPortfolioById(
+        establishment.id,
+        locale,
+      );
     } catch (error) {
       console.error("Error fetching establishment portfolio:", error);
       return null;
@@ -814,15 +821,17 @@ export const establishmentService = {
     role?: string,
   ): Promise<PortfolioResponse | null> => {
     try {
-      console.log(`Fetching portfolio for establishment ID: ${id}, Role: ${role}`);
+      console.log(
+        `Fetching portfolio for establishment ID: ${id}, Role: ${role}`,
+      );
 
-      let endpoint = "get-portfilo-center"; // Default endpoint
+      let endpoint = "v2/get-portfilo-center"; // Default endpoint
       if (role === "nursery" || role === "nurseries") {
         endpoint = "get-portfilo-nursery";
       }
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/v2/${endpoint}/${id}`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/${endpoint}/${id}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -854,8 +863,14 @@ export const establishmentService = {
       const portfolioData = data.data || data;
 
       // Check if we actually have valid portfolio data
-      if (!portfolioData || (!portfolioData.nursery_name && !portfolioData.name)) {
-        console.warn(`Portfolio data for ID ${id} seems empty or invalid structure:`, portfolioData);
+      if (
+        !portfolioData ||
+        (!portfolioData.nursery_name && !portfolioData.name)
+      ) {
+        console.warn(
+          `Portfolio data for ID ${id} seems empty or invalid structure:`,
+          portfolioData,
+        );
       }
 
       return {
@@ -864,13 +879,15 @@ export const establishmentService = {
       };
     } catch (error: any) {
       console.error("Error fetching establishment portfolio:", error);
-      // Don't return null immediately if it's a 404, maybe we can fallback? 
+      // Don't return null immediately if it's a 404, maybe we can fallback?
       // But for now, returning null triggers the waiting page
       return null;
     }
   },
 
-  getLatestEstablishments: async (locale: string): Promise<EstablishmentResponse[]> => {
+  getLatestEstablishments: async (
+    locale: string,
+  ): Promise<EstablishmentResponse[]> => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/latest-search`,
@@ -981,6 +998,15 @@ export const establishmentService = {
 };
 
 export const authService = {
+  getCategoryServices: async (): Promise<CategoryService[]> => {
+    try {
+      const response = await apiClient.get("/category-services");
+      return response.data.data;
+    } catch (error) {
+      throw ApiErrorHandler.handle(error);
+    }
+  },
+
   getCenterTypes: async () => {
     try {
       const response = await apiClient.get("/types-public");
@@ -1034,29 +1060,34 @@ export const authService = {
       formData.append("email", payload.email);
       formData.append("password", payload.password);
       formData.append("phone", payload.phone);
-      formData.append("location", payload.city_id);
+      formData.append("city_id", payload.city_id);
 
       if (payload.logo) {
         formData.append("logo", payload.logo);
+      }
+
+      if (
+        payload.category_service_ids &&
+        payload.category_service_ids.length > 0
+      ) {
+        payload.category_service_ids.forEach((id) => {
+          formData.append("category_service_ids[]", String(id));
+        });
       }
 
       console.log("Register Center Payload:", {
         name: payload.nursery_name,
         email: payload.email,
         phone: payload.phone,
-        location: payload.city_id,
+        city_id: payload.city_id,
         logo: payload.logo?.name,
       });
 
-      const response = await apiClient.post(
-        "/v3/register-center",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      const response = await apiClient.post("/v3/register-center", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-      );
+      });
       return response.data;
     } catch (error: any) {
       console.error("Register Center Error:", error);
@@ -1080,29 +1111,34 @@ export const authService = {
       formData.append("email", payload.email);
       formData.append("password", payload.password);
       formData.append("phone", payload.phone);
-      formData.append("location", payload.city_id);
+      formData.append("city_id", payload.city_id);
 
       if (payload.logo) {
         formData.append("logo", payload.logo);
+      }
+
+      if (
+        payload.category_service_ids &&
+        payload.category_service_ids.length > 0
+      ) {
+        payload.category_service_ids.forEach((id) => {
+          formData.append("category_service_ids[]", String(id));
+        });
       }
 
       console.log("Register Nursery Payload:", {
         name: payload.nursery_name,
         email: payload.email,
         phone: payload.phone,
-        location: payload.city_id,
+        city_id: payload.city_id,
         logo: payload.logo?.name,
       });
 
-      const response = await apiClient.post(
-        "/v3/register-nursery",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      const response = await apiClient.post("/v3/register-nursery", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
         },
-      );
+      });
       return response.data;
     } catch (error) {
       throw ApiErrorHandler.handle(error);

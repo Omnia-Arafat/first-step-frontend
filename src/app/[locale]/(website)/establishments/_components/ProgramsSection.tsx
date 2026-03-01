@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -14,6 +14,8 @@ import FilterDialog from "./FilterDialog";
 import ReservationDialog from "./ReservationDialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import { dashboardIcons } from "@/components/general/icons";
+import { cn } from "@/lib/utils";
+import SectionHeader from "./SectionHeader";
 
 interface ProgramsSectionProps {
   centerId: string;
@@ -29,28 +31,25 @@ const ProgramsSection = ({
   tNamespace = "nurseryDetails",
 }: ProgramsSectionProps) => {
   const t = useTranslations(`${tNamespace}.programs` as any);
-  const tCommon = useTranslations(`${tNamespace}.plans` as any); // Reuse units if needed
+  const tCommon = useTranslations(`${tNamespace}.plans` as any);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedProgramId, setSelectedProgramId] = useState<string | null>(
     null,
   );
 
-  // Reservation dialog state
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [reservationBranch, setReservationBranch] = useState<string>("");
   const [reservationPlanId, setReservationPlanId] = useState<
     number | undefined
   >(undefined);
 
-  // Filter state
   const [filters, setFilters] = useState({
     branches: [] as string[],
     programTypes: [] as string[],
     ages: [] as string[],
   });
 
-  // Fetch Branches
   const { data: branchesResponse, isLoading: loadingBranches } = useQuery({
     queryKey: ["branches-for-center", centerId],
     queryFn: () => getBranchesForCenterAction(centerId),
@@ -64,12 +63,8 @@ const ProgramsSection = ({
     }));
   }, [branchesResponse]);
 
-  // Fetch all plans for all branches (to support cross-branch filtering)
   const branchIds = useMemo(() => branches.map((b) => b.id), [branches]);
 
-  // For simplicity, we fetch pricing for the first branch or selected branches
-  // In a real scenario, we might want a "get all pricing" endpoint if available
-  // Here we use the first branch if none selected, or fetch matching branches
   const activeBranchIds =
     filters.branches.length > 0
       ? filters.branches
@@ -80,7 +75,6 @@ const ProgramsSection = ({
   const { data: allPlans = [], isLoading: loadingPlans } = useQuery({
     queryKey: ["branch-pricing-all", activeBranchIds, centerId],
     queryFn: async () => {
-      // If many branches, we might want to optimize. For now, we fetch for active ones.
       const results = await Promise.all(
         activeBranchIds.map((id) => getBranchPricingAction(id, centerId)),
       );
@@ -89,10 +83,20 @@ const ProgramsSection = ({
     enabled: activeBranchIds.length > 0,
   });
 
-  // Filtering Logic
+  const hasActiveFilters = useMemo(() => {
+    return (
+      filters.branches.length > 0 ||
+      filters.programTypes.length > 0 ||
+      filters.ages.length > 0
+    );
+  }, [filters]);
+
+  const resetFilters = () => {
+    setFilters({ branches: [], programTypes: [], ages: [] });
+  };
+
   const filteredPrograms = useMemo(() => {
     return allPlans.filter((p) => {
-      // Filter by Type
       if (
         filters.programTypes.length > 0 &&
         !filters.programTypes.includes(p.enrollment_type)
@@ -100,7 +104,6 @@ const ProgramsSection = ({
         return false;
       }
 
-      // Filter by Age
       if (filters.ages.length > 0) {
         const sAge =
           typeof p.start_age === "number" ? p.start_age : p.start_age.age;
@@ -109,7 +112,6 @@ const ProgramsSection = ({
         const eAge = typeof p.end_age === "number" ? p.end_age : p.end_age.age;
         const eType = typeof p.end_age === "number" ? "year" : p.end_age.type;
 
-        // Convert everything to months for easier comparison
         const startInMonths = sType === "month" ? sAge : sAge * 12;
         const endInMonths = eType === "month" ? eAge : eAge * 12;
 
@@ -147,7 +149,6 @@ const ProgramsSection = ({
 
   const handleBooking = () => {
     if (selectedProgram) {
-      // Find which branch this program belongs to
       const branchId = filters.branches[0] || activeBranchIds[0];
       setReservationBranch(branchId);
       setReservationPlanId(selectedProgram.id);
@@ -157,28 +158,19 @@ const ProgramsSection = ({
 
   return (
     <section id="programs" className="py-0 scroll-mt-20">
-      {/* Section Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="w-1 h-8 bg-primary rounded-full" />
-          <h2 className="heading-4 font-bold text-primary">
-            {t("title")}{" "}
-            <span className="text-gray-400 font-medium">
-              {t("count", { count: filteredPrograms.length })}
-            </span>
-          </h2>
-        </div>
-
+      <SectionHeader
+        title={t("title")}
+        countText={t("count", { count: filteredPrograms.length })}
+      >
         <button
           className="cursor-pointer text-primary"
           onClick={() => setIsFilterOpen(true)}
         >
           <dashboardIcons.multiFilter />
         </button>
-      </div>
+      </SectionHeader>
 
       <div className="bg-white-out rounded-2xl p-4 flex flex-col gap-6">
-        {/* Programs List - Optimized to show ~5 items with scrollbar */}
         <div className="max-h-[500px] overflow-y-auto custom-scrollbar pr-2 flex flex-col gap-4">
           {loadingPlans || loadingBranches ? (
             Array.from({ length: 5 }).map((_, i) => (
@@ -196,6 +188,26 @@ const ProgramsSection = ({
                 </div>
               </div>
             ))
+          ) : allPlans.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 px-6 bg-white rounded-[32px] border border-gray-100 shadow-xs animate-in fade-in zoom-in duration-500">
+              <div className="relative w-48 h-40 mb-8 opacity-40">
+                <Image
+                  src="/assets/illustrations/empty-cloud.png"
+                  alt="No Programs"
+                  fill
+                  className="object-contain grayscale"
+                />
+              </div>
+
+              <div className="space-y-3 max-w-xs text-center">
+                <h3 className="text-xl md:text-2xl font-bold text-primary leading-tight">
+                  {tCommon("noPrograms")}
+                </h3>
+                <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+                  {tCommon("noProgramsMessage")}
+                </p>
+              </div>
+            </div>
           ) : filteredPrograms.length > 0 ? (
             filteredPrograms.map((program) => (
               <ProgramCard
@@ -211,22 +223,50 @@ const ProgramsSection = ({
               />
             ))
           ) : (
-            <div className="text-center py-12 bg-white rounded-[24px] border border-dashed border-gray-200">
-              <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-400 font-medium">{t("noResults")}</p>
+            <div className="flex flex-col items-center justify-center py-8 px-6 bg-white rounded-[32px] border border-gray-100 shadow-xs animate-in fade-in zoom-in duration-500">
+              <div className="relative w-38 h-30 mb-8 transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                <Image
+                  src="/assets/illustrations/abstract-search.png"
+                  alt="No Results"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+
+              <div className="space-y-3 max-w-xs text-center">
+                <h3 className="text-xl md:text-2xl font-bold text-primary leading-tight">
+                  {t("noResults")}
+                </h3>
+                <p className="text-gray-400 text-sm md:text-base leading-relaxed">
+                  {t("noResultsDescription")}
+                </p>
+              </div>
+
+              {hasActiveFilters && (
+                <button
+                  onClick={resetFilters}
+                  className="cursor-pointer mt-8 text-secondary-mint-green font-bold text-sm hover:text-secondary-mint-green/80 transition-colors flex items-center gap-2 group"
+                >
+                  <div className="w-8 h-8 rounded-full bg-secondary-mint-green/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <dashboardIcons.multiFilter className="w-4 h-4" />
+                  </div>
+                  {t("resetFilters")}
+                </button>
+              )}
             </div>
           )}
         </div>
 
-        {/* Action Button */}
-        <Button
-          size="long"
-          onClick={handleBooking}
-          disabled={!selectedProgramId}
-          className="w-full! max-w-none"
-        >
-          {t("bookNow")}
-        </Button>
+        {filteredPrograms.length > 0 && (
+          <Button
+            size="long"
+            onClick={handleBooking}
+            disabled={!selectedProgramId}
+            className="w-full! max-w-none"
+          >
+            {t("bookNow")}
+          </Button>
+        )}
       </div>
 
       <FilterDialog

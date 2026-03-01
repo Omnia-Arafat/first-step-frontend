@@ -276,7 +276,7 @@ const hasMinimalData = (stats: any) => {
   // Check if we have at least one of these essential stats
   const hasEssentialStats =
     stats.total_enrollments > 1 ||
-    stats.total_children > 1 ||
+    stats?.total_children > 1 ||
     stats.total_team_members > 1 ||
     stats.total_parents > 1;
 
@@ -287,7 +287,7 @@ export default function CenterDashboardHome() {
   const meta = usePageMetadata();
 
   const t = useTranslations("dashboard.charts");
-  const isCenter = useHasRole("center");
+  const isCenter = useHasRole("nursery");
   const { stats, isLoading } = useCenterStats(isCenter ? "center" : "branch");
   const locale = useLocale();
 
@@ -319,9 +319,10 @@ export default function CenterDashboardHome() {
       const valueLabel = t("center.comparison.valueLabel");
       // Find previous month in the sorted array
       const prev = revenueArr.findIndex(
-        (r: RevenueItem) => r.month === item.month
+        (r: RevenueItem) => r.month === item.month,
       );
-      const previousValue = prev > 0 ? revenueArr[prev - 1].total_paid ?? 0 : 0;
+      const previousValue =
+        prev > 0 ? (revenueArr[prev - 1].total_paid ?? 0) : 0;
       const isUp = value > previousValue;
       return {
         value,
@@ -329,7 +330,7 @@ export default function CenterDashboardHome() {
         trend: isUp ? ("up" as const) : ("down" as const),
         data: getMonthData(value, isUp),
       };
-    }
+    },
   );
 
   // Build children comparison rows from enrollments_over_time
@@ -426,7 +427,7 @@ export default function CenterDashboardHome() {
                 const dateObj = parse(
                   `${year}-${monthNum}-01`,
                   "yyyy-MM-dd",
-                  new Date()
+                  new Date(),
                 );
                 const monthName = format(dateObj, "LLLL", {
                   locale: locale === "ar" ? ar : enUS,
@@ -435,7 +436,7 @@ export default function CenterDashboardHome() {
                   month: monthName,
                   value: item.total_paid ?? 0,
                 };
-              }
+              },
             )}
           />
         </div>
@@ -450,7 +451,7 @@ export default function CenterDashboardHome() {
       <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-center justify-between gap-4">
         <div className="w-full flex-1">
           <CircularProgressChart
-            currentValue={stats.total_children}
+            currentValue={stats?.total_children}
             title={t("children.title")}
             valueLabel={t("children.valueLabel")}
             capacityLabel={t("children.capacityLabel")}

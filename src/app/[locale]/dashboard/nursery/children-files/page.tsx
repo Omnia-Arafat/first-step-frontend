@@ -24,7 +24,7 @@ export default function CenterDashboardHome() {
   const meta = usePageMetadata();
 
   const t = useTranslations("dashboard.charts.children");
-  const isCenter = useHasRole("center");
+  const isCenter = useHasRole(["nursery"]);
   const { stats, isLoading } = useCenterStats(isCenter ? "center" : "branch");
 
   // Build children comparison rows from enrollments_over_time
@@ -63,7 +63,7 @@ export default function CenterDashboardHome() {
           <CircularProgressSkeleton />
         ) : (
           <CircularProgressChart
-            currentValue={stats.total_children}
+            currentValue={stats?.total_children}
             title={t("title")}
             valueLabel={t("valueLabel")}
             capacityLabel={t("capacityLabel")}

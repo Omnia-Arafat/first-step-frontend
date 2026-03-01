@@ -46,7 +46,7 @@ import { Switch } from "@/components/ui/switch";
 import clsx from "clsx";
 import { useAuthStore } from "@/store/authStore";
 import { useUserPreferencesStore } from "@/store/userPreferencesStore";
-import { handleLogout } from "@/lib/auth-utils";
+import { useLogout } from "@/lib/auth-utils";
 import { NotificationDropdown } from "@/components/notifications/NotificationDropdown";
 
 type BreadcrumbItem = {
@@ -83,6 +83,7 @@ export default function Header({
   const authStore = useAuthStore();
   const userPreferencesStore = useUserPreferencesStore();
   const role = authStore.user?.role;
+  const logout = useLogout();
 
   // Dashboard search functionality
   const {
@@ -111,7 +112,7 @@ export default function Header({
     },
     separator1: { type: "separator" as const },
     billingControl:
-      role === "center"
+      role === "center" || role === "nursery"
         ? {
             icon: CreditCard,
             label: t("menu.billing"),
@@ -160,7 +161,7 @@ export default function Header({
       type: "action" as const,
       variant: "destructive" as const,
       onClick: () => {
-        handleLogout();
+        logout();
       },
     },
   };
@@ -265,7 +266,7 @@ export default function Header({
 
     // Skip the locale segment if present
     const localeIndex = segments.findIndex(
-      (s) => s === "ar" || s === "en" || s === "ku"
+      (s) => s === "ar" || s === "en" || s === "ku",
     );
     const pathSegments =
       localeIndex >= 0 ? segments.slice(localeIndex + 1) : segments;
@@ -384,7 +385,7 @@ export default function Header({
         <div
           className={clsx(
             "hidden sm:block relative w-full transition-all duration-200",
-            searchFocused ? "max-w-2xl mx-auto" : "max-w-52 mx-4"
+            searchFocused ? "max-w-2xl mx-auto" : "max-w-52 mx-4",
           )}
         >
           <div className="relative">
@@ -540,7 +541,9 @@ function DashboardLanguageSwitcher() {
         <button className="flex items-center justify-center hover:bg-gray-100 rounded-lg p-1 transition-colors">
           <div className="flex items-center gap-x-1.5">
             <Image src={iconSrc} alt="language" width={20} height={20} />
-            <span className="text-sm font-medium text-mid-gray">{language}</span>
+            <span className="text-sm font-medium text-mid-gray">
+              {language}
+            </span>
           </div>
         </button>
       </DropdownMenuTrigger>
@@ -557,9 +560,7 @@ function DashboardLanguageSwitcher() {
               />
               <span className="text-sm font-medium">{languageT("ar")}</span>
             </div>
-            {locale === "ar" && (
-              <span className="text-xs text-primary">✓</span>
-            )}
+            {locale === "ar" && <span className="text-xs text-primary">✓</span>}
           </div>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => toggleLanguage("en")}>
@@ -573,9 +574,7 @@ function DashboardLanguageSwitcher() {
               />
               <span className="text-sm font-medium">{languageT("en")}</span>
             </div>
-            {locale === "en" && (
-              <span className="text-xs text-primary">✓</span>
-            )}
+            {locale === "en" && <span className="text-xs text-primary">✓</span>}
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>

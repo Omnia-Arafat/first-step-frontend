@@ -12,7 +12,6 @@
     Database: SQL
     Hosting: GCP
     Analytics: Google Analytics
-    Monitoring: Sentry
 
 # Standards
     HTML5, CSS3, ES6+

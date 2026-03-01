@@ -10,7 +10,7 @@ export type Occasion = {
 
 export const useOccasions = () => {
   const queryClient = useQueryClient();
-  const isCenter = useHasRole(["center", "branch_admin"]);
+  const isEstablishment = useHasRole(["center", "nursery", "branch_admin"]);
 
   const {
     data: occasions = [],
@@ -19,7 +19,9 @@ export const useOccasions = () => {
   } = useQuery({
     queryKey: ["occasions"],
     queryFn: async () => {
-      const response = await (isCenter ? sidebarService.getCenterOccasions() : sidebarService.getOccasions());
+      const response = await (isEstablishment
+        ? sidebarService.getCenterOccasions()
+        : sidebarService.getOccasions());
       return response.data.map((occasion: any) => ({
         id: occasion.id,
         title: occasion.title,
@@ -30,14 +32,16 @@ export const useOccasions = () => {
 
   const addOccasion = useMutation({
     mutationFn: async (item: Omit<Occasion, "id">) => {
-      const response = await (isCenter ? sidebarService.createCenterOccasion({
-        title: item.title,
-        date: item.date.toISOString().split("T")[0],
-      }) : sidebarService.createOccasion({
-        title: item.title,
-        date: item.date.toISOString().split("T")[0],
-      }));
-      return response;  
+      const response = await (isEstablishment
+        ? sidebarService.createCenterOccasion({
+            title: item.title,
+            date: item.date.toISOString().split("T")[0],
+          })
+        : sidebarService.createOccasion({
+            title: item.title,
+            date: item.date.toISOString().split("T")[0],
+          }));
+      return response;
     },
     onMutate: async (newOccasion) => {
       await queryClient.cancelQueries({ queryKey: ["occasions"] });
@@ -70,17 +74,19 @@ export const useOccasions = () => {
       id: string;
       updates: Partial<Occasion>;
     }) => {
-      await (isCenter ? sidebarService.updateCenterOccasion(id, {
-        title: updates.title || "",
-        date:
-          updates.date?.toISOString().split("T")[0] ||
-          new Date().toISOString().split("T")[0],
-      }) : sidebarService.updateOccasion(id, {
-        title: updates.title || "",
-        date:
-          updates.date?.toISOString().split("T")[0] ||
-          new Date().toISOString().split("T")[0],
-      }));
+      await (isEstablishment
+        ? sidebarService.updateCenterOccasion(id, {
+            title: updates.title || "",
+            date:
+              updates.date?.toISOString().split("T")[0] ||
+              new Date().toISOString().split("T")[0],
+          })
+        : sidebarService.updateOccasion(id, {
+            title: updates.title || "",
+            date:
+              updates.date?.toISOString().split("T")[0] ||
+              new Date().toISOString().split("T")[0],
+          }));
     },
     onMutate: async ({ id, updates }) => {
       await queryClient.cancelQueries({ queryKey: ["occasions"] });
@@ -90,8 +96,8 @@ export const useOccasions = () => {
 
       queryClient.setQueryData<Occasion[]>(["occasions"], (old = []) =>
         old.map((occasion: Occasion) =>
-          occasion.id === id ? { ...occasion, ...updates } : occasion
-        )
+          occasion.id === id ? { ...occasion, ...updates } : occasion,
+        ),
       );
 
       return { previousOccasions };
@@ -108,7 +114,9 @@ export const useOccasions = () => {
 
   const deleteOccasion = useMutation({
     mutationFn: async (id: string) => {
-      await (isCenter ? sidebarService.deleteCenterOccasion(id) : sidebarService.deleteOccasion(id));
+      await (isEstablishment
+        ? sidebarService.deleteCenterOccasion(id)
+        : sidebarService.deleteOccasion(id));
     },
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: ["occasions"] });
@@ -117,7 +125,7 @@ export const useOccasions = () => {
       ]);
 
       queryClient.setQueryData<Occasion[]>(["occasions"], (old = []) =>
-        old.filter((occasion) => occasion.id !== id)
+        old.filter((occasion) => occasion.id !== id),
       );
 
       return { previousOccasions };

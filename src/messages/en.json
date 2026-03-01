@@ -1014,6 +1014,7 @@
         "bookings": "Bookings",
         "daily-reports": "Daily Reports",
         "center-data": "Center Data",
+        "nursery-data": "Nursery Data",
         "gate": "First Step Gate",
         "wallet": "Wallet",
         "ad-or-blog-request": "Ad or Blog Request",
@@ -1118,7 +1119,9 @@
         "permissionError": "You do not have permission to view advertisements or blogs",
         "ad": {
           "title": "Request Advertisement",
-          "free-notice": "Your first advertisement for your center/nursery is 100% free on the homepage for one day",
+          "free-notice": "Your first advertisement for your {type} is 100% free on the homepage for one day",
+          "nursery": "nursery",
+          "center": "center",
           "description": "Attract parents with an advertisement that appears at the top of the homepage. You can specify the number of days the advertisement will appear",
           "form": {
             "image": {
@@ -2091,6 +2094,8 @@
     },
     "profileEditor": {
       "title": "Center Data",
+      "nurseryLogo": "Nursery Logo",
+      "logoHint": "Upload your nursery logo. Recommended size: 512x512px.",
       "debug": {
         "title": "Network Response Debug",
         "description": "Detailed response from the center data update API."
@@ -2112,15 +2117,20 @@
       "permissionError": "You do not have permission to view center data",
       "sections": {
         "basicInfo": "Basic Information",
-        "plans": "Plans",
-        "activities": "Activities",
-        "facilities": "Facilities",
+        "services": "Services",
+        "activities": "Success Stories",
+        "teams": "Work Team",
+        "statistics": "Statistics",
         "licenses": "Licenses",
-        "socialMedia": "Social Media"
+        "socialMedia": "Social Media",
+        "plans": "Programs",
+        "facilities": "Facilites"
       },
       "basicInfo": {
-        "nurseryLogo": "Nursery Logo",
+        "nurseryLogo": "Center Logo",
         "logoHint": "Upload a clear logo image (PNG or JPG, max 3MB)",
+        "centerName": "Center Name",
+        "centerNamePlaceholder": "Enter center name",
         "nurseryName": "Nursery Name",
         "nurseryNamePlaceholder": "e.g., World of Learning Nursery",
         "nurserySlogan": "Nursery Slogan",
@@ -2130,11 +2140,52 @@
         "descriptionLimit": "Maximum 200 characters"
       },
       "activities": {
-        "title": "Photo Albums",
+        "title": "Success Stories",
+        "description": "Share success and improvement stories for children at your center",
+        "storyImage": "Case Image",
+        "caseType": "Case Type",
+        "caseTypePlaceholder": "e.g., Speech Delay / Autism",
+        "improvementSummary": "Improvement Summary",
+        "improvementPlaceholder": "Talk about the level of improvement the child has reached...",
+        "addStory": "Add Success Story",
+        "imageHint": "Upload a photo illustrating the activity or case",
         "uploadTitle": "Upload Photo",
         "uploadHint": "Drag and drop your photos here, or upload from your device",
         "formatsNote": "Supported formats: JPG, PNG (Max size: 10MB)",
         "uploadedTitle": "Uploaded Photos ({count})"
+      },
+      "services": {
+        "title": "Services",
+        "description": "Add services provided by the center with their prices",
+        "serviceName": "Service Name",
+        "serviceNamePlaceholder": "e.g., Speech Session",
+        "serviceDescription": "Service Description",
+        "serviceDescriptionPlaceholder": "Briefly describe the service...",
+        "serviceImage": "Service Image",
+        "price": "Price",
+        "addService": "Add Service",
+        "imageHint": "Upload an image representing the service"
+      },
+      "teams": {
+        "title": "Work Team",
+        "description": "Definition of specialists and the distinguished work team",
+        "memberName": "Member Name",
+        "memberNamePlaceholder": "Enter specialist's name",
+        "memberSpecialization": "Specialization",
+        "memberSpecializationPlaceholder": "e.g., Speech Specialist",
+        "memberImage": "Member Photo",
+        "addMember": "Add Member",
+        "imageHint": "Upload a profile photo"
+      },
+      "statistics": {
+        "title": "Statistics",
+        "description": "Numbers reflecting the center's achievements",
+        "labels": {
+          "YearsofExperience": "Years of Experience",
+          "ChildrenHelped": "Children Helped",
+          "SessionsProvided": "Sessions Provided",
+          "CertifiedSpecialist": "Certified Specialist"
+        }
       },
       "facilities": {
         "title": "Choose the facilities available in your nursery"
@@ -2679,7 +2730,9 @@
       "title": "Our Team"
     },
     "services": {
-      "title": "Our Services"
+      "title": "Our Services",
+      "count": "({count} services)",
+      "subscribe": "Subscribe to Service"
     },
     "activities": {
       "title": "Our Activites",
@@ -2691,6 +2744,8 @@
       "filter": "Filtering",
       "bookNow": "Book Now",
       "noResults": "No programs available for this search",
+      "noResultsDescription": "We couldn't find any programs matching your current filters. Try adjusting your preferences.",
+      "resetFilters": "Reset Filters",
       "currency": "SAR",
       "filters": {
         "branch": "Branch",
@@ -2729,7 +2784,8 @@
       "placeholder": "Stay tuned for great offers and activities"
     },
     "ratings": {
-      "title": "Ratings ({count} ratings)",
+      "title": "Ratings",
+      "count": "({count} ratings)",
       "placeholder": "Contribute to improving the service and be the first to rate",
       "bookNow": "Book Now"
     },
@@ -2752,7 +2808,7 @@
       "social": "Social Media"
     },
     "branches": {
-      "title": "Nursery Branches",
+      "title": "Branches",
       "qassim": "Qassim",
       "gharnata": "Gharnata",
       "madina": "Madinah",
@@ -2837,7 +2893,9 @@
       "title": "Our Team"
     },
     "services": {
-      "title": "Our Services"
+      "title": "Our Services",
+      "count": "({count} services)",
+      "subscribe": "Subscribe to Service"
     },
     "activities": {
       "title": "Our Activities",
@@ -2849,6 +2907,8 @@
       "filter": "Filtering",
       "bookNow": "Book Now",
       "noResults": "No programs available for this search",
+      "noResultsDescription": "We couldn't find any programs matching your current filters. Try adjusting your preferences.",
+      "resetFilters": "Reset Filters",
       "currency": "SAR",
       "filters": {
         "branch": "Branch",

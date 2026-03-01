@@ -85,68 +85,21 @@ export const BasicInfoSection = ({
         </div>
       </div>
 
-      {/* Nursery Name and Slogan */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-        <div className="space-y-2 text-start">
-          <Label htmlFor="nurseryName" className="text-base font-medium">
-            {t("nurseryName")}
-          </Label>
-          <Input
-            id="nurseryName"
-            placeholder={t("nurseryNamePlaceholder")}
-            value={data.title_of_hero || ""}
-            onChange={(e) => onChange({ title_of_hero: e.target.value })}
-            className="bg-gray-50/50 py-6"
-          />
-          {errors.title_of_hero && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.title_of_hero[0]}
-            </p>
-          )}
-        </div>
-        <div className="space-y-2 text-start">
-          <Label htmlFor="nurserySlogan" className="text-base font-medium">
-            {t("nurserySlogan")}
-          </Label>
-          <Input
-            id="nurserySlogan"
-            placeholder={t("nurserySloganPlaceholder")}
-            value={data.subtitle_of_hero || ""}
-            onChange={(e) => onChange({ subtitle_of_hero: e.target.value })}
-            className="bg-gray-50/50 py-6"
-          />
-          {errors.subtitle_of_hero && (
-            <p className="text-sm text-red-500 mt-1">
-              {errors.subtitle_of_hero[0]}
-            </p>
-          )}
-        </div>
-      </div>
-
-      {/* Brief Description */}
+      {/* Center Name */}
       <div className="space-y-2 text-start">
-        <div className="flex justify-between">
-          <Label htmlFor="description" className="text-base font-medium">
-            {t("briefDescription")}
-          </Label>
-          <span className="text-xs text-gray-400 pt-1">
-            {t("descriptionLimit")}
-          </span>
-        </div>
-        <Textarea
-          id="description"
-          placeholder={t("descriptionPlaceholder")}
-          value={data.description || ""}
-          onChange={(e) => onChange({ description: e.target.value })}
-          className="bg-gray-50/50 min-h-[120px] resize-none"
-          maxLength={200}
+        <Label htmlFor="userName" className="text-base font-medium">
+          {t("centerName")}
+        </Label>
+        <Input
+          id="userName"
+          placeholder={t("centerNamePlaceholder")}
+          value={data.name || ""}
+          onChange={(e) => onChange({ name: e.target.value })}
+          className="bg-gray-50/50 py-6"
         />
-        {errors.description && (
-          <p className="text-sm text-red-500 mt-1">{errors.description[0]}</p>
+        {errors.name && (
+          <p className="text-sm text-red-500 mt-1">{errors.name[0]}</p>
         )}
-        <div className="text-xs text-end text-gray-400">
-          {data.description?.length || 0} / 200
-        </div>
       </div>
     </div>
   );

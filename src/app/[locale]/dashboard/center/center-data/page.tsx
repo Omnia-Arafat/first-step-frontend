@@ -20,11 +20,11 @@ import { useAuthUser } from "@/store/authStore";
 
 // Section Components
 import { BasicInfoSection } from "./_components/BasicInfoSection";
-import { PlansSection } from "./_components/PlansSection";
-import { FacilitiesSection } from "./_components/FacilitiesSection";
-import { ActivitiesSection } from "./_components/ActivitiesSection";
+import { ServicesSection } from "./_components/ServicesSection";
+import { SuccessStoriesSection } from "./_components/SuccessStoriesSection";
+import { TeamsSection } from "./_components/TeamsSection";
+import { StatisticsSection } from "./_components/StatisticsSection";
 import { LicensesSection } from "./_components/LicensesSection";
-import { SocialMediaSection } from "./_components/SocialMediaSection";
 
 export default function CenterProfilePage() {
   usePageMetadata();
@@ -39,20 +39,24 @@ export default function CenterProfilePage() {
 
   const [portfolioId, setPortfolioId] = useState<number | string | null>(null);
   const [formData, setFormData] = useState<PortfolioFormData>({
+    name: "",
     title_of_hero: "",
     subtitle_of_hero: "",
     description: "",
     images_activities: [],
     delete_images_activities: [],
-    admin_option_ids: [],
-    delete_center_options: [],
+    services: [],
+    delete_service_ids: [],
+    teams: [],
+    delete_team_ids: [],
+    statistics: [],
     licenses: [],
     delete_license_ids: [],
     contact_info: {
       facebook: "",
       instagram: "",
       twitter: "",
-      linkedin: "",
+      linkedIn: "",
       website: "",
     },
   });
@@ -66,13 +70,14 @@ export default function CenterProfilePage() {
   // Fetch initial data
   const { data: initialData, isLoading } = useQuery({
     queryKey: ["centerPortfolio"],
-    queryFn: () => centerService.getPortfolio(),
+    queryFn: () => centerService.getCenterPortfolio(),
   });
 
   useEffect(() => {
-    const p = initialData?.portofilo || initialData?.data;
+    const p = initialData?.portofilo || initialData?.data || initialData;
     if (p) {
       setFormData({
+        name: p.user_name || p.name || "",
         title_of_hero: p.hero_section?.title_of_hero || p.title_of_hero || "",
         subtitle_of_hero:
           p.hero_section?.subtitle_of_hero || p.subtitle_of_hero || "",
@@ -81,7 +86,7 @@ export default function CenterProfilePage() {
           facebook: p.contact_info?.facebook || p.facebook || "",
           instagram: p.contact_info?.instagram || p.instagram || "",
           twitter: p.contact_info?.twitter || p.twitter || "",
-          linkedin:
+          linkedIn:
             p.contact_info?.linkedin ||
             p.contact_info?.linkedIn ||
             p.linkedin ||
@@ -90,9 +95,13 @@ export default function CenterProfilePage() {
         },
         images_activities: p.images_activities || [],
         delete_images_activities: [],
-        admin_option_ids:
-          (p.admin_options || p.options)?.map((o: any) => o.id) || [],
+        services: p.services || [],
+        delete_service_ids: [],
+        teams: p.teams || [],
+        delete_team_ids: [],
+        statistics: p.statistics || [],
         licenses: p.licenses || [],
+        delete_license_ids: [],
       });
       // The logo might be in the parent object, inside portfolio, or the user object
       setLogoUrl(p.logo || initialData?.logo || user?.logo || "");
@@ -140,12 +149,14 @@ export default function CenterProfilePage() {
     }: {
       data: PortfolioFormData;
       id?: number | string;
-    }) => centerService.savePortfolio(data, id),
+    }) => centerService.saveCenterPortfolio(data, id),
     onSuccess: () => {
       setValidationErrors({});
       queryClient.invalidateQueries({ queryKey: ["centerPortfolio"] });
       toastSuccess(t("title"), t("saveSuccess"));
       router.refresh();
+      setIsDirty(false);
+      setDirtyFields(new Set());
     },
     onError: (error: any) => {
       if (error.errors && typeof error.errors === "object") {
@@ -179,21 +190,6 @@ export default function CenterProfilePage() {
   });
 
   const handleSave = () => {
-    // Validate licenses - stop sending if any entry is incomplete
-    if (formData.licenses && formData.licenses.length > 0) {
-      const isIncomplete = formData.licenses.some(
-        (l) => !l.number?.trim() || !l.document,
-      );
-
-      if (isIncomplete) {
-        toastError(
-          t("sections.licenses"),
-          "Please complete all license information (number and document) before saving.",
-        );
-        return; // BLOCK SUBMISSION
-      }
-    }
-
     const dirtyData: Partial<PortfolioFormData> = {};
     dirtyFields.forEach((field) => {
       (dirtyData as any)[field] = (formData as any)[field];
@@ -203,20 +199,23 @@ export default function CenterProfilePage() {
     if (formData.delete_license_ids?.length) {
       dirtyData.delete_license_ids = formData.delete_license_ids;
     }
-    if (formData.delete_center_options?.length) {
-      dirtyData.delete_center_options = formData.delete_center_options;
-    }
     if (formData.delete_images_activities?.length) {
       dirtyData.delete_images_activities = formData.delete_images_activities;
     }
+    if (formData.delete_service_ids?.length) {
+      dirtyData.delete_service_ids = formData.delete_service_ids;
+    }
+    if (formData.delete_team_ids?.length) {
+      dirtyData.delete_team_ids = formData.delete_team_ids;
+    }
+
+    // Always include statistics as they are usually updated as a set
+    if (formData.statistics?.length) {
+      dirtyData.statistics = formData.statistics;
+    }
 
     // If nothing dirty left after filtering, don't send
-    if (
-      Object.keys(dirtyData).length === 0 &&
-      !formData.delete_license_ids?.length &&
-      !formData.delete_center_options?.length &&
-      !formData.delete_images_activities?.length
-    ) {
+    if (Object.keys(dirtyData).length === 0) {
       setIsDirty(false);
       return;
     }
@@ -237,24 +236,24 @@ export default function CenterProfilePage() {
       title: t("sections.basicInfo"),
     },
     {
-      id: "plans",
-      title: t("sections.plans"),
-    },
-    {
-      id: "facilities",
-      title: t("sections.facilities"),
+      id: "services",
+      title: t("sections.services"),
     },
     {
       id: "activities",
       title: t("sections.activities"),
     },
     {
-      id: "licenses",
-      title: t("sections.licenses"),
+      id: "teams",
+      title: t("sections.teams"),
     },
     {
-      id: "socialMedia",
-      title: t("sections.socialMedia"),
+      id: "statistics",
+      title: t("sections.statistics"),
+    },
+    {
+      id: "licenses",
+      title: t("sections.licenses"),
     },
   ];
 
@@ -270,11 +269,9 @@ export default function CenterProfilePage() {
             onLogoChange={(file: File) => logoMutation.mutate(file)}
           />
         );
-      case "plans":
-        return <PlansSection />;
-      case "facilities":
+      case "services":
         return (
-          <FacilitiesSection
+          <ServicesSection
             data={formData}
             onChange={updateFormData}
             errors={validationErrors}
@@ -282,7 +279,23 @@ export default function CenterProfilePage() {
         );
       case "activities":
         return (
-          <ActivitiesSection
+          <SuccessStoriesSection
+            data={formData}
+            onChange={updateFormData}
+            errors={validationErrors}
+          />
+        );
+      case "teams":
+        return (
+          <TeamsSection
+            data={formData}
+            onChange={updateFormData}
+            errors={validationErrors}
+          />
+        );
+      case "statistics":
+        return (
+          <StatisticsSection
             data={formData}
             onChange={updateFormData}
             errors={validationErrors}
@@ -291,14 +304,6 @@ export default function CenterProfilePage() {
       case "licenses":
         return (
           <LicensesSection
-            data={formData}
-            onChange={updateFormData}
-            errors={validationErrors}
-          />
-        );
-      case "socialMedia":
-        return (
-          <SocialMediaSection
             data={formData}
             onChange={updateFormData}
             errors={validationErrors}

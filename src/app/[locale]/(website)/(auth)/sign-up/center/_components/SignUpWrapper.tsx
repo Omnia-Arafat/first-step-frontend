@@ -13,6 +13,7 @@ import { UseFormReturn } from "react-hook-form";
 import { toastError } from "@/lib/toast";
 import { ApiError } from "@/lib/error-handling";
 import { trackSignUp } from "@/lib/snapchatPixel";
+import { useAuthStore } from "@/store/authStore";
 
 const SignUpWrapper = () => {
   const router = useRouter();
@@ -41,8 +42,9 @@ const SignUpWrapper = () => {
         password: { field: "password", step: 1 },
         phone: { field: "phone", step: 1 },
         nursery_name: { field: "nursery_name", step: 1 },
-        description: { field: "description", step: 1 },
+        city_id: { field: "city_id", step: 1 },
         logo: { field: "logo", step: 1 },
+        category_service_ids: { field: "category_service_ids", step: 1 },
       };
 
       let earliestErrorStep = Infinity;
@@ -69,7 +71,7 @@ const SignUpWrapper = () => {
             // Handle array fields or nested errors specifically if needed
             // For now fall back to root
             console.warn(
-              `Field ${field} not found directly in form values, showing as root error`
+              `Field ${field} not found directly in form values, showing as root error`,
             );
             formRef.current?.setError("root", {
               type: "server",
@@ -92,9 +94,7 @@ const SignUpWrapper = () => {
       if (earliestErrorStep !== Infinity) {
         toastError(
           locale === "ar" ? "خطأ في التحقق" : "Validation Error",
-          locale === "ar"
-            ? "يرجى التحقق من الحقول"
-            : "Please check the fields"
+          locale === "ar" ? "يرجى التحقق من الحقول" : "Please check the fields",
         );
       }
     } else {
@@ -107,7 +107,7 @@ const SignUpWrapper = () => {
       // Also show as toast for better visibility
       toastError(
         "Registration Failed",
-        error.message || "An error occurred. Please try again."
+        error.message || "An error occurred. Please try again.",
       );
     }
   };
@@ -156,8 +156,9 @@ const SignUpWrapper = () => {
       password: data.password,
       phone: data.phone,
       nursery_name: data.nursery_name,
-      description: data.description,
+      city_id: data.city_id,
       logo: data.logo,
+      category_service_ids: data.category_service_ids,
     };
 
     mutation.mutate(expectedData);

@@ -11,7 +11,7 @@ export type Task = {
 
 export const useTasks = () => {
   const queryClient = useQueryClient();
-  const isCenter = useHasRole(["center", "branch_admin"]);
+  const isEstablishment = useHasRole(["center", "nursery", "branch_admin"]);
 
   const {
     data: tasks = [],
@@ -20,7 +20,9 @@ export const useTasks = () => {
   } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const response = await (isCenter ? sidebarService.getCenterTasks() : sidebarService.getTasks());
+      const response = await (isEstablishment
+        ? sidebarService.getCenterTasks()
+        : sidebarService.getTasks());
       return response.map((task: any) => ({
         id: task.id,
         title: task.title,
@@ -32,15 +34,17 @@ export const useTasks = () => {
 
   const addTask = useMutation({
     mutationFn: async (item: Omit<Task, "id">) => {
-      const response = await (isCenter ? sidebarService.createCenterTask({
-        title: item.title,
-        date: item.date.toISOString().split("T")[0],
-        done: item.done,
-      }) : sidebarService.createTask({
-        title: item.title,
-        date: item.date.toISOString().split("T")[0],
-        done: item.done,
-      }));
+      const response = await (isEstablishment
+        ? sidebarService.createCenterTask({
+            title: item.title,
+            date: item.date.toISOString().split("T")[0],
+            done: item.done,
+          })
+        : sidebarService.createTask({
+            title: item.title,
+            date: item.date.toISOString().split("T")[0],
+            done: item.done,
+          }));
       return response;
     },
     onMutate: async (newTask) => {
@@ -79,19 +83,21 @@ export const useTasks = () => {
       id: string;
       updates: Partial<Task>;
     }) => {
-      await (isCenter ? sidebarService.updateCenterTask(id, {
-        title: updates.title || "",
-        date:
-          updates.date?.toISOString().split("T")[0] ||
-          new Date().toISOString().split("T")[0],
-        done: updates.done ?? false,
-      }) : sidebarService.updateTask(id, {
-        title: updates.title || "",
-        date:
-          updates.date?.toISOString().split("T")[0] ||
-          new Date().toISOString().split("T")[0],
-        done: updates.done ?? false,
-      }));
+      await (isEstablishment
+        ? sidebarService.updateCenterTask(id, {
+            title: updates.title || "",
+            date:
+              updates.date?.toISOString().split("T")[0] ||
+              new Date().toISOString().split("T")[0],
+            done: updates.done ?? false,
+          })
+        : sidebarService.updateTask(id, {
+            title: updates.title || "",
+            date:
+              updates.date?.toISOString().split("T")[0] ||
+              new Date().toISOString().split("T")[0],
+            done: updates.done ?? false,
+          }));
     },
     onMutate: async ({ id, updates }) => {
       await queryClient.cancelQueries({ queryKey: ["tasks"] });
@@ -99,8 +105,8 @@ export const useTasks = () => {
 
       queryClient.setQueryData<Task[]>(["tasks"], (old = []) =>
         old.map((task: Task) =>
-          task.id === id ? { ...task, ...updates } : task
-        )
+          task.id === id ? { ...task, ...updates } : task,
+        ),
       );
 
       return { previousTasks };
@@ -117,14 +123,16 @@ export const useTasks = () => {
 
   const deleteTask = useMutation({
     mutationFn: async (id: string) => {
-      await (isCenter ? sidebarService.deleteCenterTask(id) : sidebarService.deleteTask(id));
+      await (isEstablishment
+        ? sidebarService.deleteCenterTask(id)
+        : sidebarService.deleteTask(id));
     },
     onMutate: async (id) => {
       await queryClient.cancelQueries({ queryKey: ["tasks"] });
       const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]);
 
       queryClient.setQueryData<Task[]>(["tasks"], (old = []) =>
-        old.filter((task) => task.id !== id)
+        old.filter((task) => task.id !== id),
       );
 
       return { previousTasks };
@@ -144,22 +152,24 @@ export const useTasks = () => {
       const task = tasks.find((t: Task) => t.id === id);
       if (!task) throw new Error("Task not found");
 
-      await (isCenter ? sidebarService.updateCenterTask(id, {
-        title: task.title,
-        date: task.date.toISOString().split("T")[0],
-        done,
-      }) : sidebarService.updateTask(id, {
-        title: task.title,
-        date: task.date.toISOString().split("T")[0],
-        done,
-      }));
+      await (isEstablishment
+        ? sidebarService.updateCenterTask(id, {
+            title: task.title,
+            date: task.date.toISOString().split("T")[0],
+            done,
+          })
+        : sidebarService.updateTask(id, {
+            title: task.title,
+            date: task.date.toISOString().split("T")[0],
+            done,
+          }));
     },
     onMutate: async ({ id, done }) => {
       await queryClient.cancelQueries({ queryKey: ["tasks"] });
       const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]);
 
       queryClient.setQueryData<Task[]>(["tasks"], (old = []) =>
-        old.map((task) => (task.id === id ? { ...task, done } : task))
+        old.map((task) => (task.id === id ? { ...task, done } : task)),
       );
 
       return { previousTasks };

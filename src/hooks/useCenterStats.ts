@@ -37,7 +37,7 @@ export type Stats = {
 type Role = "center" | "branch";
 
 export const useCenterStats = (role: Role) => {
-  const isCenter = useHasRole(["center", "branch_admin"]);
+  const isCenter = useHasRole(["center", "nursery", "branch_admin"]);
   const { subscriptionRequired } = useSubscriptionStore();
 
   const {

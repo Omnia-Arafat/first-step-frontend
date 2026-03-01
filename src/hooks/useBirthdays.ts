@@ -10,7 +10,7 @@ export type Birthday = {
 
 export const useBirthdays = () => {
   const isAdmin = useHasRole("admin");
-  const isCenter = useHasRole(["center", "branch_admin"]);
+  const isEstablishment = useHasRole(["center", "nursery", "branch_admin"]);
   const isParent = useHasRole("parent");
 
   const {
@@ -20,16 +20,22 @@ export const useBirthdays = () => {
   } = useQuery({
     queryKey: ["birthdays"],
     queryFn: async () => {
-      let response;
+      let response: any[] = [];
 
       if (isAdmin) {
         response = await sidebarService.getAdminBirthdays();
-      } else if (isCenter) {
+      } else if (isEstablishment) {
         response = await sidebarService.getCenterBirthdays();
       } else if (isParent) {
         response = await sidebarService.getParentBirthdays();
       }
-      return response.map((birthday: any) => ({
+
+      // Ensure response is an array before mapping
+      const birthdayData = Array.isArray(response)
+        ? response
+        : (response as any)?.data || [];
+
+      return birthdayData.map((birthday: any) => ({
         id: birthday.id,
         title: birthday.child_name,
         date: new Date(birthday.birthday_date),

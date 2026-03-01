@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale();
   return makePageMetadata(
     locale as Locale,
-    "dashboard/nursery/ad-or-blog-request/ad-request"
+    "dashboard/nursery/ad-or-blog-request/ad-request",
   );
 }
 
@@ -18,7 +18,7 @@ export default function CenterAdRequestPage() {
   return (
     <div>
       <div className="py-2.5 text-center bg-secondary-mint-green rounded-t-full font-medium">
-        {t("free-notice")}
+        {t("free-notice", { type: t("nursery") })}
       </div>
 
       <div className="p-10 flex flex-col gap-y-4">

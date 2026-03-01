@@ -15,7 +15,7 @@ const transformApiData = (apiData: any): PortfolioFormData => {
     contact_info: {
       facebook: "",
       instagram: "",
-      linkedin: "",
+      linkedIn: "",
       twitter: "",
       website: "",
     },
@@ -31,7 +31,7 @@ const transformApiData = (apiData: any): PortfolioFormData => {
     contact_info: {
       facebook: apiData.contact_info?.facebook || "",
       instagram: apiData.contact_info?.instagram || "",
-      linkedin: apiData.contact_info?.linkedin || "",
+      linkedIn: apiData.contact_info?.linkedIn || "",
       twitter: apiData.contact_info?.twitter || "",
       website: apiData.contact_info?.website || "",
     },

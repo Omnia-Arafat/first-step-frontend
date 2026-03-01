@@ -31,7 +31,7 @@ const ServicesSection = ({
   services,
   locale: propLocale,
 }: ServicesSectionProps) => {
-  const t = useTranslations("centerDetails.services");
+  const t = useTranslations("nurseryDetails.services");
   const locale = useLocale();
   const isRtl = locale === "ar";
 
@@ -62,7 +62,6 @@ const ServicesSection = ({
               return (
                 <CarouselItem key={index} className="pr-0 basis-full">
                   <div className="flex flex-col-reverse md:flex-row items-stretch gap-8 md:gap-[60px]">
-                    {/* Right Side: Content */}
                     <div className="flex-1 flex flex-col py-5">
                       <div className="space-y-4">
                         <h3
@@ -105,7 +104,6 @@ const ServicesSection = ({
                       </div>
                     </div>
 
-                    {/* Left Side: Image */}
                     <div className="relative w-full md:w-[45%] aspect-square md:aspect-270/320 shrink-0">
                       <Image
                         src={imageUrl}

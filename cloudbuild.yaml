@@ -23,10 +23,6 @@ steps:
       - "--cache-from=europe-west1-docker.pkg.dev/$PROJECT_ID/first-step-images/first-step-frontend:cache"
       - "--tag=europe-west1-docker.pkg.dev/$PROJECT_ID/first-step-images/first-step-frontend:latest"
       - "--tag=europe-west1-docker.pkg.dev/$PROJECT_ID/first-step-images/first-step-frontend:cache"
-      - "--build-arg=NEXT_PUBLIC_SENTRY_DSN=${_SENTRY_DSN}"
-      - "--build-arg=SENTRY_AUTH_TOKEN=${_SENTRY_AUTH_TOKEN}"
-      - "--build-arg=SENTRY_ORG=${_SENTRY_ORG}"
-      - "--build-arg=SENTRY_PROJECT=${_SENTRY_PROJECT}"
       - "."
 
   # (Optional) Step 1.5: Show debug images (can be removed later)
@@ -63,14 +59,8 @@ steps:
       - --platform=managed
       - --port=3000
       - --allow-unauthenticated
-      - --set-env-vars=NEXT_PUBLIC_SENTRY_DSN=${_SENTRY_DSN}
 
-substitutions:
-  _SENTRY_DSN: "https://2f73c92c15f85b18aeb01d5feb0fa18e@o4510815830212608.ingest.us.sentry.io/4510815835324416"
-  _SENTRY_ORG: "first-step-4p"
-  _SENTRY_PROJECT: "first-step"
-  # _SENTRY_AUTH_TOKEN should be set in the Cloud Build trigger settings or as a secret
-  _SENTRY_AUTH_TOKEN: ""
+substitutions: {}
 
 images:
   - europe-west1-docker.pkg.dev/$PROJECT_ID/first-step-images/first-step-frontend:latest

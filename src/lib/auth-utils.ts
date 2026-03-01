@@ -1,6 +1,7 @@
 import { useAuthStore } from "@/store/authStore";
 import { useSubscriptionStore } from "@/store/subscriptionStore";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 
 /**
  * Centralized logout utility that handles:
@@ -21,6 +22,7 @@ export const handleLogout = () => {
     if (typeof window !== "undefined") {
       // Clear any other app-specific cached data
       const keysToRemove = [
+        "auth-storage",
         "dashboard-search-history",
         "user-preferences",
         "recent-activities",
@@ -35,9 +37,12 @@ export const handleLogout = () => {
       });
     }
 
-    // Redirect to sign-in page
+    // Redirect to sign-in page, preserving locale
     if (typeof window !== "undefined") {
-      window.location.href = "/sign-in";
+      const pathSegments = window.location.pathname.split("/");
+      const locale = pathSegments[1];
+      const hasLocale = locale === "en" || locale === "ar" || locale === "ku";
+      window.location.href = hasLocale ? `/${locale}/sign-in` : "/sign-in";
     }
   } catch (error) {
     console.error("Error during logout:", error);
@@ -54,9 +59,13 @@ export const handleLogout = () => {
  */
 export const useLogout = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   return () => {
     try {
+      // Clear all react query data
+      queryClient.clear();
+
       // Clear authentication state
       useAuthStore.getState().clearAuth();
 
@@ -67,6 +76,7 @@ export const useLogout = () => {
       if (typeof window !== "undefined") {
         // Clear any other app-specific cached data
         const keysToRemove = [
+          "auth-storage",
           "dashboard-search-history",
           "user-preferences",
           "recent-activities",

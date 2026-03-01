@@ -63,7 +63,7 @@ export default function CenterDashboardHome() {
           <CircularProgressSkeleton />
         ) : (
           <CircularProgressChart
-            currentValue={stats.total_children}
+            currentValue={stats?.total_children}
             title={t("title")}
             valueLabel={t("valueLabel")}
             capacityLabel={t("capacityLabel")}

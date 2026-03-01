@@ -97,10 +97,14 @@ export default function CenterEditProfilePage() {
   ];
 
   const handleSave = async (formData: CenterProfileForm) => {
-    const payload = {
+    const payload: any = {
       ...formData,
-      city_id: Number(formData.city_id),
     };
+
+    if (formData.city_id) {
+      payload.city_id = Number(formData.city_id);
+    }
+
     await updateProfileMutation.mutateAsync(payload);
   };
 

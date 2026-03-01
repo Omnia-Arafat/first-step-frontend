@@ -2,12 +2,15 @@
 
 import { useTranslations } from "next-intl";
 import { PortfolioFormData } from "@/types";
-import { Upload, Trash2, X, Image as ImageIcon } from "lucide-react";
+import { Upload, Trash2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toastError } from "@/lib/toast";
 import Image from "next/image";
+
+// The shape of a single activity item in PortfolioFormData
+type ActivityItem = NonNullable<PortfolioFormData["images_activities"]>[number];
 
 interface Props {
   data: PortfolioFormData;
@@ -20,31 +23,33 @@ export const ActivitiesSection = ({ data, onChange, errors = {} }: Props) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Use ref to store initial server images - only set once on mount
-  const initialImagesRef = useRef<string[]>([]);
+  // Track original server-side IDs so we can mark them for deletion
+  const initialIdsRef = useRef<number[]>([]);
   const isInitializedRef = useRef(false);
-  const lastServerImagesCountRef = useRef(0);
+  const lastServerCountRef = useRef(0);
 
   useEffect(() => {
     if (!data.images_activities) return;
 
-    const serverImages = data.images_activities.filter(
-      (img): img is string => typeof img === "string",
+    // Server images are items that have a numeric id (they came from the API)
+    const serverItems = data.images_activities.filter(
+      (item): item is ActivityItem & { id: number } =>
+        typeof item.id === "number",
     );
 
-    // Reset tracking if server image count changed (indicates a successful save/delete)
+    // Reset tracking when the server count changes (after a save/delete)
     if (
-      serverImages.length !== lastServerImagesCountRef.current &&
+      serverItems.length !== lastServerCountRef.current &&
       isInitializedRef.current
     ) {
       isInitializedRef.current = false;
-      initialImagesRef.current = [];
+      initialIdsRef.current = [];
     }
 
-    // Only capture initial images once when component mounts or after reset
-    if (!isInitializedRef.current && serverImages.length > 0) {
-      initialImagesRef.current = serverImages;
-      lastServerImagesCountRef.current = serverImages.length;
+    // Capture initial server IDs only once on mount (or after reset)
+    if (!isInitializedRef.current && serverItems.length > 0) {
+      initialIdsRef.current = serverItems.map((item) => item.id);
+      lastServerCountRef.current = serverItems.length;
       isInitializedRef.current = true;
     }
   }, [data.images_activities]);
@@ -52,8 +57,8 @@ export const ActivitiesSection = ({ data, onChange, errors = {} }: Props) => {
   const handleFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
 
-    const MAX_SIZE = 10 * 1024 * 1024; // 10MB as per translation
-    const validFiles: File[] = [];
+    const MAX_SIZE = 10 * 1024 * 1024; // 10 MB
+    const newItems: ActivityItem[] = [];
 
     Array.from(files).forEach((file) => {
       if (file.size > MAX_SIZE) {
@@ -61,14 +66,15 @@ export const ActivitiesSection = ({ data, onChange, errors = {} }: Props) => {
       } else if (!file.type.startsWith("image/")) {
         toastError(t("uploadTitle"), `${file.name}: Only images are allowed`);
       } else {
-        validFiles.push(file);
+        // Wrap the File inside the object shape expected by PortfolioFormData
+        newItems.push({ image: file });
       }
     });
 
-    if (validFiles.length === 0) return;
+    if (newItems.length === 0) return;
 
     onChange({
-      images_activities: [...(data.images_activities || []), ...validFiles],
+      images_activities: [...(data.images_activities || []), ...newItems],
     });
   };
 
@@ -81,18 +87,22 @@ export const ActivitiesSection = ({ data, onChange, errors = {} }: Props) => {
       images_activities: updatedImages,
     };
 
-    // If removing a server image (string URL), track its original index for deletion
-    if (typeof itemToRemove === "string") {
-      const originalIndex = initialImagesRef.current.indexOf(itemToRemove);
-      if (originalIndex !== -1) {
-        updates.delete_images_activities = [
-          ...(data.delete_images_activities || []),
-          originalIndex,
-        ];
-      }
+    // If the removed item had a server-side ID, track it for deletion
+    if (typeof itemToRemove.id === "number") {
+      updates.delete_images_activities = [
+        ...(data.delete_images_activities || []),
+        itemToRemove.id,
+      ];
     }
 
     onChange(updates);
+  };
+
+  /** Resolve a display URL from an activity item */
+  const resolveUrl = (item: ActivityItem): string | null => {
+    if (item.image instanceof File) return URL.createObjectURL(item.image);
+    if (typeof item.image === "string" && item.image) return item.image;
+    return null;
   };
 
   return (
@@ -150,17 +160,18 @@ export const ActivitiesSection = ({ data, onChange, errors = {} }: Props) => {
             {t("uploadedTitle", { count: data.images_activities.length })}
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {data.images_activities.map((img, index) => {
-              const url = img instanceof File ? URL.createObjectURL(img) : img;
+            {data.images_activities.map((item, index) => {
+              const url = resolveUrl(item);
+              if (!url) return null;
 
               return (
                 <div
-                  key={index}
+                  key={item.id ?? index}
                   className="relative aspect-square rounded-2xl overflow-hidden border border-light-gray group bg-gray-50"
                 >
                   <Image
                     src={url}
-                    alt={`Activity ${index + 1}`}
+                    alt={item.kind || `Activity ${index + 1}`}
                     fill
                     className="object-cover transition-transform group-hover:scale-105"
                   />

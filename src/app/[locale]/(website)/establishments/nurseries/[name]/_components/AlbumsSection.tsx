@@ -7,14 +7,13 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { X, ChevronLeft, ChevronRight, Maximize2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import SectionHeader from "../../../_components/SectionHeader";
 
 interface AlbumsSectionProps {
   images: string[];
@@ -62,28 +61,11 @@ const AlbumsSection = ({ images }: AlbumsSectionProps) => {
         }}
         className="w-full"
       >
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-3">
-            <div className="w-1 h-8 bg-primary rounded-full" />
-            <h2 className="heading-4 font-bold text-primary">
-              {t("title")}{" "}
-              <span className="text-gray-400 font-medium">
-                {t("count", { count: displayImages.length })}
-              </span>
-            </h2>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <CarouselPrevious
-              useChevron
-              className="static translate-y-0 translate-x-0 w-6 h-6 border-2 border-secondary-mint-green! text-secondary-mint-green shadow-none disabled:border-light-gray! disabled:text-light-gray"
-            />
-            <CarouselNext
-              useChevron
-              className="static translate-y-0 translate-x-0 w-6 h-6 border-2 border-secondary-mint-green! text-secondary-mint-green shadow-none disabled:border-light-gray! disabled:text-light-gray"
-            />
-          </div>
-        </div>
+        <SectionHeader
+          title={t("title")}
+          countText={t("count", { count: displayImages.length })}
+          showNavigation={true}
+        />
 
         <div className="bg-white-out p-4 rounded-2xl flex flex-col gap-6">
           <CarouselContent className="-ml-4">

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "@/i18n/navigation";
 import { useSubscriptionRequired } from "@/store/subscriptionStore";
 import { useAuthUser } from "@/store/authStore";
@@ -36,6 +36,16 @@ export default function DashboardLayout({
 
   // Authentication is now handled by middleware
   // No need for client-side guards
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Prevent components from crashing if user state is cleared during a logout transition.
+  if (mounted && !user) {
+    return null;
+  }
 
   return (
     <div className="relative h-screen">

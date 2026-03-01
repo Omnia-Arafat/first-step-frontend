@@ -67,8 +67,10 @@ const getCenterNavbar = (
     icon: dashboardIcons.reports,
   },
   {
-    title: t("center.center-data"),
-    url: `${basePath}/center-data`,
+    title: basePath.includes("nursery")
+      ? t("center.nursery-data")
+      : t("center.center-data"),
+    url: `${basePath}/${basePath.includes("nursery") ? "nursery-data" : "center-data"}`,
     icon: dashboardIcons.site,
   },
   {

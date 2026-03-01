@@ -269,11 +269,7 @@
       },
       "nursery": {
         "title": "حضانة أو مركز ترفيهي",
-        "features": [
-          "تقارير تشغيل وأداء",
-          "إدارة الحجوزات",
-          "لوحة تحكم شاملة"
-        ]
+        "features": ["تقارير تشغيل وأداء", "إدارة الحجوزات", "لوحة تحكم شاملة"]
       },
       "mentor": {
         "title": "مرشد",
@@ -1010,6 +1006,7 @@
         "bookings": "الحجوزات",
         "daily-reports": "التقارير اليومية",
         "center-data": "بيانات مركزك",
+        "nursery-data": "بيانات حضانتك",
         "gate": "تطبيق First Step Gate",
         "wallet": "محفظتي",
         "ad-or-blog-request": "طلب إعلان أو مقال",
@@ -1176,7 +1173,9 @@
         "permissionError": "ليس لديك صلاحية لعرض الإعلانات أو المدونات",
         "ad": {
           "title": "طلب إعلان",
-          "free-notice": "الإعلان الأول لحضانتك/ مركزك مجاني 100% في الصفحة الرئيسية لمدة يوم واحد",
+          "free-notice": "الإعلان الأول لـ {type} مجاني 100% في الصفحة الرئيسية لمدة يوم واحد",
+          "nursery": "حضانتك",
+          "center": "مركزك",
           "description": "اجذب أولياء الأمور بإعلان يظهر في بداية الصفحة الرئيسية، يمكنك تحديد عدد أيام ظهور الإعلان",
           "form": {
             "image": {
@@ -2086,6 +2085,8 @@
     },
     "profileEditor": {
       "title": "بيانات مركزك",
+      "nurseryLogo": "شعار الحضانة",
+      "logoHint": "ارفع شعار الحضانة الخاص بك. الحجم الموصى به: 512x512 بكسل.",
       "debug": {
         "title": "فحص رد الشبكة",
         "description": "تفاصيل الرد الوارد من واجهة برمجة التطبيقات لتحديث بيانات المركز."
@@ -2107,15 +2108,20 @@
       "permissionError": "ليس لديك صلاحية لعرض بيانات المركز",
       "sections": {
         "basicInfo": "المعلومات الأساسية",
-        "plans": "البرامج",
-        "activities": "الأنشطة",
-        "facilities": "المرافق والخدمات",
+        "services": "الخدمات",
+        "activities": "قصص النجاح",
+        "teams": "فريق العمل",
+        "statistics": "الإحصائيات",
         "licenses": "التراخيص",
-        "socialMedia": "وسائل التواصل الاجتماعي"
+        "socialMedia": "وسائل التواصل الاجتماعي",
+        "plans": "البرامج",
+        "facilites": "المرافق"
       },
       "basicInfo": {
-        "nurseryLogo": "شعار الحضانة",
+        "nurseryLogo": "شعار المركز",
         "logoHint": "قم بتحميل صورة شعار احترافية. (PNG أو JPG، بحد أقصى 3 ميجابايت)",
+        "centerName": "اسم المركز",
+        "centerNamePlaceholder": "أدخل اسم المركز",
         "nurseryName": "اسم الحضانة",
         "nurseryNamePlaceholder": "مثال: حضانة عالم التعلم",
         "nurserySlogan": "شعار الحضانة",
@@ -2125,11 +2131,52 @@
         "descriptionLimit": "الحد الأقصى 200 حرف"
       },
       "activities": {
-        "title": "ألبومات الصور",
+        "title": "قصص النجاح",
+        "description": "شارك قصص النجاح والتحسن للأطفال في مركزك",
+        "storyImage": "صورة الحالة",
+        "caseType": "نوع الحالة",
+        "caseTypePlaceholder": "مثال: تأخر نطق / توحد",
+        "improvementSummary": "ملخص التحسن",
+        "improvementPlaceholder": "تحدث عن مدى التحسن الذي وصل له الطفل...",
+        "addStory": "إضافة قصة نجاح",
+        "imageHint": "تحميل صورة توضح النشاط أو الحالة",
         "uploadTitle": "تحميل صورة",
         "uploadHint": "اسحب وأفلت صورك هنا، أو حمل من جهازك",
         "formatsNote": "الصيغ المدعومة: JPG, PNG (الحجم الأقصى: 10 ميجابايت)",
         "uploadedTitle": "الصور المحملة ({count})"
+      },
+      "services": {
+        "title": "الخدمات",
+        "description": "أضف الخدمات التي يقدمها المركز مع أسعارها",
+        "serviceName": "اسم الخدمة",
+        "serviceNamePlaceholder": "مثال: جلسة تخاطب",
+        "serviceDescription": "وصف الخدمة",
+        "serviceDescriptionPlaceholder": "تحدث باختصار عن الخدمة...",
+        "serviceImage": "صورة الخدمة",
+        "price": "السعر",
+        "addService": "إضافة خدمة",
+        "imageHint": "تحميل صورة معبرة عن الخدمة"
+      },
+      "teams": {
+        "title": "فريق العمل",
+        "description": "تعريف بالأخصائيين وفريق العمل المتميز",
+        "memberName": "اسم العضو",
+        "memberNamePlaceholder": "أدخل اسم الأخصائي",
+        "memberSpecialization": "التخصص",
+        "memberSpecializationPlaceholder": "مثال: أخصائي تخاطب",
+        "memberImage": "صورة العضو",
+        "addMember": "إضافة عضو",
+        "imageHint": "تحميل صورة شخصية"
+      },
+      "statistics": {
+        "title": "الإحصائيات",
+        "description": "أرقام تعكس إنجازات المركز",
+        "labels": {
+          "YearsofExperience": "سنوات الخبرة",
+          "ChildrenHelped": "طفل تم مساعدته",
+          "SessionsProvided": "جلسة مقدمة",
+          "CertifiedSpecialist": "أخصائي معتمد"
+        }
       },
       "facilities": {
         "title": "اختر المرافق المتاحة في حضانتك"
@@ -2679,7 +2726,9 @@
       "title": "فريقنا"
     },
     "services": {
-      "title": "خدماتنا"
+      "title": "خدماتنا",
+      "count": "({count} خدمات)",
+      "subscribe": "اشترك في الخدمة"
     },
     "activities": {
       "title": "نشاطاتنا",
@@ -2691,6 +2740,8 @@
       "filter": "التصفية",
       "bookNow": "احجز الآن",
       "noResults": "لا توجد برامج مطابقة لخيارات التصفية",
+      "noResultsDescription": "لم نجد برامج تطابق خيارات التصفية الحالية. جرب تغيير الإعدادات.",
+      "resetFilters": "إعادة ضبط التصفية",
       "currency": "ريال",
       "filters": {
         "branch": "الفرع",
@@ -2729,7 +2780,8 @@
       "placeholder": "انتظروا عروض وأنشطة رائعة"
     },
     "ratings": {
-      "title": "تقييمات ({count} تقييم)",
+      "title": "تقييمات",
+      "count": "({count} تقييم)",
       "placeholder": "ساهم في تحسين الخدمة وكن أول تقييم",
       "bookNow": "احجز الآن"
     },
@@ -2752,7 +2804,7 @@
       "social": "وسائل التواصل الاجتماعي"
     },
     "branches": {
-      "title": "فروع الحضانة",
+      "title": "الفروع",
       "qassim": "القصيم",
       "gharnata": "غرناطة",
       "madina": "المدينة المنورة",
@@ -2837,7 +2889,9 @@
       "title": "فريقنا"
     },
     "services": {
-      "title": "خدماتنا"
+      "title": "خدماتنا",
+      "count": "({count} خدمة)",
+      "subscribe": "اشترك في الخدمة"
     },
     "activities": {
       "title": "نشاطاتنا",
@@ -2849,6 +2903,8 @@
       "filter": "التصفية",
       "bookNow": "احجز الآن",
       "noResults": "لا توجد برامج مطابقة لخيارات التصفية",
+      "noResultsDescription": "لم نجد برامج تطابق خيارات التصفية الحالية. جرب تغيير الإعدادات.",
+      "resetFilters": "إعادة ضبط التصفية",
       "currency": "ريال",
       "filters": {
         "branch": "الفرع",
@@ -2962,7 +3018,7 @@
     }
   },
   "branches": {
-    "title": "فروع الحضانة",
+    "title": "الفروع",
     "qassim": "القصيم",
     "gharnata": "غرناطة",
     "madina": "المدينة المنورة",

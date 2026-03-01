@@ -172,6 +172,7 @@ export interface CenterRegisterPayload {
   nursery_name: string;
   city_id: string;
   logo: File;
+  category_service_ids?: number[];
 }
 
 // Extended interface for establishment API response that includes user_id
@@ -197,6 +198,18 @@ export interface EstablishmentResponse extends Omit<
   city: string | { name: { ar: string; en: string } };
   neighborhood?: string | { ar: string; en: string } | null;
   address?: string;
+  nursery?: {
+    center_id: number;
+    nursery_name: string;
+    logo?: string;
+    [key: string]: any;
+  };
+  center?: {
+    center_id: number;
+    nursery_name: string;
+    logo?: string;
+    [key: string]: any;
+  };
 }
 
 // ===== Child Info Form Types =====
@@ -283,6 +296,16 @@ export interface Value {
   image: string;
 }
 
+export interface CategoryService {
+  id: number;
+  name: {
+    en: string;
+    ar: string;
+  };
+  created_at: string;
+  updated_at: string;
+}
+
 // -----------------------------
 // Chat Feature Types
 // -----------------------------
@@ -355,11 +378,35 @@ export interface PortfolioData {
   id: number;
   center_id: number;
   hero_section?: HeroSection;
-  images_activities?: string[];
+  images_activities?: {
+    id: number;
+    image: string;
+    summary: string;
+    kind: string;
+  }[];
   contact_info?: ContactInfo;
   ads_images?: string[];
   admin_options?: AdminOption[];
   licenses?: License[];
+  services?: {
+    id: number;
+    title: string;
+    description: string;
+    image_service: string;
+    price: string;
+  }[];
+  teams?: {
+    id: number;
+    name: string;
+    mission: string;
+    image: string;
+  }[];
+  statistics?: {
+    id: number;
+    address: string;
+    value: string;
+  }[];
+  name?: string;
 }
 
 export interface PortfolioResponse {
@@ -370,13 +417,45 @@ export interface PortfolioResponse {
 // Profile Editor Types
 export interface PortfolioFormData {
   // Hero Info
+  name?: string;
   title_of_hero?: string;
   subtitle_of_hero?: string;
   description?: string;
 
-  // Activities
-  images_activities?: (File | string)[];
+  // Activities (Success Stories)
+  images_activities?: {
+    id?: number;
+    image?: File | string;
+    summary?: string;
+    kind?: string;
+  }[];
   delete_images_activities?: number[];
+
+  // Services
+  services?: {
+    id?: number;
+    title: string;
+    description: string;
+    image_service?: File | string;
+    price: string;
+  }[];
+  delete_service_ids?: number[];
+
+  // Teams
+  teams?: {
+    id?: number;
+    name: string;
+    mission: string;
+    image?: File | string;
+  }[];
+  delete_team_ids?: number[];
+
+  // Statistics
+  statistics?: {
+    id?: number;
+    address: string;
+    value: string;
+  }[];
 
   // Facilities / Options
   admin_option_ids?: number[];
@@ -395,7 +474,7 @@ export interface PortfolioFormData {
     facebook?: string;
     instagram?: string;
     twitter?: string;
-    linkedin?: string;
+    linkedIn?: string;
     website?: string;
   };
 }
@@ -405,17 +484,17 @@ export interface PricingFormData {
   enrollment_type: string;
   title: string;
   start_age:
-  | number // old structure support
-  | {
-    type: string;
-    age: number;
-  };
+    | number // old structure support
+    | {
+        type: string;
+        age: number;
+      };
   end_age:
-  | number // old structure support
-  | {
-    type: string;
-    age: number;
-  };
+    | number // old structure support
+    | {
+        type: string;
+        age: number;
+      };
   count: number;
   price_amount: number;
 }
@@ -500,4 +579,5 @@ export interface NurseryRegisterPayload {
   nursery_name: string;
   city_id: string;
   logo: File;
+  category_service_ids?: number[];
 }

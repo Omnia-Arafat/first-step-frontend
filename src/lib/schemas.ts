@@ -175,13 +175,13 @@ export const createChildStep1Schema = (locale: "ar" | "en" = "ar") =>
       })
       .refine(
         (file) => file.size <= MAX_FILE_SIZE,
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       )
       .refine(
         (file) => ["image/png", "image/jpeg", "image/jpg"].includes(file.type),
         {
           message: getErrorMessage("image-type", locale),
-        }
+        },
       ),
   });
 
@@ -204,7 +204,7 @@ const createChildStep2Schema = (locale: "ar" | "en" = "ar") =>
               name: z.string().trim().optional(),
               medication: z.string().trim().optional(),
               procedures: z.string().trim().optional(),
-            })
+            }),
           )
           .optional(),
       })
@@ -255,7 +255,7 @@ const createChildStep2Schema = (locale: "ar" | "en" = "ar") =>
               allergyTypes: z.string().trim().optional(),
               allergyFoods: z.string().trim().optional(),
               allergyProcedures: z.string().trim().optional(),
-            })
+            }),
           )
           .optional(),
       })
@@ -329,7 +329,7 @@ const createChildStep4Schema = (locale: "ar" | "en" = "ar") =>
           idNumber: z.string().min(1, {
             message: getErrorMessage("general-field-required", locale),
           }),
-        })
+        }),
       )
       .min(1, { message: getErrorMessage("general-field-required", locale) }),
 
@@ -423,7 +423,7 @@ const createBranchStep1Schema = (locale: "ar" | "en" = "ar") =>
         },
         {
           message: getErrorMessage("general-field-required", locale),
-        }
+        },
       ),
     neighborhood: z
       .string()
@@ -443,16 +443,16 @@ const createBranchStep1Schema = (locale: "ar" | "en" = "ar") =>
       })
       .refine(
         (file) => file.size <= MAX_FILE_SIZE,
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       )
       .refine(
         (file) =>
           ["image/png", "image/jpeg", "image/jpg", "image/svg+xml"].includes(
-            file.type
+            file.type,
           ),
         {
           message: getErrorMessage("image-type", locale),
-        }
+        },
       ),
   });
 
@@ -497,7 +497,7 @@ const createCenterStep1Schema = (locale: "ar" | "en" = "ar") =>
         },
         {
           message: getErrorMessage("general-field-required", locale),
-        }
+        },
       ),
     logo: z
       .instanceof(File, {
@@ -505,11 +505,11 @@ const createCenterStep1Schema = (locale: "ar" | "en" = "ar") =>
       })
       .refine(
         (file) => file.size <= 3 * 1024 * 1024, // 3MB
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       )
       .refine(
         (file) => ["image/png", "image/jpeg", "image/jpg"].includes(file.type),
-        getErrorMessage("invalid-file-type", locale)
+        getErrorMessage("invalid-file-type", locale),
       ),
     nursery_type: z
       .array(z.string())
@@ -526,9 +526,13 @@ const createCenterStep1Schema = (locale: "ar" | "en" = "ar") =>
     custom_services: z
       .array(
         z.object({
-          name: z.string().min(1, { message: getErrorMessage("general-field-required", locale) }),
-          description: z.string().min(1, { message: getErrorMessage("general-field-required", locale) }),
-        })
+          name: z.string().min(1, {
+            message: getErrorMessage("general-field-required", locale),
+          }),
+          description: z.string().min(1, {
+            message: getErrorMessage("general-field-required", locale),
+          }),
+        }),
       )
       .optional(),
   });
@@ -547,7 +551,7 @@ const createCenterStep2Schema = (locale: "ar" | "en" = "ar") =>
       })
       .refine(
         (file) => file.size <= 3 * 1024 * 1024, // 3MB
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       )
       .refine(
         (file) =>
@@ -561,7 +565,7 @@ const createCenterStep2Schema = (locale: "ar" | "en" = "ar") =>
             "text/plain",
             "application/zip",
           ].includes(file.type),
-        getErrorMessage("invalid-file-type", locale)
+        getErrorMessage("invalid-file-type", locale),
       ),
     license_path: z
       .instanceof(File, {
@@ -569,7 +573,7 @@ const createCenterStep2Schema = (locale: "ar" | "en" = "ar") =>
       })
       .refine(
         (file) => file.size <= 3 * 1024 * 1024, // 3MB
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       )
       .refine(
         (file) =>
@@ -583,7 +587,7 @@ const createCenterStep2Schema = (locale: "ar" | "en" = "ar") =>
             "text/plain",
             "application/zip",
           ].includes(file.type),
-        getErrorMessage("invalid-file-type", locale)
+        getErrorMessage("invalid-file-type", locale),
       ),
     notes: z.string().optional(),
   });
@@ -650,7 +654,7 @@ const createCenterStep3Schema = (locale: "ar" | "en" = "ar") =>
               meal_name: z.string().trim().optional(),
               juice: z.string().trim().optional(),
               components: z.string().trim().optional(),
-            })
+            }),
           )
           .optional(),
         second_meals: z
@@ -659,7 +663,7 @@ const createCenterStep3Schema = (locale: "ar" | "en" = "ar") =>
               meal_name: z.string().trim().optional(),
               juice: z.string().trim().optional(),
               components: z.string().trim().optional(),
-            })
+            }),
           )
           .optional(),
         time_of_first_period: z.string().trim().optional(),
@@ -773,11 +777,11 @@ const createCenterStep4Schema = (locale: "ar" | "en" = "ar") =>
       })
       .refine(
         (file) => file.size <= MAX_FILE_SIZE,
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       )
       .refine(
         (file) => ACCEPTED_FILE_TYPES.includes(file.type),
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       ),
 
     commercial_record_path: z
@@ -786,11 +790,11 @@ const createCenterStep4Schema = (locale: "ar" | "en" = "ar") =>
       })
       .refine(
         (file) => file.size <= MAX_FILE_SIZE,
-        getErrorMessage("file-size", locale)
+        getErrorMessage("file-size", locale),
       )
       .refine(
         (file) => ACCEPTED_FILE_TYPES.includes(file.type),
-        getErrorMessage("pdf-type", locale)
+        getErrorMessage("pdf-type", locale),
       ),
     comments: z.string().optional(),
   });
@@ -801,57 +805,76 @@ export type CenterStep4FormData = z.infer<
 
 // Sign Up For Centers Simplified Schema
 export const createCenterSchema = (locale: "ar" | "en" = "ar") =>
-  z.object({
-    // Basic Info
-    email: z.string().email({ message: getErrorMessage("invalid-email", locale) }),
-    phone: z
-      .string()
-      .regex(/^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/, {
-        message: "Please enter a valid phone number",
+  z
+    .object({
+      // Basic Info
+      email: z
+        .string()
+        .email({ message: getErrorMessage("invalid-email", locale) }),
+      phone: z
+        .string()
+        .regex(/^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/, {
+          message: "Please enter a valid phone number",
+        }),
+      password: getPasswordSchema(locale),
+      confirmPassword: z
+        .string()
+        .min(1, { message: getErrorMessage("general-field-required", locale) }),
+      nursery_name: z
+        .string()
+        .min(2, { message: getErrorMessage("general-field-required", locale) }),
+      city_id: z
+        .string()
+        .min(1, { message: getErrorMessage("general-field-required", locale) }),
+      logo: z.instanceof(File, {
+        message: getErrorMessage("general-field-required", locale),
       }),
-    password: getPasswordSchema(locale),
-    confirmPassword: z.string().min(1, { message: getErrorMessage("general-field-required", locale) }),
-    nursery_name: z
-      .string()
-      .min(2, { message: getErrorMessage("general-field-required", locale) }),
-    city_id: z
-      .string()
-      .min(1, { message: getErrorMessage("general-field-required", locale) }),
-    logo: z.instanceof(File, {
-      message: getErrorMessage("general-field-required", locale),
-    }),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: locale === "ar" ? "كلمة المرور غير متطابقة" : "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+      category_service_ids: z
+        .array(z.number())
+        .min(1, { message: getErrorMessage("general-field-required", locale) }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message:
+        locale === "ar" ? "كلمة المرور غير متطابقة" : "Passwords do not match",
+      path: ["confirmPassword"],
+    });
 
 export type CenterFormData = z.infer<ReturnType<typeof createCenterSchema>>;
 
-
 // Nursery Signup Schema
 export const createNurserySchema = (locale: "ar" | "en" = "ar") =>
-  z.object({
-    email: z.string().email({ message: getErrorMessage("invalid-email", locale) }),
-    phone: z
-      .string()
-      .regex(/^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/, {
-        message: "Please enter a valid phone number",
+  z
+    .object({
+      email: z
+        .string()
+        .email({ message: getErrorMessage("invalid-email", locale) }),
+      phone: z
+        .string()
+        .regex(/^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/, {
+          message: "Please enter a valid phone number",
+        }),
+      password: getPasswordSchema(locale),
+      confirmPassword: z
+        .string()
+        .min(1, { message: getErrorMessage("general-field-required", locale) }),
+      nursery_name: z
+        .string()
+        .min(2, { message: getErrorMessage("general-field-required", locale) }),
+      city_id: z
+        .string()
+        .min(1, { message: getErrorMessage("general-field-required", locale) }),
+      logo: z.instanceof(File, {
+        message: getErrorMessage("general-field-required", locale),
       }),
-    password: getPasswordSchema(locale),
-    confirmPassword: z.string().min(1, { message: getErrorMessage("general-field-required", locale) }),
-    nursery_name: z
-      .string()
-      .min(2, { message: getErrorMessage("general-field-required", locale) }),
-    city_id: z
-      .string()
-      .min(1, { message: getErrorMessage("general-field-required", locale) }),
-    logo: z.instanceof(File, {
-      message: getErrorMessage("general-field-required", locale),
-    }),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: locale === "ar" ? "كلمة المرور غير متطابقة" : "Passwords do not match",
-    path: ["confirmPassword"],
-  });
+      category_service_ids: z
+        .array(z.number())
+        .min(1, { message: getErrorMessage("general-field-required", locale) }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message:
+        locale === "ar" ? "كلمة المرور غير متطابقة" : "Passwords do not match",
+      path: ["confirmPassword"],
+    });
 
 export type NurseryFormData = z.infer<ReturnType<typeof createNurserySchema>>;
 
@@ -983,7 +1006,7 @@ function createImageSchema(
   expectedWidth: number,
   expectedHeight: number,
   sizeMessage: string,
-  locale: "ar" | "en"
+  locale: "ar" | "en",
 ) {
   return z.union([z.string().url(), z.any()]).superRefine(async (val, ctx) => {
     // Case 1: It's a URL string — skip dimension check (optional: validate image extension)
@@ -1028,13 +1051,13 @@ export const createBlogRequestSchema = (locale: "ar" | "en" = "ar") =>
       1440,
       610,
       "يجب أن يكون مقاس الصورة 1440 × 610",
-      locale
+      locale,
     ),
     cardImage: createImageSchema(
       264,
       160,
       "يجب أن يكون مقاس الصورة 264 × 160",
-      locale
+      locale,
     ),
   });
 
@@ -1069,13 +1092,13 @@ export const createAdminBlogRequestSchema = (locale: "ar" | "en" = "ar") =>
       1440,
       610,
       "يجب أن يكون مقاس الصورة 1440 × 610",
-      locale
+      locale,
     ),
     cardImage: createImageSchema(
       264,
       160,
       "يجب أن يكون مقاس الصورة 264 × 160",
-      locale
+      locale,
     ),
   });
 
@@ -1106,7 +1129,7 @@ export const createTeamMemberSchema = (locale: "ar" | "en" = "ar") =>
             "length" in fileList &&
             fileList.length > 0 &&
             fileList[0].type.startsWith("image/"),
-          "يرجى رفع صورة صالحة"
+          "يرجى رفع صورة صالحة",
         ),
     ]),
     // .refine(async (file) => {
@@ -1144,7 +1167,7 @@ export const createCenterProfileSchema = (locale: "ar" | "en" = "ar") =>
         },
         {
           message: getErrorMessage("general-field-required", locale),
-        }
+        },
       ),
     neighborhood: z
       .string()
@@ -1228,7 +1251,7 @@ export const createParentAccountsSchema = (locale: "ar" | "en" = "ar") =>
           },
           {
             message: getErrorMessage("phone-format-guide", locale),
-          }
+          },
         ),
     }),
     children: z
@@ -1256,7 +1279,7 @@ export const createParentAccountsSchema = (locale: "ar" | "en" = "ar") =>
           gender: z.enum(["male", "female"], {
             required_error: getErrorMessage("general-field-required", locale),
           }),
-        })
+        }),
       )
       .min(1, { message: getErrorMessage("general-field-required", locale) }),
   });

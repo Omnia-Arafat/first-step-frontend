@@ -30,7 +30,7 @@ export default function CenterDashboardBookings() {
             element.classList.remove(
               "ring-2",
               "ring-blue-500",
-              "ring-offset-2"
+              "ring-offset-2",
             );
           }, 3000);
         }
@@ -42,7 +42,7 @@ export default function CenterDashboardBookings() {
 
   const t = useTranslations("dashboard.charts");
   const tBookings = useTranslations("dashboard.charts.bookings");
-  const isCenter = useHasRole("center");
+  const isCenter = useHasRole(["center", "nursery"]);
   const { stats, isLoading } = useCenterStats(isCenter ? "center" : "branch");
 
   if (isLoading) {
@@ -115,9 +115,10 @@ export default function CenterDashboardBookings() {
       const valueLabel = t("center.comparison.valueLabel");
       // Find previous month in the sorted array
       const prev = revenueArr.findIndex(
-        (r: RevenueItem) => r.month === item.month
+        (r: RevenueItem) => r.month === item.month,
       );
-      const previousValue = prev > 0 ? revenueArr[prev - 1].total_paid ?? 0 : 0;
+      const previousValue =
+        prev > 0 ? (revenueArr[prev - 1].total_paid ?? 0) : 0;
       const isUp = value > previousValue;
       return {
         value,
@@ -125,7 +126,7 @@ export default function CenterDashboardBookings() {
         trend: isUp ? ("up" as const) : ("down" as const),
         data: getMonthData(value, isUp),
       };
-    }
+    },
   );
 
   function getMonthData(value: number, isUp: boolean) {
