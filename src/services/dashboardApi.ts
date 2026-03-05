@@ -487,7 +487,7 @@ export const parentService = {
 
   getChildrenCount: async () => {
     try {
-      const response = await apiClient.get("/parent/children/count");
+      const response = await apiClient.get("/parent/count");
       return response.data;
     } catch (error) {
       throw ApiErrorHandler.handle(error);
@@ -1110,9 +1110,12 @@ export const centerService = {
         formData.append("contact_info[website]", payload.contact_info.website);
 
       // Activities
-      payload.images_activities?.forEach((img, index) => {
-        if (img instanceof File) {
-          formData.append(`images_activities[${index}]`, img);
+      payload.images_activities?.forEach((activity, index) => {
+        const imageFile =
+          activity instanceof File ? activity : activity.image instanceof File ? activity.image : null;
+
+        if (imageFile) {
+          formData.append(`images_activities[${index}]`, imageFile);
         }
       });
       payload.delete_images_activities?.forEach((index, i) => {
@@ -1138,12 +1141,15 @@ export const centerService = {
       });
 
       // Options (Facilities)
-      payload.admin_option_ids?.forEach((id, index) => {
-        formData.append(`admin_option_ids[${index}]`, String(id));
-      });
-      payload.delete_center_options?.forEach((id, index) => {
-        formData.append(`delete_center_options[${index}]`, String(id));
-      });
+      if (payload.admin_option_ids) {
+        if (payload.admin_option_ids.length === 0) {
+          formData.append("admin_option_ids", "");
+        } else {
+          payload.admin_option_ids.forEach((id, index) => {
+            formData.append(`admin_option_ids[${index}]`, String(id));
+          });
+        }
+      }
 
       // Licenses
       payload.licenses?.forEach((license, index) => {
@@ -1282,12 +1288,15 @@ export const centerService = {
       });
 
       // Options (Facilities)
-      payload.admin_option_ids?.forEach((id, index) => {
-        formData.append(`admin_option_ids[${index}]`, String(id));
-      });
-      payload.delete_center_options?.forEach((id, index) => {
-        formData.append(`delete_center_options[${index}]`, String(id));
-      });
+      if (payload.admin_option_ids) {
+        if (payload.admin_option_ids.length === 0) {
+          formData.append("admin_option_ids", "");
+        } else {
+          payload.admin_option_ids.forEach((id, index) => {
+            formData.append(`admin_option_ids[${index}]`, String(id));
+          });
+        }
+      }
 
       // Licenses
       payload.licenses?.forEach((license, index) => {

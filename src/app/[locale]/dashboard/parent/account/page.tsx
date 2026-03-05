@@ -7,6 +7,7 @@ import { parentService } from "@/services/dashboardApi";
 import EditProfile from "@/components/dashboard/EditProfile";
 import { createParentProfileSchema, ParentProfileForm } from "@/lib/schemas";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ParentEditProfilePage() {
   const meta = usePageMetadata();
@@ -82,7 +83,21 @@ export default function ParentEditProfilePage() {
   ];
 
   if (!user || isLoading) {
-    return <div className="flex justify-center p-8">Loading...</div>;
+    return (
+      <div className="container mx-auto px-4 py-6">
+        <div className="space-y-8">
+          <Skeleton className="h-10 w-64" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <div key={index} className="space-y-3">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-12 w-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

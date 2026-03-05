@@ -2,10 +2,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const BranchCardSkeleton = () => {
   return (
-    <div className="bg-sidebar border-b border-light-gray p-6 flex flex-col lg:flex-row gap-8 animate-pulse">
+    <div className="bg-sidebar border border-gray-100 p-6 flex flex-col lg:flex-row gap-8 rounded-2xl">
       <div className="flex flex-col gap-y-6 w-full">
         <div className="flex items-start gap-4">
-          <Skeleton className="w-[81.66px] h-[80px] rounded-md" />
+          <Skeleton className="w-[81.66px] h-[80px] rounded-full" />
 
           <div className="flex flex-col gap-2 lg:gap-4 w-full">
             <Skeleton className="h-6 w-1/3" />

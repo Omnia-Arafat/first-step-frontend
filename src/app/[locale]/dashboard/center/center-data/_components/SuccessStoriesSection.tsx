@@ -2,13 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { PortfolioFormData } from "@/types";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Upload } from "lucide-react";
-import { useRef } from "react";
-import Image from "next/image";
+import { SuccessStoriesSectionView } from "./SuccessStoriesSectionView";
 
 interface Props {
   data: PortfolioFormData;
@@ -59,144 +53,20 @@ export const SuccessStoriesSection = ({
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex flex-col gap-2 text-start">
-        <h3 className="text-xl font-bold">{t("title")}</h3>
-        <p className="text-mid-gray text-sm">{t("description")}</p>
-      </div>
-
-      <div className="space-y-12">
-        {activities.map((activity, index) => (
-          <div
-            key={index}
-            className="relative p-6 border rounded-2xl bg-gray-50/30 space-y-6"
-          >
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="absolute top-2 ltr:right-2 rtl:left-2 text-destructive hover:text-destructive hover:bg-destructive/10"
-              onClick={() => handleRemove(index)}
-            >
-              <Trash2 className="w-5 h-5" />
-            </Button>
-
-            <div className="grid grid-cols-1 gap-6">
-              {/* Image Upload */}
-              <div className="space-y-2 text-start">
-                <Label className="text-base font-medium">
-                  {t("storyImage")}
-                </Label>
-                <ImageUpload
-                  value={activity.image}
-                  onChange={(file) => handleChange(index, "image", file)}
-                  hint={t("imageHint")}
-                />
-              </div>
-
-              {/* Kind / Case Type */}
-              <div className="space-y-2 text-start">
-                <Label
-                  htmlFor={`kind-${index}`}
-                  className="text-base font-medium"
-                >
-                  {t("caseType")}
-                </Label>
-                <Input
-                  id={`kind-${index}`}
-                  placeholder={t("caseTypePlaceholder")}
-                  value={activity.kind || ""}
-                  onChange={(e) => handleChange(index, "kind", e.target.value)}
-                  className="bg-white py-6"
-                />
-              </div>
-
-              {/* Summary / Improvement */}
-              <div className="space-y-2 text-start">
-                <Label
-                  htmlFor={`summary-${index}`}
-                  className="text-base font-medium"
-                >
-                  {t("improvementSummary")}
-                </Label>
-                <Textarea
-                  id={`summary-${index}`}
-                  placeholder={t("improvementPlaceholder")}
-                  value={activity.summary || ""}
-                  onChange={(e) =>
-                    handleChange(index, "summary", e.target.value)
-                  }
-                  className="bg-white min-h-[100px] resize-none"
-                  maxLength={200}
-                />
-                <div className="text-xs text-end text-gray-400">
-                  {activity.summary?.length || 0} / 200
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <Button
-        type="button"
-        variant="outline"
-        className="w-full py-8 border-dashed border-2 rounded-2xl text-primary text-lg font-bold hover:bg-primary/5"
-        onClick={handleAdd}
-      >
-        <Plus className="w-6 h-6 ltr:mr-2 rtl:ml-2" />
-        {t("addStory")}
-      </Button>
-    </div>
-  );
-};
-
-interface ImageUploadProps {
-  value?: File | string;
-  onChange: (file: File) => void;
-  hint: string;
-}
-
-const ImageUpload = ({ value, onChange, hint }: ImageUploadProps) => {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const preview = value instanceof File ? URL.createObjectURL(value) : value;
-
-  return (
-    <div
-      onClick={() => fileInputRef.current?.click()}
-      className="relative border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer hover:bg-gray-50 transition-colors bg-white group"
-    >
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={(e) => e.target.files?.[0] && onChange(e.target.files[0])}
-        accept="image/*"
-        className="hidden"
-      />
-
-      {preview ? (
-        <div className="relative w-full aspect-21/9 rounded-xl overflow-hidden">
-          <Image
-            src={preview}
-            alt="Success Story"
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-            <Upload className="w-8 h-8 text-white" />
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-primary/5 flex items-center justify-center text-primary">
-            <Upload className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="font-bold text-lg text-gray-700">تحميل صوره</p>
-            <p className="text-sm text-mid-gray mt-1">{hint}</p>
-          </div>
-        </div>
-      )}
-    </div>
+    <SuccessStoriesSectionView
+      title={t("title")}
+      description={t("description")}
+      addLabel={t("addStory")}
+      storyImageLabel={t("storyImage")}
+      imageHint={t("imageHint")}
+      caseTypeLabel={t("caseType")}
+      caseTypePlaceholder={t("caseTypePlaceholder")}
+      summaryLabel={t("improvementSummary")}
+      summaryPlaceholder={t("improvementPlaceholder")}
+      activities={activities}
+      onAdd={handleAdd}
+      onRemove={handleRemove}
+      onChange={handleChange}
+    />
   );
 };

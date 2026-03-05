@@ -7,8 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ColumnDef } from "@tanstack/react-table";
 import { Eye } from "lucide-react";
 import { ReservationStatus } from "@/types";
-import { useReservationStatus } from "./shared/status";
 import { useHasRole } from "@/store/authStore";
+import { ReservationStatusBadge } from "@/components/shared/ReservationStatusBadge";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -32,7 +32,6 @@ export function useParentsColumns(
   >
 ) {
   const t = useTranslations("dashboard.tables.parents");
-  const { getStatusText, getStatusColorClass } = useReservationStatus();
 
   const columns: ColumnDef<Parent>[] = [
     {
@@ -117,15 +116,11 @@ export function useParentsColumns(
         );
 
         const status = selectedChild?.reservationStatus;
-        const colorClasses = getStatusColorClass(status ?? "selectChild");
-        const text = status ? getStatusText(status) : t("selectChild");
-
         return (
-          <div
-            className={`text-xs w-fit px-2 py-1 rounded-[4px] select-none ${colorClasses}`}
-          >
-            {text}
-          </div>
+          <ReservationStatusBadge
+            status={status ?? "selectChild"}
+            fallbackLabel={status ? undefined : t("selectChild")}
+          />
         );
       },
     },

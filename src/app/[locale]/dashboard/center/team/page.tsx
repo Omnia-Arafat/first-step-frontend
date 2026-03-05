@@ -35,11 +35,11 @@ const BranchSkeleton = () => {
         {Array.from({ length: 4 }).map((_, index) => (
           <div
             key={index}
-            className="p-2 rounded-3xl flex flex-col items-center gap-y-2"
+            className="p-2 rounded-3xl border border-gray-100 flex flex-col items-center gap-y-2"
           >
-            <Skeleton className="w-full min-w-[11.25rem] h-[12.5rem] rounded-2xl" />
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-4 w-24" />
+            <Skeleton className="w-full min-w-45 h-50 rounded-2xl" />
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-4 w-32" />
             <div className="flex items-center gap-1">
               <Skeleton className="h-8 w-8 rounded-md" />
               <Skeleton className="h-8 w-8 rounded-md" />
@@ -99,7 +99,7 @@ export default function CenterDashboardTeam() {
               </Button>
             </div>
 
-            <Team members={teamData} />
+            <Team members={teamData} branchId={branch.id} />
           </div>
         );
       })}

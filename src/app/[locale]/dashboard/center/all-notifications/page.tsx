@@ -9,6 +9,24 @@ import { useTranslations } from "next-intl";
 import { usePageMetadata } from "@/hooks/usePageMetadata";
 import { Skeleton } from "@/components/ui/skeleton";
 
+function NotificationItemSkeleton() {
+  return (
+    <div className="bg-white rounded-lg border border-gray-100 p-4">
+      <div className="flex items-center justify-between gap-3">
+        <Skeleton className="h-10 w-10 rounded-full shrink-0" />
+        <div className="flex-1 min-w-0 space-y-2">
+          <Skeleton className="h-5 w-3/4" />
+        </div>
+        <Skeleton className="h-4 w-16" />
+      </div>
+      <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+      </div>
+    </div>
+  );
+}
+
 export default function NotificationsPage() {
   usePageMetadata();
 
@@ -30,16 +48,7 @@ export default function NotificationsPage() {
           <Skeleton className="h-8 w-48" />
           <div className="space-y-3">
             {Array.from({ length: 5 }).map((_, index) => (
-              <div key={index} className="bg-white rounded-lg border p-4">
-                <div className="flex items-start gap-4">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-5 w-3/4" />
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-1/2" />
-                  </div>
-                </div>
-              </div>
+              <NotificationItemSkeleton key={index} />
             ))}
           </div>
         </div>

@@ -13,18 +13,13 @@ import { createCenterSchema, CenterFormData } from "@/lib/schemas";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { getCitiesAction } from "@/actions/getCitiesAction";
+import PhoneInput from "@/components/forms/PhoneInput";
 import { authService } from "@/services/api";
 import { CategoryService } from "@/types";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { FormOptionsSkeleton } from "@/components/loading/LoadingSkeletons";
+import { CitySelector } from "@/components/forms/CitySelector";
 
 export function SignUp({
   submitHandler,
@@ -56,14 +51,9 @@ export function SignUp({
     mode: "onBlur",
     reValidateMode: "onChange",
   });
+  const phoneField = methods.register("phone");
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
-
-  // Fetch cities
-  const { data: cities = [], isLoading: citiesLoading } = useQuery({
-    queryKey: ["cities"],
-    queryFn: getCitiesAction,
-  });
 
   const { data: categoryServices = [], isLoading: categoryServicesLoading } =
     useQuery({
@@ -194,38 +184,16 @@ export function SignUp({
                     {isAr ? "المدينة" : "City"}{" "}
                     <span className="text-red-500">*</span>
                   </Label>
-                  <Select
+                  <CitySelector
                     value={methods.watch("city_id")}
-                    onValueChange={(value) =>
+                    onChange={(value) =>
                       methods.setValue("city_id", value, {
                         shouldValidate: true,
                       })
                     }
-                    disabled={citiesLoading}
-                  >
-                    <SelectTrigger className="h-12">
-                      <SelectValue
-                        placeholder={
-                          citiesLoading
-                            ? isAr
-                              ? "جاري التحميل..."
-                              : "Loading..."
-                            : isAr
-                              ? "اختر المدينة"
-                              : "Select City"
-                        }
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {cities.map((city) => (
-                        <SelectItem key={city.id} value={city.id.toString()}>
-                          {city.name?.[locale as unknown as "ar" | "en"] ||
-                            city.name?.ar ||
-                            city.id}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                    placeholder={isAr ? "اختر المدينة" : "Select City"}
+                    className="h-12"
+                  />
                   {!!methods.formState.errors.city_id && (
                     <p className="text-red-500 text-xs mt-1">
                       {methods.formState.errors.city_id.message}
@@ -238,9 +206,18 @@ export function SignUp({
                     {isAr ? "رقم الهاتف" : "Phone Number"}{" "}
                     <span className="text-red-500">*</span>
                   </Label>
-                  <Input
-                    {...methods.register("phone")}
-                    placeholder="05xxxxxxxx"
+                  <PhoneInput
+                    name={phoneField.name}
+                    ref={phoneField.ref}
+                    onBlur={phoneField.onBlur}
+                    value={methods.watch("phone")}
+                    onChange={(value) => {
+                      methods.setValue("phone", value, {
+                        shouldValidate: true,
+                        shouldDirty: true,
+                      });
+                    }}
+                    placeholder="5xxxxxxxx"
                     className="h-12"
                   />
                   {!!methods.formState.errors.phone && (
@@ -310,59 +287,63 @@ export function SignUp({
                     ? "نوع الخدمات التي تقدمها"
                     : "Type of services you provide"}
                 </Label>
-                <div className="flex flex-wrap items-center gap-4">
-                  {categoryServices.map((service: CategoryService) => {
-                    const isSelected = (
-                      methods.watch("category_service_ids") || []
-                    ).includes(service.id);
-                    return (
-                      <div
-                        key={service.id}
-                        className="flex items-center gap-3 cursor-pointer group"
-                        onClick={() => {
-                          const current =
-                            methods.getValues("category_service_ids") || [];
-                          if (!isSelected) {
-                            methods.setValue(
-                              "category_service_ids",
-                              [...current, service.id],
-                              { shouldValidate: true },
-                            );
-                          } else {
-                            methods.setValue(
-                              "category_service_ids",
-                              current.filter((id) => id !== service.id),
-                              { shouldValidate: true },
-                            );
-                          }
-                        }}
-                      >
+                {categoryServicesLoading ? (
+                  <FormOptionsSkeleton />
+                ) : (
+                  <div className="flex flex-wrap items-center gap-4">
+                    {categoryServices.map((service: CategoryService) => {
+                      const isSelected = (
+                        methods.watch("category_service_ids") || []
+                      ).includes(service.id);
+                      return (
                         <div
-                          className={cn(
-                            "w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all",
-                            isSelected
-                              ? "border-primary bg-white"
-                              : "border-gray-200 group-hover:border-gray-300",
-                          )}
+                          key={service.id}
+                          className="flex items-center gap-3 cursor-pointer group"
+                          onClick={() => {
+                            const current =
+                              methods.getValues("category_service_ids") || [];
+                            if (!isSelected) {
+                              methods.setValue(
+                                "category_service_ids",
+                                [...current, service.id],
+                                { shouldValidate: true },
+                              );
+                            } else {
+                              methods.setValue(
+                                "category_service_ids",
+                                current.filter((id) => id !== service.id),
+                                { shouldValidate: true },
+                              );
+                            }
+                          }}
                         >
-                          {isSelected && (
-                            <Check className="w-4 h-4 text-primary stroke-[3.5px]" />
-                          )}
+                          <div
+                            className={cn(
+                              "w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all",
+                              isSelected
+                                ? "border-primary bg-white"
+                                : "border-gray-200 group-hover:border-gray-300",
+                            )}
+                          >
+                            {isSelected && (
+                              <Check className="w-4 h-4 text-primary stroke-[3.5px]" />
+                            )}
+                          </div>
+                          <span
+                            className={cn(
+                              "font-medium transition-colors text-sm",
+                              isSelected
+                                ? "text-gray"
+                                : "text-mid-gray group-hover:text-gray",
+                            )}
+                          >
+                            {service.name[locale as "ar" | "en"]}
+                          </span>
                         </div>
-                        <span
-                          className={cn(
-                            "font-medium transition-colors text-sm",
-                            isSelected
-                              ? "text-gray"
-                              : "text-mid-gray group-hover:text-gray",
-                          )}
-                        >
-                          {service.name[locale as "ar" | "en"]}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
+                )}
                 {!!methods.formState.errors.category_service_ids && (
                   <p className="text-red-500 text-xs mt-1">
                     {methods.formState.errors.category_service_ids.message}
@@ -380,7 +361,7 @@ export function SignUp({
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
-                  <span className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                  <Loader2 className="h-5 w-5 animate-spin" />
                   {isAr ? "جاري التسجيل..." : "Registering..."}
                 </div>
               ) : isAr ? (

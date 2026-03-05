@@ -6,6 +6,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { showToast, toastError } from "@/lib/toast";
 import { useTranslations } from "next-intl";
+import { ListSkeleton } from "@/components/loading/LoadingSkeletons";
 
 const ChildWrapper = ({
   initialValues,
@@ -495,7 +496,7 @@ const ChildWrapper = ({
   //   }
   // }, [fetchedChild, mode, formKey]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <ListSkeleton count={4} />;
 
   return (
     <React.Fragment>

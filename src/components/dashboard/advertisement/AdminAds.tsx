@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import AdRequestForm from "@/components/forms/dashboard/adblog-request/AdRequestForm";
 import { AdRequestFormData } from "@/lib/schemas";
 import EmptyState from "@/components/common/EmptyState";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AdminAds = () => {
   const queryClient = useQueryClient();
@@ -40,9 +41,8 @@ const AdminAds = () => {
     </div>
   );
 
-  if (isLoading) return <div>{t("loading")}</div>;
   if (error) return <div className="text-red-500">{t("errorLoading")}</div>;
-  if (!data?.data?.length)
+  if (!data?.data?.length && !isLoading)
     return (
       <>
         {addButton}
@@ -63,7 +63,7 @@ const AdminAds = () => {
   const buttons = (
     formData: AdRequestFormData,
     isValid: boolean,
-    adId: string
+    adId: string,
   ) => (
     <>
       <Button asChild size={"sm"}>
@@ -76,7 +76,7 @@ const AdminAds = () => {
         }}
         size={"sm"}
         variant={"outline"}
-        className="!border-destructive text-destructive"
+        className="border-destructive! text-destructive"
       >
         {t("deleteAd")}
       </Button>
@@ -86,21 +86,41 @@ const AdminAds = () => {
   return (
     <div className="flex flex-col gap-y-6">
       {addButton}
-      {data.data.map((item: any) => (
-        <AdRequestForm
-          key={item.id}
-          initialData={{
-            title: { ar: item.title.ar, en: item.title.en },
-            description: { ar: item.description.ar, en: item.description.en },
-            image: item.image,
-            start_date: new Date(item.publish_date),
-            end_date: new Date(item.end_date),
-          }}
-          mode="show"
-        >
-          {(formData, isValid) => buttons(formData, isValid, item.id)}
-        </AdRequestForm>
-      ))}
+      {isLoading ? (
+        <div className="space-y-6">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div
+              key={index}
+              className="space-y-4 rounded-2xl border border-gray-100 p-6"
+            >
+              <Skeleton className="h-6 w-48" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-10 w-full" />
+              <Skeleton className="h-48 w-full rounded-xl" />
+              <div className="flex gap-3">
+                <Skeleton className="h-10 w-32 rounded-lg" />
+                <Skeleton className="h-10 w-32 rounded-lg" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        data.data.map((item: any) => (
+          <AdRequestForm
+            key={item.id}
+            initialData={{
+              title: { ar: item.title.ar, en: item.title.en },
+              description: { ar: item.description.ar, en: item.description.en },
+              image: item.image,
+              start_date: new Date(item.publish_date),
+              end_date: new Date(item.end_date),
+            }}
+            mode="show"
+          >
+            {(formData, isValid) => buttons(formData, isValid, item.id)}
+          </AdRequestForm>
+        ))
+      )}
     </div>
   );
 };

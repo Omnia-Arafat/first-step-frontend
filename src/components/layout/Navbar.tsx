@@ -29,7 +29,7 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
   const [needsOldBrowserFallback, setNeedsOldBrowserFallback] = useState(true); // Start with true for SSR
   const [buttonsVisible, setButtonsVisible] = useState(false); // New state for button visibility
   const [openMobileSubmenuId, setOpenMobileSubmenuId] = useState<number | null>(
-    null
+    null,
   );
   const pathname = usePathname();
   const locale = useLocale();
@@ -187,22 +187,24 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
   });
 
   const hoverEffect =
-    "group-hover:text-primary group-hover:font-bold group-hover:text-xl group-hover:text-secondary-orange duration-300 ";
+    "transition-all duration-300 ease-out group-hover:text-secondary-orange group-hover:[text-shadow:0_0_0.9px_currentColor]";
 
   return (
     <>
       <div className="relative w-full bg-white/80 backdrop-blur-md shadow-sm transition-all duration-300">
         <div
-          className={`relative container mx-auto px-4 transition-all duration-300 ${isScrolled ? "py-2" : "py-2.5"
-            }`}
+          className={`relative container mx-auto px-4 transition-all duration-300 ${
+            isScrolled ? "py-2" : "py-2.5"
+          }`}
         >
           <div className="flex justify-between items-center gap-x-0">
             {/* Left */}
             <div className="flex-1">
               <Link className="inline-block w-fit" href={"/"}>
                 <div
-                  className={`relative transition-all duration-300 ${isScrolled ? "w-[140px] " : "w-[236px] "
-                    }`}
+                  className={`relative transition-all duration-300 ${
+                    isScrolled ? "w-[140px] " : "w-[236px] "
+                  }`}
                   style={{
                     height: isScrolled ? "35px" : "59.9px",
                     aspectRatio: "236/59.9",
@@ -220,62 +222,63 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
 
             {/* Centered navigation */}
             <div
-              className={`hidden xl:block shrink-0 rounded-full transition-all duration-300 ${isScrolled ? "py-4 px-10" : "py-7 px-14"
-                }`}
+              className={`hidden xl:block shrink-0 rounded-full transition-all duration-300 ${
+                isScrolled ? "py-4 px-10" : "py-7 px-14"
+              }`}
             >
               <ul className="flex justify-between items-center gap-x-9">
-                {links.map((link: any) => (
-                  <li
-                    key={link.id}
-                    className="relative inline-block font-medium text-center h-7 group"
-                  >
-                    <Link
-                      href={link.path}
-                      className={`text-base text-gray flex items-center justify-center gap-1 ${hoverEffect} ${isActive(link.path) ||
-                        (link.items &&
-                          link.items.some((item: any) => isActive(item.path)))
-                        ? "text-xl font-extrabold text-primary"
-                        : ""
+                {links.map((link: any) => {
+                  const isCurrent =
+                    isActive(link.path) ||
+                    (link.items &&
+                      link.items.some((item: any) => isActive(item.path)));
+
+                  return (
+                    <li
+                      key={link.id}
+                      className="relative inline-block font-medium text-center group"
+                    >
+                      <Link
+                        href={link.path}
+                        className={`text-base text-gray flex items-center justify-center gap-1 ${
+                          isCurrent
+                            ? "group-hover:text-secondary-orange duration-300"
+                            : hoverEffect
+                        } ${
+                          isCurrent ? "text-xl font-extrabold text-primary" : ""
                         }`}
-                    >
-                      {link.title}
+                      >
+                        {link.title}
+                        {link.items && (
+                          <ChevronDown
+                            size={14}
+                            className="transition-transform duration-300 group-hover:rotate-180"
+                          />
+                        )}
+                      </Link>
+
                       {link.items && (
-                        <ChevronDown
-                          size={14}
-                          className="transition-transform duration-300 group-hover:rotate-180"
-                        />
-                      )}
-                    </Link>
-
-                    {link.items && (
-                      <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 hidden group-hover:block transition-all duration-300 animate-in fade-in slide-in-from-top-2">
-                        <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-2 min-w-[200px] overflow-hidden">
-                          {link.items.map((item: any) => (
-                            <Link
-                              key={item.path}
-                              href={item.path}
-                              className={`block px-4 py-3 text-sm text-gray hover:bg-emerald-50 hover:text-primary rounded-lg transition-all duration-200 rtl:text-right ltr:text-left ${isActive(item.path)
-                                ? "bg-emerald-50 text-primary font-bold"
-                                : ""
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 pt-4 hidden group-hover:block transition-all duration-300 animate-in fade-in slide-in-from-top-2">
+                          <div className="bg-white rounded-xl shadow-xl border border-gray-100 p-2 min-w-[200px] overflow-hidden">
+                            {link.items.map((item: any) => (
+                              <Link
+                                key={item.path}
+                                href={item.path}
+                                className={`block px-4 py-3 text-sm text-gray hover:bg-emerald-50 hover:text-primary rounded-lg transition-all duration-200 rtl:text-right ltr:text-left ${
+                                  isActive(item.path)
+                                    ? "bg-emerald-50 text-primary font-bold"
+                                    : ""
                                 }`}
-                            >
-                              {item.title}
-                            </Link>
-                          ))}
+                              >
+                                {item.title}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    )}
-
-                    <span
-                      className={cn(
-                        "relative h-0 inset-0 pointer-events-none flex items-center justify-center text-xl font-extrabold opacity-0",
-                        link.items && "ltr:pr-4 rtl:pl-4"
                       )}
-                    >
-                      {link.title}
-                    </span>
-                  </li>
-                ))}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
@@ -298,8 +301,6 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
           </div>
         </div>
       </div>
-
-
 
       {/* Floating Action Buttons - Fixed to viewport */}
       {/* {!token && (
@@ -362,8 +363,9 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
           {/* Mobile Menu Overlay - Fixed to whole viewport */}
           <div
             ref={overlayRef}
-            className={`z-10000 fixed top-0 left-0 w-screen h-screen bg-black/50 transition-opacity duration-300 ${isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-              }`}
+            className={`z-10000 fixed top-0 left-0 w-screen h-screen bg-black/50 transition-opacity duration-300 ${
+              isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
             onClick={forceCloseMenu}
             aria-hidden="true"
             style={{
@@ -378,10 +380,11 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
           {/* Enhanced slide-out menu with ref */}
           <div
             ref={menuRef}
-            className={`z-10001 fixed top-0 bottom-0 ltr:right-0 rtl:left-0 w-4/5 max-w-xs h-screen bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${isMenuOpen
-              ? "translate-x-0"
-              : "ltr:translate-x-full rtl:-translate-x-full"
-              }`}
+            className={`z-10001 fixed top-0 bottom-0 ltr:right-0 rtl:left-0 w-4/5 max-w-xs h-screen bg-white shadow-lg transform transition-transform duration-300 ease-in-out ${
+              isMenuOpen
+                ? "translate-x-0"
+                : "ltr:translate-x-full rtl:-translate-x-full"
+            }`}
             style={{
               height: "100vh",
               // Fallback for old browsers
@@ -414,31 +417,33 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
                       <button
                         onClick={() =>
                           setOpenMobileSubmenuId(
-                            openMobileSubmenuId === link.id ? null : link.id
+                            openMobileSubmenuId === link.id ? null : link.id,
                           )
                         }
-                        className={`w-full px-6 py-4 text-base transition-colors duration-200 flex items-center justify-between ${isActive(link.path) ||
+                        className={`w-full px-6 py-4 text-base transition-colors duration-200 flex items-center justify-between ${
+                          isActive(link.path) ||
                           link.items.some((item: any) => isActive(item.path))
-                          ? "font-bold text-emerald-600 bg-emerald-50"
-                          : "text-gray-700 hover:bg-gray-50"
-                          }`}
+                            ? "font-bold text-emerald-600 bg-emerald-50"
+                            : "text-gray-700 hover:bg-gray-50"
+                        }`}
                       >
                         {link.title}
                         <ChevronDown
                           size={14}
                           className={cn(
                             "transition-transform duration-300",
-                            openMobileSubmenuId === link.id && "rotate-180"
+                            openMobileSubmenuId === link.id && "rotate-180",
                           )}
                         />
                       </button>
                     ) : (
                       <Link
                         href={link.path}
-                        className={`px-6 py-4 text-base transition-colors duration-200 flex items-center justify-between ${isActive(link.path)
-                          ? "font-bold text-emerald-600 bg-emerald-50"
-                          : "text-gray-700 hover:bg-gray-50"
-                          }`}
+                        className={`px-6 py-4 text-base transition-colors duration-200 flex items-center justify-between ${
+                          isActive(link.path)
+                            ? "font-bold text-emerald-600 bg-emerald-50"
+                            : "text-gray-700 hover:bg-gray-50"
+                        }`}
                         onClick={forceCloseMenu}
                       >
                         {link.title}
@@ -450,10 +455,11 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
                           <li key={item.path}>
                             <Link
                               href={item.path}
-                              className={`block ltr:px-12 rtl:px-12 py-3 text-sm transition-colors duration-200 ${isActive(item.path)
-                                ? "font-extrabold text-emerald-600"
-                                : "text-gray-600 hover:bg-gray-100"
-                                }`}
+                              className={`block ltr:px-12 rtl:px-12 py-3 text-sm transition-colors duration-200 ${
+                                isActive(item.path)
+                                  ? "font-extrabold text-emerald-600"
+                                  : "text-gray-600 hover:bg-gray-100"
+                              }`}
                               onClick={forceCloseMenu}
                             >
                               - {item.title}

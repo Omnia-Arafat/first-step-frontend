@@ -36,10 +36,16 @@ interface ConsultationsClientProps {
   locale: string;
 }
 
+const saudiPhoneSchema = z
+  .string()
+  .regex(/^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/, {
+    message: "invalidPhone",
+  });
+
 // Parent consultation form schema
 const parentConsultationSchema = z.object({
   name: z.string().optional(),
-  phone: z.string().optional(),
+  phone: saudiPhoneSchema.optional().or(z.literal("")),
   email: z.string().email("invalidEmail").optional().or(z.literal("")),
   kind_of_user: z.string().optional(),
   kind_of_user_other: z.string().optional(),
@@ -56,7 +62,7 @@ const centerConsultationSchema = z.object({
   center_specification_other: z.string().optional(),
   name_of_consultan_request: z.string().optional(),
   mission_of_consultant_request: z.string().optional(),
-  phone: z.string().optional(),
+  phone: saudiPhoneSchema.optional().or(z.literal("")),
   email: z.string().email("invalidEmail").optional().or(z.literal("")),
   subject_of_consultan: z.string().optional(),
   subject_of_consultan_other: z.string().optional(),
@@ -179,7 +185,7 @@ export default function ConsultationsClient({
 
         const payload = {
           name: data.name || "",
-          phone: data.phone ? `+966${data.phone}` : "",
+          phone: data.phone || "",
           email: data.email || "",
           kind_of_user:
             data.kind_of_user === "other"
@@ -226,7 +232,7 @@ export default function ConsultationsClient({
           name_of_consultan_request: data.name_of_consultan_request || "",
           mission_of_consultant_request:
             data.mission_of_consultant_request || "",
-          phone: data.phone ? `+966${data.phone}` : "",
+          phone: data.phone || "",
           email: data.email || "",
           subject_of_consultan:
             data.subject_of_consultan === "other"
@@ -431,6 +437,7 @@ function ParentFormSection({
               <PhoneInput
                 {...field}
                 placeholder={t("form.phonePlaceholder")}
+                onChange={field.onChange}
                 className={cn(
                   form.formState.errors.phone && "border-destructive"
                 )}
@@ -715,6 +722,7 @@ function CenterFormSection({
               <PhoneInput
                 {...field}
                 placeholder={t("form.phonePlaceholder")}
+                onChange={field.onChange}
                 className={cn(
                   form.formState.errors.phone && "border-destructive"
                 )}

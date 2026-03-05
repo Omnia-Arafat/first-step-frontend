@@ -21,7 +21,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { authService } from "@/services/api";
 import { useRouter } from "@/i18n/navigation";
-import { LoaderCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 const SendEmailForm = ({
   onSuccess,
@@ -129,9 +129,7 @@ const SendEmailForm = ({
             }
           >
             {(mutation.isPending || form.formState.isSubmitting) && (
-              <span className="animate-spin mr-2.5">
-                <LoaderCircle />
-              </span>
+              <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
             )}
             {mutation.isPending || form.formState.isSubmitting
               ? locale === "ar"

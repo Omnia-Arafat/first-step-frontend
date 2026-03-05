@@ -70,11 +70,16 @@ export function NotificationDropdown() {
           {isLoading ? (
             <div className="p-4 space-y-3">
               {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <Skeleton className="h-10 w-10 rounded-full flex-shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-3 w-full" />
+                <div
+                  key={index}
+                  className="rounded-lg border border-gray-100 p-3 bg-white"
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <Skeleton className="h-10 w-10 rounded-full shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <Skeleton className="h-4 w-3/4" />
+                    </div>
+                    <Skeleton className="h-3 w-10" />
                   </div>
                 </div>
               ))}

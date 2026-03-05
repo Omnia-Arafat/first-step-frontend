@@ -2,7 +2,15 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useTranslations } from "next-intl";
-import { Plus, Minus, Check, Search, CheckCircle, XCircle, Loader2 } from "lucide-react";
+import {
+  Plus,
+  Minus,
+  Check,
+  Search,
+  CheckCircle,
+  XCircle,
+  Loader2,
+} from "lucide-react";
 import useDebounce from "@/hooks/useDebounce";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +42,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
 import { Branch } from "@/types";
+import { ListItemSkeleton } from "@/components/loading/LoadingSkeletons";
 
 interface CreatePromocodeModalProps {
   isOpen: boolean;
@@ -57,7 +66,10 @@ const promocodeSchema = z
       .min(1, "Coupon name is required")
       .min(3, "Coupon name must be at least 3 characters")
       .max(50, "Coupon name must not exceed 50 characters")
-      .regex(/^[a-zA-Z0-9\s\-_]+$/, "Coupon name can only contain letters, numbers, spaces, hyphens, and underscores"),
+      .regex(
+        /^[a-zA-Z0-9\s\-_]+$/,
+        "Coupon name can only contain letters, numbers, spaces, hyphens, and underscores",
+      ),
     description: z.string().min(1, "Description is required"),
     percentage: z.number().min(0).max(100),
     start_date: z.date({ required_error: "Start date is required" }),
@@ -123,7 +135,7 @@ export default function CreatePromocodeModal({
   const [selectedBranches, setSelectedBranches] = useState<number[]>([]);
   const [allowChildrenOnly, setAllowChildrenOnly] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string>(
-    COLORS[Math.floor(Math.random() * COLORS.length)]
+    COLORS[Math.floor(Math.random() * COLORS.length)],
   );
   const [selectAllCenters, setSelectAllCenters] = useState(false);
   const [selectAllBranches, setSelectAllBranches] = useState(false);
@@ -166,18 +178,19 @@ export default function CreatePromocodeModal({
       setTitleValidation({ isChecking: true, isValid: null, message: "" });
 
       try {
-        const response = await adminService.checkPromocodeExists(debouncedTitle);
+        const response =
+          await adminService.checkPromocodeExists(debouncedTitle);
         const exists = response?.exists || false;
-        
+
         setTitleValidation({
           isChecking: false,
           isValid: !exists,
-          message: exists 
-            ? (t("titleExists") || "This coupon name already exists")
-            : (t("titleAvailable") || "Coupon name is available")
+          message: exists
+            ? t("titleExists") || "This coupon name already exists"
+            : t("titleAvailable") || "Coupon name is available",
         });
       } catch (error) {
-        console.error('Title validation error:', error);
+        console.error("Title validation error:", error);
         setTitleValidation({ isChecking: false, isValid: null, message: "" });
       }
     };
@@ -190,7 +203,7 @@ export default function CreatePromocodeModal({
     return centers.filter((center) =>
       center.nursery_name
         .toLowerCase()
-        .includes(centerSearchQuery.toLowerCase())
+        .includes(centerSearchQuery.toLowerCase()),
     );
   }, [centers, centerSearchQuery]);
 
@@ -205,7 +218,7 @@ export default function CreatePromocodeModal({
     return branches.filter((branch) =>
       branch.nursery_name
         .toLowerCase()
-        .includes(branchSearchQuery.toLowerCase())
+        .includes(branchSearchQuery.toLowerCase()),
     );
   }, [centers, effectiveActiveCenterId, branchSearchQuery]);
 
@@ -330,7 +343,7 @@ export default function CreatePromocodeModal({
           // If no center selected but branches are, find the center of the first branch
           const firstBranchId = initialBranchIds[0];
           const center = centersData.find((c: Center) =>
-            c.branches.some((b) => b.id === firstBranchId)
+            c.branches.some((b) => b.id === firstBranchId),
           );
           if (center) setActiveCenterId(center.id);
         }
@@ -354,7 +367,9 @@ export default function CreatePromocodeModal({
 
     // Block submission if title already exists
     if (!promocodeId && titleValidation.isValid === false) {
-      toast.error(titleValidation.message || "Please choose a different coupon name");
+      toast.error(
+        titleValidation.message || "Please choose a different coupon name",
+      );
       return;
     }
 
@@ -393,7 +408,7 @@ export default function CreatePromocodeModal({
       // Deselect Center -> Deselect all its branches
       setSelectedCenters((prev) => prev.filter((id) => id !== centerId));
       setSelectedBranches((prev) =>
-        prev.filter((id) => !centerBranchIds.includes(id))
+        prev.filter((id) => !centerBranchIds.includes(id)),
       );
     } else {
       // Select Center -> Select all its branches
@@ -410,7 +425,7 @@ export default function CreatePromocodeModal({
     // Since we are likely in the context of activeCenterId, we can check that first,
     // but to be safe and support global search logic if added later, we search in all centers.
     const center = centers.find((c) =>
-      c.branches.some((b) => b.id === branchId)
+      c.branches.some((b) => b.id === branchId),
     );
     if (!center) return;
 
@@ -427,11 +442,11 @@ export default function CreatePromocodeModal({
       // Check if ALL branches of this center are now selected
       const centerBranchIds = center.branches.map((b) => b.id);
       const allSelected = centerBranchIds.every((id) =>
-        newSelectedBranches.includes(id)
+        newSelectedBranches.includes(id),
       );
       if (allSelected) {
         setSelectedCenters((prev) =>
-          prev.includes(center.id) ? prev : [...prev, center.id]
+          prev.includes(center.id) ? prev : [...prev, center.id],
         );
       }
     }
@@ -479,12 +494,12 @@ export default function CreatePromocodeModal({
       // Remove visible branches from selection
       const visibleIdsSet = new Set(visibleBranchIds);
       setSelectedBranches((prev) =>
-        prev.filter((id) => !visibleIdsSet.has(id))
+        prev.filter((id) => !visibleIdsSet.has(id)),
       );
       // Deselect the active center since we are unchecking branches
       if (activeCenter) {
         setSelectedCenters((prev) =>
-          prev.filter((id) => id !== activeCenter.id)
+          prev.filter((id) => id !== activeCenter.id),
         );
       }
     }
@@ -493,7 +508,7 @@ export default function CreatePromocodeModal({
   useEffect(() => {
     if (filteredBranches.length > 0) {
       setSelectAllBranches(
-        filteredBranches.every((b) => selectedBranches.includes(b.id))
+        filteredBranches.every((b) => selectedBranches.includes(b.id)),
       );
     } else {
       setSelectAllBranches(false);
@@ -501,14 +516,14 @@ export default function CreatePromocodeModal({
   }, [selectedBranches, filteredBranches]);
 
   const incrementValue = (
-    field: "percentage" | "amount" | "max_number_of_usage"
+    field: "percentage" | "amount" | "max_number_of_usage",
   ) => {
     const currentValue = form.getValues(field);
     form.setValue(field, currentValue + 1);
   };
 
   const decrementValue = (
-    field: "percentage" | "amount" | "max_number_of_usage"
+    field: "percentage" | "amount" | "max_number_of_usage",
   ) => {
     const currentValue = form.getValues(field);
     form.setValue(field, Math.max(0, currentValue - 1));
@@ -546,8 +561,8 @@ export default function CreatePromocodeModal({
                 ? t("viewTitle") || "View Coupon Details"
                 : t("editTitle") || "Edit Coupon Details"
               : step === 1
-              ? t("step1Title")
-              : t("step2Title")}
+                ? t("step1Title")
+                : t("step2Title")}
           </DialogTitle>
         </DialogHeader>
 
@@ -631,7 +646,7 @@ export default function CreatePromocodeModal({
                           checked={status === "active"}
                           onCheckedChange={(checked) =>
                             statusMutation.mutate(
-                              checked ? "active" : "inactive"
+                              checked ? "active" : "inactive",
                             )
                           }
                           disabled={statusMutation.isPending || isViewMode}
@@ -657,21 +672,23 @@ export default function CreatePromocodeModal({
                                 placeholder={t("couponNamePlaceholder")}
                                 disabled={isViewMode}
                                 className={`${
-                                  fieldState.error || titleValidation.isValid === false
+                                  fieldState.error ||
+                                  titleValidation.isValid === false
                                     ? "border-red-500"
                                     : titleValidation.isValid === true
-                                    ? "border-green-500"
-                                    : ""
+                                      ? "border-green-500"
+                                      : ""
                                 } pr-10`}
                               />
-                              
+
                               {/* Single validation icon based on state */}
                               <div className="absolute right-3 top-1/2 -translate-y-1/2">
                                 {titleValidation.isChecking ? (
                                   <Loader2 className="w-5 h-5 text-gray-400 animate-spin" />
                                 ) : titleValidation.isValid === true ? (
                                   <CheckCircle className="w-5 h-5 text-green-500" />
-                                ) : (fieldState.error || titleValidation.isValid === false) ? (
+                                ) : fieldState.error ||
+                                  titleValidation.isValid === false ? (
                                   <XCircle className="w-5 h-5 text-red-500" />
                                 ) : null}
                               </div>
@@ -680,9 +697,13 @@ export default function CreatePromocodeModal({
                           <FormMessage />
                           {/* Validation Message */}
                           {titleValidation.message && !fieldState.error && (
-                            <p className={`text-sm mt-1 ${
-                              titleValidation.isValid === false ? "text-red-500" : "text-green-600"
-                            }`}>
+                            <p
+                              className={`text-sm mt-1 ${
+                                titleValidation.isValid === false
+                                  ? "text-red-500"
+                                  : "text-green-600"
+                              }`}
+                            >
                               {titleValidation.message}
                             </p>
                           )}
@@ -988,14 +1009,11 @@ export default function CreatePromocodeModal({
                           {centersLoading ? (
                             <div className="space-y-2">
                               {[1, 2, 3, 4, 5].map((i) => (
-                                <div
+                                <ListItemSkeleton
                                   key={i}
-                                  className="flex items-center gap-2 p-2 border rounded-lg"
-                                >
-                                  <Skeleton className="h-4 w-4" />
-                                  <Skeleton className="h-8 w-8 rounded-full" />
-                                  <Skeleton className="h-4 w-32" />
-                                </div>
+                                  className="rounded-lg p-2"
+                                  lines={1}
+                                />
                               ))}
                             </div>
                           ) : filteredCenters.length === 0 ? (
@@ -1012,11 +1030,11 @@ export default function CreatePromocodeModal({
                                 // View/Edit Mode: Separate relevant centers
                                 filteredCenters.forEach((center) => {
                                   const isSelected = selectedCenters.includes(
-                                    center.id
+                                    center.id,
                                   );
                                   const hasSelectedBranches =
                                     center.branches.some((b) =>
-                                      selectedBranches.includes(b.id)
+                                      selectedBranches.includes(b.id),
                                     );
 
                                   if (isSelected || hasSelectedBranches) {
@@ -1032,7 +1050,7 @@ export default function CreatePromocodeModal({
 
                               const renderCenterRow = (center: Center) => {
                                 const isSelected = selectedCenters.includes(
-                                  center.id
+                                  center.id,
                                 );
                                 const isActive =
                                   center.id === effectiveActiveCenterId;
@@ -1066,7 +1084,7 @@ export default function CreatePromocodeModal({
                                           className="w-8 h-8 rounded-full object-cover"
                                         />
                                       ) : (
-                                        <div className="w-8 h-8 bg-gradient-to-br from-red-400 to-green-400 rounded-full" />
+                                        <div className="w-8 h-8 bg-linear-to-br from-red-400 to-green-400 rounded-full" />
                                       )}
                                       {center.nursery_name}
                                     </Label>
@@ -1129,13 +1147,12 @@ export default function CreatePromocodeModal({
                           {centersLoading ? (
                             <div className="space-y-2">
                               {[1, 2, 3, 4, 5].map((i) => (
-                                <div
+                                <ListItemSkeleton
                                   key={i}
-                                  className="flex items-center gap-2 p-2 border rounded-lg"
-                                >
-                                  <Skeleton className="h-4 w-4" />
-                                  <Skeleton className="h-4 w-32" />
-                                </div>
+                                  className="rounded-lg p-2"
+                                  lines={1}
+                                  showLeading={false}
+                                />
                               ))}
                             </div>
                           ) : filteredBranches.length === 0 ? (
@@ -1196,7 +1213,7 @@ export default function CreatePromocodeModal({
                       onClick={(e) => handleStep1Continue(e)}
                       className="flex-1 bg-primary"
                       disabled={
-                        createMutation.isPending || 
+                        createMutation.isPending ||
                         updateMutation.isPending ||
                         titleValidation.isChecking ||
                         titleValidation.isValid === false
@@ -1252,13 +1269,19 @@ export default function CreatePromocodeModal({
                             selectedBranches.length === 0)
                         }
                       >
-                        {createMutation.isPending || updateMutation.isPending
-                          ? promocodeId
-                            ? t("updating") || "Updating..."
-                            : t("creating")
-                          : promocodeId
-                          ? t("updateCoupon") || "Update Coupon"
-                          : t("createCoupon")}
+                        {createMutation.isPending ||
+                        updateMutation.isPending ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            {promocodeId
+                              ? t("updating") || "Updating..."
+                              : t("creating")}
+                          </>
+                        ) : promocodeId ? (
+                          t("updateCoupon") || "Update Coupon"
+                        ) : (
+                          t("createCoupon")
+                        )}
                       </Button>
                     )}
                   </>

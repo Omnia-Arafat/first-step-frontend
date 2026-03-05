@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
+import { Loader2 } from "lucide-react";
 
 interface FormNavigationProps {
   currentStep: number;
@@ -28,7 +29,7 @@ export default function FormNavigation({
           size={"lg"}
           variant="outline"
           onClick={onPrevious}
-          className="!border-light-gray text-mid-gray w-full sm:w-auto"
+          className="border-light-gray! text-mid-gray w-full sm:w-auto"
           disabled={isLoading}
         >
           {t("previous")}
@@ -43,9 +44,7 @@ export default function FormNavigation({
           onClick={onNext}
           disabled={isLoading}
         >
-          {isLoading && (
-            <div className="h-4 w-4 bg-white/20 rounded animate-pulse mr-2.5" />
-          )}
+          {isLoading && <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />}
           {t("next")}
         </Button>
       ) : (
@@ -55,9 +54,7 @@ export default function FormNavigation({
           size={"lg"}
           disabled={isLoading}
         >
-          {isLoading && (
-            <div className="h-4 w-4 bg-white/20 rounded animate-pulse mr-2.5" />
-          )}
+          {isLoading && <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />}
           {t("sign-up")}
         </Button>
       )}

@@ -2,7 +2,7 @@
 
 import { ReservationStatus } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useReservationStatus } from "./shared/status";
+import { ReservationStatusBadge } from "@/components/shared/ReservationStatusBadge";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -111,21 +111,12 @@ export const getColumns = (
     id: "reservationStatus",
     header: () => <div className="min-w-[120px]">حالة الحجز</div>,
     cell: ({ row }) => {
-      const { getStatusText, getStatusColorClass } = useReservationStatus();
-
       const status = row.original.status as ReservationStatus;
-      const colorClasses = getStatusColorClass(
-        status || "waitingForConfirmation"
-      );
-      const text = getStatusText(status);
-
       return (
-        <div
-          className={`text-xs w-fit px-2 py-1 rounded-[4px] select-none ${colorClasses} whitespace-nowrap`}
-          dir="rtl"
-        >
-          {text}
-        </div>
+        <ReservationStatusBadge
+          status={status || "waitingForConfirmation"}
+          className="whitespace-nowrap"
+        />
       );
     },
   },

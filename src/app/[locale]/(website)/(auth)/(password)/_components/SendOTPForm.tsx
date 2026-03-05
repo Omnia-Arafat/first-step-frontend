@@ -27,7 +27,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { authService } from "@/services/api";
 import { useRouter } from "@/i18n/navigation";
-import { LoaderCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { ApiError } from "@/lib/error-handling";
 
 const SendOTPForm = ({
@@ -205,7 +205,7 @@ const SendOTPForm = ({
                       >
                         {resendMutation.isPending ? (
                           <span className="flex items-center gap-2">
-                            <LoaderCircle size={14} className="animate-spin" />
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
                             {locale === "ar" ? "جاري الإرسال..." : "Sending..."}
                           </span>
                         ) : (
@@ -238,9 +238,7 @@ const SendOTPForm = ({
             disabled={mutation.isPending || mutation.isSuccess || otpExpired}
           >
             {(mutation.isPending || form.formState.isSubmitting) && (
-              <span className="animate-spin mr-2.5">
-                <LoaderCircle />
-              </span>
+              <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
             )}
             {mutation.isPending || form.formState.isSubmitting
               ? locale === "ar"

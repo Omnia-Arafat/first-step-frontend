@@ -2,7 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
-import { ReservationStatus, useReservationStatus } from "./shared/status";
+import { ReservationStatus } from "./shared/status";
+import { ReservationStatusBadge } from "@/components/shared/ReservationStatusBadge";
 import { Button } from "@/components/ui/button";
 import { Check, X, Eye } from "lucide-react";
 import { centerService } from "@/services/dashboardApi";
@@ -81,7 +82,6 @@ export function useCenterBookingsColumns(
   onViewDetails?: (booking: Booking) => void
 ) {
   const t = useTranslations("dashboard.tables.center-bookings");
-  const { getStatusText, getStatusColorClass } = useReservationStatus();
   const queryClient = useQueryClient();
 
   const enrollmentMutation = useMutation({
@@ -295,19 +295,11 @@ export function useCenterBookingsColumns(
           ? ((row.original as any).detailStatus as string)
           : selectedChild.status;
         const status = effectiveStatus as ReservationStatus;
-        const colorClasses = getStatusColorClass(status);
-        const text = getStatusText(status);
 
         const isExpandedParent = (row.original as any).isExpandedParent;
         if (!isDetail && isExpandedParent) return "";
 
-        return (
-          <div
-            className={`text-xs w-fit px-2 py-1 rounded-[4px] select-none ${colorClasses}`}
-          >
-            {text}
-          </div>
-        );
+        return <ReservationStatusBadge status={status} />;
       },
     },
     {

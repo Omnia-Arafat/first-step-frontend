@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/store/authStore";
 import { authService } from "@/services/api";
 import { toastError } from "@/lib/toast";
-import { initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const firebaseConfig = {
@@ -15,46 +15,74 @@ const firebaseConfig = {
 
 let isInitialized = false;
 
+const getGoogleAuthErrorMessage = (error: any): string => {
+  const code = error?.code as string | undefined;
+
+  if (code === "auth/popup-closed-by-user") {
+    return "Google sign-in was cancelled.";
+  }
+
+  if (code === "auth/popup-blocked") {
+    return "Popup was blocked by your browser. Please allow popups and try again.";
+  }
+
+  if (code === "auth/network-request-failed") {
+    return "Network error while contacting Google. Please try again.";
+  }
+
+  if (code === "auth/missing-google-access-token") {
+    return "Google did not return a valid sign-in token. Please try again.";
+  }
+
+  if (code === "app/no-app") {
+    return "Google sign-in is not configured correctly. Please try again later.";
+  }
+
+  return error?.message || "Failed to sign in with Google. Please try again.";
+};
+
+const getDashboardPath = (user: any) => {
+  if (user?.role === "parent") return "/dashboard/parent";
+  if (user?.role === "admin") return "/dashboard/admin";
+  if (user?.role === "nursery") return "/dashboard/nursery";
+  if (user?.role === "branch_admin") {
+    return user.center_id ? "/dashboard/center" : "/dashboard/nursery";
+  }
+  return "/dashboard/center";
+};
+
 export const initializeGoogleAuth = () => {
   if (typeof window === "undefined") return;
   if (isInitialized) return;
 
   try {
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+    const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    getAuth(app);
     isInitialized = true;
   } catch (error) {
     console.error("Firebase initialization failed:", error);
   }
 };
 
-const handleGoogleSignIn = async (credential: any) => {
+const handleGoogleSignIn = async (accessToken: string) => {
   try {
-    const result = await authService.googleSignIn(credential);
+    const result = await authService.googleSignIn(accessToken);
 
     // Use setUserToken to properly set both state and cookies
     useAuthStore.getState().setUserToken(result.user, result.token);
-
-    let dashboardPath = "/dashboard/center";
-    if (result.user.role === "parent") {
-      dashboardPath = "/dashboard/parent";
-    } else if (result.user.role === "admin") {
-      dashboardPath = "/dashboard/admin";
-    } else if (result.user.role === "branch_admin") {
-      dashboardPath = result.user.center_id ? "/dashboard/center" : "/dashboard/nursery";
-    }
-
-    window.location.href = dashboardPath;
+    window.location.href = getDashboardPath(result.user);
   } catch (error: any) {
     console.error("Google sign-in failed:", error);
-    toastError(
-      error.message || "Failed to sign in with Google. Please try again."
-    );
+    toastError(getGoogleAuthErrorMessage(error));
+    const wrappedError =
+      error instanceof Error ? error : new Error(getGoogleAuthErrorMessage(error));
+    (wrappedError as any)._googleToastShown = true;
+    throw wrappedError;
   }
 };
 
 export const triggerGoogleSignIn = async () => {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") return false;
 
   try {
     const auth = getAuth();
@@ -63,24 +91,20 @@ export const triggerGoogleSignIn = async () => {
     const result = await signInWithPopup(auth, provider);
     const credential = GoogleAuthProvider.credentialFromResult(result);
 
-    // Start the sign-in process
-    const signInPromise = handleGoogleSignIn(credential?.accessToken);
+    const accessToken = credential?.accessToken;
+    if (!accessToken) {
+      throw Object.assign(new Error("Google access token is missing"), {
+        code: "auth/missing-google-access-token",
+      });
+    }
 
-    // Return a promise that resolves after redirect
-    return new Promise((resolve) => {
-      signInPromise
-        .then(() => {
-          // The redirect will happen in handleGoogleSignIn
-          // This promise will never resolve, keeping the loading state
-          resolve(true);
-        })
-        .catch((error) => {
-          resolve(false);
-        });
-    });
+    await handleGoogleSignIn(accessToken);
+    return true;
   } catch (error: any) {
     console.error("Google sign-in failed:", error);
-    toastError("Failed to sign in with Google. Please try again.");
-    return false;
+    if (!error?._googleToastShown) {
+      toastError(getGoogleAuthErrorMessage(error));
+    }
+    throw error;
   }
 };

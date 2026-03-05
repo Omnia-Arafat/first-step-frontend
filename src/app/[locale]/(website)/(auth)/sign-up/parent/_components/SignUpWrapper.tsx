@@ -11,7 +11,7 @@ import { ParentRegisterPayloadv2 } from "@/types";
 import ParentSignUp from "@/components/forms/parent/ParentSignUp";
 import Step1ChildInfo from "@/components/forms/child/Step1";
 import { Button } from "@/components/ui/button";
-import { LoaderCircle } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import {
   createChildStep1Schema,
   JustSignUpParentFormData,
@@ -61,12 +61,12 @@ const SignUpWrapper = () => {
         : firstError;
       toastError(
         "Registration Failed",
-        firstErrorMessage || "Please check your information and try again."
+        firstErrorMessage || "Please check your information and try again.",
       );
     } else {
       toastError(
         "Registration Failed",
-        error.message || "Please check your information and try again."
+        error.message || "Please check your information and try again.",
       );
     }
   };
@@ -89,7 +89,7 @@ const SignUpWrapper = () => {
       if (showChildForm) {
         toastSuccess(
           "Account Created Successfully!",
-          "Now you can add your child's information."
+          "Now you can add your child's information.",
         );
         setParentAccountCreated(true);
       } else {
@@ -151,7 +151,7 @@ const SignUpWrapper = () => {
       t("child-added-title", { default: "Child Added!" }),
       t("child-added-message", {
         default: "Child information saved. You can add another child.",
-      })
+      }),
     );
   };
 
@@ -160,7 +160,7 @@ const SignUpWrapper = () => {
     setSavedChildren((prev) => prev.filter((_, i) => i !== index));
     toastSuccess(
       t("child-removed-title", { default: "Child Removed" }),
-      t("child-removed-message", { default: "Child has been removed." })
+      t("child-removed-message", { default: "Child has been removed." }),
     );
   };
 
@@ -178,7 +178,7 @@ const SignUpWrapper = () => {
         t("children-saved-title", { default: "Success!" }),
         t("children-saved-message", {
           default: "All children have been registered successfully.",
-        })
+        }),
       );
 
       // Extract children data from API response
@@ -197,7 +197,7 @@ const SignUpWrapper = () => {
             image: allChildren[index]?.childImage
               ? URL.createObjectURL(allChildren[index].childImage)
               : undefined,
-          })
+          }),
         );
         setRegisteredChildren(childrenWithIds);
       }
@@ -214,7 +214,7 @@ const SignUpWrapper = () => {
         error.message ||
           t("children-error-message", {
             default: "Failed to register children. Please try again.",
-          })
+          }),
       );
     },
   });
@@ -231,7 +231,7 @@ const SignUpWrapper = () => {
         t("no-children-title", { default: "No Children" }),
         t("no-children-message", {
           default: "Please add at least one child before submitting.",
-        })
+        }),
       );
       return;
     }
@@ -243,7 +243,7 @@ const SignUpWrapper = () => {
       formData.append(`children[${index}][child_name]`, child.childName);
       formData.append(
         `children[${index}][birthday_date]`,
-        child.birthDate?.toISOString().split("T")[0] || ""
+        child.birthDate?.toISOString().split("T")[0] || "",
       );
       formData.append(`children[${index}][parent_name]`, child.fatherName);
       formData.append(`children[${index}][mother_name]`, child.motherName);
@@ -253,12 +253,12 @@ const SignUpWrapper = () => {
         child.gender === "male"
           ? "boy"
           : child.gender === "female"
-          ? "girl"
-          : "";
+            ? "girl"
+            : "";
       formData.append(`children[${index}][gender]`, genderValue);
       formData.append(
         `children[${index}][national_number]`,
-        child.childNationalNumber || ""
+        child.childNationalNumber || "",
       );
       if (child.childImage) {
         formData.append(`children[${index}][image]`, child.childImage);
@@ -369,7 +369,7 @@ const SignUpWrapper = () => {
                 {/* Child form action buttons */}
                 <div className="mt-8 flex justify-center gap-4">
                   <Button
-                    className="!border-light-gray text-mid-gray w-full sm:w-auto"
+                    className="border-light-gray! text-mid-gray w-full sm:w-auto"
                     size="lg"
                     type="button"
                     variant="outline"
@@ -402,16 +402,14 @@ const SignUpWrapper = () => {
                           t("no-children-message", {
                             default:
                               "Please add at least one child before submitting.",
-                          })
+                          }),
                         );
                       }
                     }}
                     disabled={addChildrenMutation.isPending}
                   >
                     {addChildrenMutation.isPending && (
-                      <span className="animate-spin mr-2.5">
-                        <LoaderCircle />
-                      </span>
+                      <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
                     )}
                     {t("save-child")}
                   </Button>

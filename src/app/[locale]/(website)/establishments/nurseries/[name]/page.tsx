@@ -152,6 +152,7 @@ export default async function NurseryPage({
               centerId={centerIdStr}
               nurseryName={name}
               locale={locale}
+              adminOptions={portfolio.admin_options || []}
             />
 
             {/* Coupons Section */}

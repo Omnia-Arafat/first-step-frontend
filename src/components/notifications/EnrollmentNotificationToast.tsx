@@ -3,11 +3,10 @@
 import React from "react";
 import { UserPlus, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { useRouter } from "@/i18n/navigation";
 import { useAuthStore } from "@/store/authStore";
 
-interface EnrollmentData {
+export interface EnrollmentData {
   id: number;
   user_id: number;
   center_id: number;
@@ -27,32 +26,29 @@ interface EnrollmentData {
   day_string?: string;
 }
 
-interface EnrollmentNotificationToastProps {
+export interface EnrollmentNotificationToastViewProps {
   title: string;
   description: string;
   enrollment: EnrollmentData;
+  onView: () => void;
   onDismiss?: () => void;
 }
 
-export function EnrollmentNotificationToast({
+const formatEnrollmentDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};
+
+export function EnrollmentNotificationToastView({
   title,
   description,
   enrollment,
+  onView,
   onDismiss,
-}: EnrollmentNotificationToastProps) {
-  const router = useRouter();
-  const { user } = useAuthStore();
-
-  const dashboardPath = user?.role === "parent" ? "parent" : "center";
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-
+}: EnrollmentNotificationToastViewProps) {
   return (
     <div className="flex flex-col gap-3 p-4 bg-white rounded-lg shadow-lg border-l-4 border-l-blue-500 min-w-80 max-w-sm">
       {/* Header */}
@@ -73,7 +69,7 @@ export function EnrollmentNotificationToast({
       <div className="flex items-center gap-2 text-xs text-gray-500 pl-11">
         <div className="flex items-center gap-1">
           <Calendar className="size-3" />
-          <span>{formatDate(enrollment.enrollment_date)}</span>
+          <span>{formatEnrollmentDate(enrollment.enrollment_date)}</span>
         </div>
         <span>•</span>
         <span>#{enrollment.reservation_number}</span>
@@ -83,9 +79,7 @@ export function EnrollmentNotificationToast({
       <div className="pl-11">
         <Button
           onClick={() => {
-            router.push(
-              `/dashboard/${dashboardPath}/bookings?enrollmentId=${enrollment.id}`
-            );
+            onView();
             onDismiss?.();
           }}
           size="sm"
@@ -95,5 +89,38 @@ export function EnrollmentNotificationToast({
         </Button>
       </div>
     </div>
+  );
+}
+
+interface EnrollmentNotificationToastProps {
+  title: string;
+  description: string;
+  enrollment: EnrollmentData;
+  onDismiss?: () => void;
+}
+
+export function EnrollmentNotificationToast({
+  title,
+  description,
+  enrollment,
+  onDismiss,
+}: EnrollmentNotificationToastProps) {
+  const router = useRouter();
+  const { user } = useAuthStore();
+
+  const dashboardPath = user?.role === "parent" ? "parent" : "center";
+
+  return (
+    <EnrollmentNotificationToastView
+      title={title}
+      description={description}
+      enrollment={enrollment}
+      onDismiss={onDismiss}
+      onView={() =>
+        router.push(
+          `/dashboard/${dashboardPath}/bookings?enrollmentId=${enrollment.id}`
+        )
+      }
+    />
   );
 }

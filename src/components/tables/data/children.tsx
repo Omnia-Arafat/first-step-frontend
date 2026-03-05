@@ -1,11 +1,11 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Edit, Eye, Trash2 } from "lucide-react";
+import { Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { ReservationStatus, useReservationStatus } from "./shared/status";
+import { ReservationStatusBadge } from "@/components/shared/ReservationStatusBadge";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -22,7 +22,6 @@ export type Child = {
 
 export function useChildrenColumns() {
   const t = useTranslations("dashboard.tables.children");
-  const { getStatusText, getStatusColorClass } = useReservationStatus();
 
   const columns: ColumnDef<Child>[] = [
     {
@@ -63,16 +62,7 @@ export function useChildrenColumns() {
         const enrollments = row.getValue("enrollments") as Child["enrollments"];
         const latestEnrollment = enrollments[0];
         const status = latestEnrollment?.status || "pending";
-        const colorClasses = getStatusColorClass(status as any);
-        const text = getStatusText(status as any);
-
-        return (
-          <div
-            className={`text-xs w-fit px-2 py-1 rounded-[4px] select-none ${colorClasses}`}
-          >
-            {text}
-          </div>
-        );
+        return <ReservationStatusBadge status={status} />;
       },
     },
     {

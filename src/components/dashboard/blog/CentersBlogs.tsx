@@ -15,7 +15,6 @@ const CentersBlogs = () => {
   
   const columns = useCenterBlogsColumns();
 
-  if (isLoading) return <div>{t("loading")}</div>;
   if (error) return <div className="text-red-500">{t("error")}</div>;
 
   // Map backend data to table format
@@ -35,7 +34,12 @@ const CentersBlogs = () => {
         <p className="heading-4 font-medium text-primary text-center">
           {t("title")}
         </p>
-        <DataTable columns={columns} data={rows} pagination={true} />
+        <DataTable
+          columns={columns}
+          data={rows}
+          pagination={true}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

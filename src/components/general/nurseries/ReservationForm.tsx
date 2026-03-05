@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { UserPlus, X, Ticket } from "lucide-react";
+import { Loader2, UserPlus, X, Ticket, Check } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { Button } from "@/components/ui/button";
@@ -22,9 +22,10 @@ import {
 import { enrollmentService } from "@/services/api";
 import { useAuthUser, useAuthStore } from "@/store/authStore";
 import { toastSuccess, toastError } from "@/lib/toast";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
 import { cn } from "@/lib/utils";
 import ProgramCard from "@/app/[locale]/(website)/establishments/_components/ProgramCard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AdminOption } from "@/types";
 
 // --- Types & Interfaces ---
 
@@ -37,6 +38,7 @@ interface ReservationFormProps {
   onClose?: () => void;
   preSelectedPlanId?: number | string;
   showOnlySelectedPlan?: boolean;
+  adminOptions?: AdminOption[];
 }
 
 type PlanType = "monthly" | "weekly" | "daily" | "hourly";
@@ -145,8 +147,8 @@ const PlanSelection = ({
   const t = useTranslations("reservationForm.labels");
   const visiblePlans = showOnlySelected
     ? plans.filter(
-      (p) => p.id === selectedPlanId || p.planId === selectedPlanId,
-    )
+        (p) => p.id === selectedPlanId || p.planId === selectedPlanId,
+      )
     : plans;
 
   if (showOnlySelected && visiblePlans.length > 0) {
@@ -172,8 +174,8 @@ const PlanSelection = ({
           ? "justify-center items-center"
           : "overflow-x-auto pb-2 custom-scrollbar justify-start",
         plans.length <= 4 &&
-        !showOnlySelected &&
-        "flex-row justify-center items-center",
+          !showOnlySelected &&
+          "flex-row justify-center items-center",
       )}
       style={{
         maxWidth: showOnlySelected || plans.length > 4 ? "100%" : "48rem",
@@ -277,14 +279,14 @@ const ChildSelection = ({
           Array.from({ length: 4 }).map((_, idx) => (
             <motion.div
               key={idx}
-              className="rounded-lg bg-gray-200 animate-pulse min-w-[110px] w-24 h-32 md:min-w-[120px] md:w-28 md:h-36 flex flex-col items-center justify-center shrink-0"
+              className="rounded-lg border-2 border-gray-200 bg-white min-w-[110px] w-24 h-32 md:min-w-[120px] md:w-28 md:h-36 flex flex-col items-center justify-start shrink-0 p-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: idx * 0.1, duration: 0.5 }}
             >
-              <div className="w-16 h-16 bg-gray-300 rounded-full mb-4" />
-              <div className="w-16 h-4 bg-gray-300 rounded mb-2" />
-              <div className="w-8 h-3 bg-gray-300 rounded" />
+              <Skeleton className="w-16 h-16 rounded-full mt-2 mb-3" />
+              <Skeleton className="w-16 h-4 rounded mb-2" />
+              <Skeleton className="w-10 h-3 rounded" />
             </motion.div>
           ))}
 
@@ -471,8 +473,8 @@ const BookingSummary = ({
           <span className="text-mid-gray font-medium" dir="ltr">
             {date
               ? format(new Date(date), "EEEE yyyy/MM/dd", {
-                locale: locale === "ar" ? ar : undefined,
-              })
+                  locale: locale === "ar" ? ar : undefined,
+                })
               : "-"}
             {showTime && ` ${fromTime}`}
           </span>
@@ -529,7 +531,7 @@ const BookingSummary = ({
                   }
                 >
                   {couponProps.isApplying ? (
-                    <LoadingSpinner size="sm" />
+                    <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
                     tLabels("tryCoupon")
                   )}
@@ -592,6 +594,82 @@ const BookingSummary = ({
   );
 };
 
+const FacilitiesSelection = ({
+  locale,
+  options,
+  selectedIds,
+  onToggle,
+}: {
+  locale: "ar" | "en";
+  options: AdminOption[];
+  selectedIds: number[];
+  onToggle: (id: number) => void;
+}) => {
+  if (options.length === 0) return null;
+
+  const title =
+    locale === "ar"
+      ? "اختر المرافق المسموح بها لطفلك"
+      : "Choose the facilities available to your child";
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3, duration: 0.4, type: "spring", stiffness: 60 }}
+      className="py-6"
+    >
+      <h3 className="mb-6 text-base font-bold text-primary">{title}</h3>
+
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(100px,max-content))] justify-between gap-x-6 gap-y-1">
+        {options.map((option) => {
+          const isSelected = selectedIds.includes(option.id);
+          const title =
+            typeof option.title === "string"
+              ? option.title
+              : option.title[locale] || option.title.ar;
+
+          return (
+            <button
+              key={option.id}
+              type="button"
+              onClick={() => onToggle(option.id)}
+              className={cn(
+                "flex w-full min-w-0 items-center justify-start gap-2 text-start transition",
+                "cursor-pointer focus:outline-none focus:ring-2 focus:ring-secondary-mint-green/40",
+              )}
+            >
+              <div
+                className={cn(
+                  "min-w-4 h-4 rounded-full border transition-colors flex items-center justify-center",
+                  isSelected
+                    ? "bg-secondary-mint-green border-secondary-mint-green text-white"
+                    : "border-gray-300 bg-white",
+                )}
+              >
+                {isSelected && <Check className="w-2.5 h-2.5 stroke-3" />}
+              </div>
+
+              <div className="relative h-5 w-5 shrink-0">
+                <Image
+                  src={option.image}
+                  alt={title}
+                  fill
+                  className="object-contain"
+                />
+              </div>
+
+              <span className="min-w-0 whitespace-nowrap text-sm font-medium text-mid-gray">
+                {title}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </motion.section>
+  );
+};
+
 // --- Main Component ---
 
 const ReservationForm = ({
@@ -603,6 +681,7 @@ const ReservationForm = ({
   onClose,
   preSelectedPlanId,
   showOnlySelectedPlan = false,
+  adminOptions = [],
 }: ReservationFormProps) => {
   const t = useTranslations("reservationForm");
   const router = useRouter();
@@ -617,6 +696,9 @@ const ReservationForm = ({
   const [toTime, setToTime] = useState("");
   const [bookingDate, setBookingDate] = useState("");
   const [selectedChildren, setSelectedChildren] = useState<string[]>([]);
+  const [selectedAdminOptions, setSelectedAdminOptions] = useState<number[]>(
+    adminOptions.map((option) => option.id),
+  );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [hasInitialized, setHasInitialized] = useState(false);
 
@@ -832,6 +914,10 @@ const ReservationForm = ({
     }
   }, [submitSuccess]);
 
+  useEffect(() => {
+    setSelectedAdminOptions(adminOptions.map((option) => option.id));
+  }, [adminOptions]);
+
   // -- Handlers --
 
   const handleApplyCoupon = async () => {
@@ -902,6 +988,15 @@ const ReservationForm = ({
     setCouponError(null);
   };
 
+  const handleToggleAdminOption = (optionId: number) => {
+    const isSelected = selectedAdminOptions.includes(optionId);
+    setSelectedAdminOptions(
+      isSelected
+        ? selectedAdminOptions.filter((id) => id !== optionId)
+        : [...selectedAdminOptions, optionId],
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -936,6 +1031,7 @@ const ReservationForm = ({
         branch_price_id: Number(planId),
         parent_phone: phone,
         children: selectedChildren.map((id) => Number(id)),
+        admin_options: selectedAdminOptions,
       };
 
       if (promoDetails && promoDetails.promo_code) {
@@ -1086,6 +1182,13 @@ const ReservationForm = ({
               locale={locale}
               router={router}
             />
+
+            <FacilitiesSelection
+              locale={locale}
+              options={adminOptions}
+              selectedIds={selectedAdminOptions}
+              onToggle={handleToggleAdminOption}
+            />
           </div>
 
           {/* Left Column (Sidebar-like in RTL) */}
@@ -1129,7 +1232,14 @@ const ReservationForm = ({
             isSubmitting || !bookingDate || selectedChildren.length === 0
           }
         >
-          {isSubmitting ? t("labels.submitting") : t("labels.confirmBooking")}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              {t("labels.submitting")}
+            </>
+          ) : (
+            t("labels.confirmBooking")
+          )}
         </Button>
       </div>
     </>

@@ -295,6 +295,15 @@
           "Upload educational content"
         ],
         "soon": "Soon"
+      },
+      "provider": {
+        "title": "Individual Service Provider",
+        "features": [
+          "Showcase your services and prices",
+          "Reviews and feedback for your services",
+          "Quick access to centers and nurseries"
+        ],
+        "soon": "Soon"
       }
     },
     "buttons": {
@@ -2119,6 +2128,7 @@
         "basicInfo": "Basic Information",
         "services": "Services",
         "activities": "Success Stories",
+        "nurseryActivities": "Photo Albums",
         "teams": "Work Team",
         "statistics": "Statistics",
         "licenses": "Licenses",
@@ -2235,6 +2245,12 @@
         "startAge": "From age..",
         "endAge": "To age..",
         "count": "Count",
+        "numberOfHours": "Number of hours",
+        "numberOfDays": "Number of days",
+        "numberOfWeeks": "Number of weeks",
+        "numberOfMonths": "Number of months",
+        "numberOfYears": "Number of years",
+        "numberOfSessions": "Number of sessions",
         "branches": "Branches",
         "selectBranchesPlaceholder": "Select branches...",
         "cancel": "Cancel",
@@ -2958,7 +2974,8 @@
       "placeholder": "Stay tuned for great offers and activities"
     },
     "ratings": {
-      "title": "Ratings ({count} ratings)",
+      "title": "Ratings",
+      "count": "({count} ratings)",
       "placeholder": "Contribute to improving the service and be the first to rate",
       "bookNow": "Book Now"
     },

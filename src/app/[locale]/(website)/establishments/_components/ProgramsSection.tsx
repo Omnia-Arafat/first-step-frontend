@@ -16,12 +16,14 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { dashboardIcons } from "@/components/general/icons";
 import { cn } from "@/lib/utils";
 import SectionHeader from "./SectionHeader";
+import { AdminOption } from "@/types";
 
 interface ProgramsSectionProps {
   centerId: string;
   nurseryName: string;
   locale: string;
   tNamespace?: string;
+  adminOptions?: AdminOption[];
 }
 
 const ProgramsSection = ({
@@ -29,6 +31,7 @@ const ProgramsSection = ({
   nurseryName,
   locale,
   tNamespace = "nurseryDetails",
+  adminOptions = [],
 }: ProgramsSectionProps) => {
   const t = useTranslations(`${tNamespace}.programs` as any);
   const tCommon = useTranslations(`${tNamespace}.plans` as any);
@@ -176,9 +179,9 @@ const ProgramsSection = ({
             Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={i}
-                className="bg-white px-4 py-4 rounded-2xl flex items-center justify-between gap-8 animate-pulse"
+                className="bg-white px-2 py-4 rounded-2xl flex items-center justify-between gap-8"
               >
-                <Skeleton className="h-6 flex-1" />
+                <Skeleton className="h-7 flex-1 max-w-[40%]" />
                 <div className="flex-1 flex items-center justify-between gap-4">
                   <Skeleton className="h-5 w-24" />
                   <div className="flex flex-col items-center gap-2">
@@ -285,6 +288,7 @@ const ProgramsSection = ({
         selectedBranch={reservationBranch}
         selectedPlanId={reservationPlanId}
         locale={locale as "ar" | "en"}
+        adminOptions={adminOptions}
       />
     </section>
   );

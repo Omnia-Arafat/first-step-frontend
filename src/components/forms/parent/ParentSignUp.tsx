@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLocale, useTranslations } from "next-intl";
@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import {
   createParentSchema,
   type JustSignUpParentFormData,
@@ -93,14 +93,7 @@ export default function ParentSignUp({
                 <FormControl>
                   <PhoneInput
                     {...field}
-                    value={field.value?.replace(/^\+966/, "")}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      const local = e.target.value
-                        .replace(/^\+?966|^00966|^966/, "")
-                        .replace(/^0+/, "");
-                      field.onChange(`+966${local}`);
-                    }}
-                    locale={locale}
+                    onChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />
@@ -253,7 +246,7 @@ export default function ParentSignUp({
             disabled={loading.addChild || loading.createAccount}
           >
             {loading.addChild && (
-              <div className="h-4 w-4 bg-white/20 rounded animate-pulse mr-2.5" />
+              <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
             )}
             Add Child
           </Button>
@@ -267,7 +260,7 @@ export default function ParentSignUp({
             onClick={handleSubmit(onCreateAccount)}
           >
             {loading.createAccount && (
-              <div className="h-4 w-4 bg-white/20 rounded animate-pulse mr-2.5" />
+              <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
             )}
             Create Account
           </Button>

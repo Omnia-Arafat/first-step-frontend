@@ -6,6 +6,67 @@ import { use } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { adminService } from "@/services/dashboardApi";
 import ChildShow from "@/components/forms/dashboard/children/ChildShow";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const ChildShowSkeleton = () => {
+  return (
+    <div className="w-full space-y-6">
+      <div className="w-full flex flex-col gap-y-4">
+        <Skeleton className="h-8 w-48" />
+        <div className="grid grid-cols-1 lg:p-4 xl:grid-cols-2 gap-y-4 gap-x-10">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="space-y-2">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="w-full flex flex-col gap-y-4">
+        <Skeleton className="h-8 w-48" />
+        <div className="grid grid-cols-1 lg:p-4 xl:grid-cols-2 gap-y-4 gap-x-10">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="space-y-2">
+              <Skeleton className="h-5 w-32" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="w-full flex flex-col gap-y-4">
+        <Skeleton className="h-8 w-48" />
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-32" />
+          <div className="grid grid-cols-1 lg:p-4 xl:grid-cols-2 gap-y-4 gap-x-10">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="space-y-2">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full flex flex-col gap-y-4">
+        <Skeleton className="h-8 w-48" />
+        <div className="space-y-4">
+          <Skeleton className="h-5 w-32" />
+          <div className="grid grid-cols-1 lg:p-4 xl:grid-cols-2 gap-y-4 gap-x-10">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="space-y-2">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function ChildDetailsPage({
   params,
@@ -22,7 +83,7 @@ export default function ChildDetailsPage({
     enabled: !!childId,
   });
 
-  if (isLoading) return <div>جاري التحميل...</div>;
+  if (isLoading) return <ChildShowSkeleton />;
   if (error)
     return <div className="text-red-500">حدث خطأ أثناء جلب البيانات</div>;
   if (!data) return null;

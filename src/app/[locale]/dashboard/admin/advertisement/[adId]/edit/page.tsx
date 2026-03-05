@@ -8,6 +8,51 @@ import { useQuery } from "@tanstack/react-query";
 import AdDetailsWrapper from "@/components/dashboard/advertisement/AdDetailsWrapper";
 import { AdRequestFormData } from "@/lib/schemas";
 import { adminService } from "@/services/dashboardApi";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function AdvertisementEditSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="mb-3.5 flex items-center justify-between">
+        <Skeleton className="h-10 w-64 mx-auto" />
+      </div>
+      <div className="grid sm:grid-cols-2 items-start gap-4">
+        <div className="sm:col-span-2 space-y-3">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="aspect-[720/340] w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="sm:col-span-2 flex gap-3 justify-end">
+          <Skeleton className="h-10 w-28 rounded-lg" />
+          <Skeleton className="h-10 w-28 rounded-lg" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function AdvertisementEdit({
   params,
@@ -26,7 +71,7 @@ export default function AdvertisementEdit({
 
   const t = useTranslations("dashboard.admin.advertisement.edit");
 
-  if (isLoading) return <div>{t("loading")}</div>;
+  if (isLoading) return <AdvertisementEditSkeleton />;
   if (error) return <div className="text-red-500">{t("errorLoading")}</div>;
   if (!data) return null;
 
@@ -42,7 +87,7 @@ export default function AdvertisementEdit({
   return (
     <div>
       <div className="mb-3.5 flex items-center justify-between">
-        <h1 className="heading-4 font-bold text-primary max-w-[39.75rem] mx-auto">
+        <h1 className="heading-4 font-bold text-primary max-w-159 mx-auto">
           {t("pageTitle")}
         </h1>
       </div>

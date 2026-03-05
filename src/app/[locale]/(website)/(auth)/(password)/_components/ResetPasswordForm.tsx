@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Eye, EyeOff, LoaderCircle } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import {
   createResetPasswordSchema,
   ResetPasswordFormData,
@@ -178,9 +178,7 @@ const ResetPasswordForm = ({
             {(mutation.isPending ||
               mutation.isSuccess ||
               form.formState.isSubmitting) && (
-              <span className="animate-spin mr-2.5">
-                <LoaderCircle />
-              </span>
+              <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
             )}
             {mutation.isPending || form.formState.isSubmitting
               ? locale === "ar"

@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { animate } from "framer-motion";
+import { Loader2 } from "lucide-react";
 import { paymentService } from "@/services/api";
 import { useAuthStore } from "@/store/authStore";
 import { usePlans } from "@/hooks/usePlans";
@@ -304,7 +305,7 @@ const SubscriptionSection = () => {
 
         {/* Promo Banner */}
         <div className="relative rounded-3xl overflow-hidden">
-          <div className="z-20 relative flex flex-col items-center gap-y-8 text-center py-14.5 px-10 bg-[linear-gradient(to_right,_#2B399000_0%,_#2B3990FF_30%,_#2B3990FF_70%,_#2B399000_100%)]">
+          <div className="z-20 relative flex flex-col items-center gap-y-8 text-center py-14.5 px-10 bg-[linear-gradient(to_right,#2B399000_0%,#2B3990FF_30%,#2B3990FF_70%,#2B399000_100%)]">
             <div className="flex flex-col items-center gap-y-3.5">
               <p className="font-medium text-white">{t("banner.title")}</p>
               <p className="heading-3 text-white">
@@ -327,13 +328,10 @@ const SubscriptionSection = () => {
                 disabled={loading || isSubmitting !== null}
               >
                 {loading ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 bg-white/20 rounded animate-pulse"></div>
-                    Loading...
-                  </div>
+                  <Skeleton className="h-4 w-24 bg-white/70" />
                 ) : isSubmitting !== null ? (
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 bg-white/20 rounded animate-pulse"></div>
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     {t("plans.processing") || "Processing..."}
                   </div>
                 ) : (
@@ -386,7 +384,7 @@ const SubscriptionSection = () => {
                       }}
                     />
                     <div className="z-20 absolute inset-0 bg-primary-blue rounded-5xl" />
-                    <div className="z-10 w-full absolute bottom-[calc(100%-1.5rem)] right-0 bg-gradient-to-b from-white to-secondary-mint-green/24 text-primary heading-4 text-center font-bold px-4 pt-6 pb-12 rounded-t-5xl">
+                    <div className="z-10 w-full absolute bottom-[calc(100%-1.5rem)] right-0 bg-linear-to-b from-white to-secondary-mint-green/24 text-primary heading-4 text-center font-bold px-4 pt-6 pb-12 rounded-t-5xl">
                       {t("plans.popular")}
                     </div>
                     <div className="z-30 relative p-6 flex flex-col items-center gap-10">
@@ -405,7 +403,7 @@ const SubscriptionSection = () => {
                       >
                         {isSubmitting === plan.planId ? (
                           <div className="flex items-center justify-center gap-2">
-                            <div className="w-4 h-4 bg-primary-blue/20 rounded animate-pulse"></div>
+                            <Loader2 className="h-4 w-4 animate-spin" />
                             {t("plans.processing")}
                           </div>
                         ) : (
@@ -438,7 +436,7 @@ const SubscriptionSection = () => {
                     >
                       {isSubmitting === plan.planId ? (
                         <div className="flex items-center justify-center gap-2">
-                          <div className="w-4 h-4 bg-primary-blue/20 rounded animate-pulse"></div>
+                          <Loader2 className="h-4 w-4 animate-spin" />
                           {t("plans.processing")}
                         </div>
                       ) : (

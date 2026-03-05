@@ -3,6 +3,7 @@
 import React from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import ReservationForm from "@/components/general/nurseries/ReservationForm";
+import { AdminOption } from "@/types";
 
 interface ReservationDialogProps {
   isOpen: boolean;
@@ -11,6 +12,7 @@ interface ReservationDialogProps {
   selectedBranch?: string;
   selectedPlanId?: number;
   locale: "ar" | "en";
+  adminOptions?: AdminOption[];
 }
 
 const ReservationDialog = ({
@@ -20,6 +22,7 @@ const ReservationDialog = ({
   selectedBranch,
   selectedPlanId,
   locale,
+  adminOptions = [],
 }: ReservationDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -36,6 +39,7 @@ const ReservationDialog = ({
             onClose={onClose}
             preSelectedPlanId={selectedPlanId}
             showOnlySelectedPlan={true}
+            adminOptions={adminOptions}
           />
         </div>
       </DialogContent>

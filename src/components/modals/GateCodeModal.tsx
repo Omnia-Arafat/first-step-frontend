@@ -15,6 +15,7 @@ import { centerService } from "@/services/dashboardApi";
 import { Branch } from "@/types";
 import { toastError, toastSuccess } from "@/lib/toast";
 import Image from "next/image";
+import { SelectFieldSkeleton } from "@/components/loading/LoadingSkeletons";
 
 interface GateCodeModalProps {
   isOpen: boolean;
@@ -116,30 +117,29 @@ const GateCodeModal: React.FC<GateCodeModalProps> = ({
               </div>
 
               <div className="space-y-4 w-full">
-                <Select
-                  value={selectedBranchId}
-                  onValueChange={setSelectedBranchId}
-                  disabled={isFetchingBranches}
-                >
-                  <SelectTrigger className="w-full h-12 text-right dir-rtl">
-                    <SelectValue
-                      placeholder={
-                        isFetchingBranches ? "Loading..." : t("selectBranch")
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {branches.map((branch) => (
-                      <SelectItem key={branch.id} value={branch.id.toString()}>
-                        {branch.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {isFetchingBranches ? (
+                  <SelectFieldSkeleton className="space-y-0" />
+                ) : (
+                  <Select
+                    value={selectedBranchId}
+                    onValueChange={setSelectedBranchId}
+                  >
+                    <SelectTrigger className="w-full h-12 text-right dir-rtl">
+                      <SelectValue placeholder={t("selectBranch")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {branches.map((branch) => (
+                        <SelectItem key={branch.id} value={branch.id.toString()}>
+                          {branch.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
 
                 <Button
                   onClick={handleGenerate}
-                  disabled={!selectedBranchId || isLoading}
+                  disabled={!selectedBranchId || isLoading || isFetchingBranches}
                   className="w-full h-12 text-lg font-medium bg-primary hover:bg-primary/90"
                 >
                   {isLoading ? "Generating..." : t("generate")}

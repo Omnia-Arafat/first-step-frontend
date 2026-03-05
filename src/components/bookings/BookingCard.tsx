@@ -2,8 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import LoadingSpinner from "@/components/common/LoadingSpinner";
+import { ReservationStatusBadge } from "@/components/shared/ReservationStatusBadge";
 import { useTranslations } from "next-intl";
+import { Loader2 } from "lucide-react";
 
 interface BookingCardProps {
   booking: any;
@@ -26,18 +27,6 @@ export default function BookingCard({
 }: BookingCardProps) {
   const t = useTranslations("dashboard.parent.bookings");
 
-  const STATUS_STYLES: Record<string, string> = {
-    pending: "text-white",
-    accepted: "text-white",
-    existing: "text-white",
-    paid: "text-white",
-    expired: "text-white",
-    rejected: "text-white",
-    canceled: "text-white",
-    cancelled: "text-white",
-    waiting_confirmation: "text-white",
-  };
-
   const STATUS_MAP: Record<string, string> = {
     pending: t("status.pending"),
     accepted: t("status.accepted"),
@@ -48,18 +37,6 @@ export default function BookingCard({
     canceled: t("status.canceled"),
     cancelled: t("status.cancelled"),
     waiting_confirmation: t("status.waiting_confirmation"),
-  };
-
-  const STATUS_COLORS: Record<string, string> = {
-    pending: "#9891FF",
-    accepted: "#FFAD0D",
-    existing: "#3B82F6",
-    paid: "#47B881",
-    expired: "#CACACA",
-    rejected: "#F64C4C",
-    canceled: "#000000",
-    cancelled: "#000000",
-    waiting_confirmation: "#9891FF",
   };
 
   const actionsByStatus: Record<
@@ -142,20 +119,6 @@ export default function BookingCard({
     { key: "paymentMethod", label: t("fields.paymentMethod") },
   ];
 
-  function StatusBadge({ status }: { status: string }) {
-    const backgroundColor = STATUS_COLORS[status] || "#CACACA";
-    return (
-      <span
-        className={`px-3 py-1 rounded-md text-xs font-bold ${
-          STATUS_STYLES[status] || "text-white"
-        }`}
-        style={{ backgroundColor }}
-      >
-        {STATUS_MAP[status] || status}
-      </span>
-    );
-  }
-
   // Filter actions logic
   const allActions = actionsByStatus[STATUS_MAP[booking.status]] || [];
   const filteredActions = allActions.filter((action) => {
@@ -213,13 +176,17 @@ export default function BookingCard({
                 <span className="font-semibold text-primary">
                   {field.label}
                 </span>
-                <span className="text-mid-gray font-bold">
+                <div className="text-mid-gray font-bold">
                   {field.isStatus ? (
-                    <StatusBadge status={booking.status} />
+                    <ReservationStatusBadge
+                      status={booking.status}
+                      fallbackLabel={STATUS_MAP[booking.status] || booking.status}
+                      className="rounded-md px-3 font-bold"
+                    />
                   ) : (
                     booking[field.key]
                   )}
-                </span>
+                </div>
               </div>
             ))}
           </div>
@@ -292,7 +259,7 @@ export default function BookingCard({
               >
                 {(action.action === "cancel" && cancellingId === booking.id) ||
                 (action.action === "renew" && renewingId === booking.id) ? (
-                  <LoadingSpinner size="sm" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   action.label
                 )}

@@ -5,7 +5,20 @@ import { useCenterStats } from "@/hooks/useCenterStats";
 import { useAdminStats } from "@/hooks/useAdminStats";
 import { useHasRole } from "@/store/authStore";
 
-export const useStatusNumbers = () => {
+export interface StatusNumberItem {
+  title: string;
+  value: number;
+  color: string;
+}
+
+export interface StatusNumbersData {
+  rejected: StatusNumberItem;
+  waitingForConfirmation: StatusNumberItem;
+  waitingForPayment: StatusNumberItem;
+  confirmed: StatusNumberItem;
+}
+
+export const useStatusNumbers = (): StatusNumbersData => {
   const t = useTranslations("shared.status");
   const isAdmin = useHasRole("admin");
   const isCenter = useHasRole(["center", "nursery"]);
@@ -48,13 +61,7 @@ export const useStatusNumbers = () => {
   return numbers;
 };
 
-interface CardProps {
-  title: string;
-  value: number;
-  color: string;
-}
-
-const Card = ({ title, value, color }: CardProps) => {
+const StatusNumberCard = ({ title, value, color }: StatusNumberItem) => {
   return (
     <div
       className="rounded-xl px-4 py-2 min-w-fit text-primary font-bold"
@@ -66,18 +73,26 @@ const Card = ({ title, value, color }: CardProps) => {
   );
 };
 
-const StatusNumbers = () => {
-  const numbers = useStatusNumbers();
+export interface StatusNumbersViewProps {
+  numbers: StatusNumbersData;
+}
 
+export const StatusNumbersView = ({ numbers }: StatusNumbersViewProps) => {
   return (
     <div className="grow">
       <div className="grid grid-cols-2 gap-4">
         {Object.values(numbers).map((item) => (
-          <Card key={item.title} {...item} />
+          <StatusNumberCard key={item.title} {...item} />
         ))}
       </div>
     </div>
   );
+};
+
+const StatusNumbers = () => {
+  const numbers = useStatusNumbers();
+
+  return <StatusNumbersView numbers={numbers} />;
 };
 
 export default StatusNumbers;

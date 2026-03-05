@@ -7,6 +7,7 @@ import { centerService } from "@/services/dashboardApi";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Props {
   data: PortfolioFormData;
@@ -27,29 +28,27 @@ export const FacilitiesSection = ({ data, onChange, errors = {} }: Props) => {
     const currentIds = data.admin_option_ids || [];
     const isSelected = currentIds.includes(optionId);
 
-    if (isSelected) {
-      onChange({
-        admin_option_ids: currentIds.filter((id) => id !== optionId),
-        delete_center_options: [
-          ...(data.delete_center_options || []),
-          optionId,
-        ],
-      });
-    } else {
-      onChange({
-        admin_option_ids: [...currentIds, optionId],
-        delete_center_options: (data.delete_center_options || []).filter(
-          (id) => id !== optionId,
-        ),
-      });
-    }
+    onChange({
+      admin_option_ids: isSelected
+        ? currentIds.filter((id) => id !== optionId)
+        : [...currentIds, optionId],
+    });
   };
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="h-32 bg-gray-100 rounded-2xl animate-pulse" />
+          <div
+            key={i}
+            className="relative rounded-xl px-4 py-3 flex flex-col gap-3 min-w-[180px] grow bg-white"
+          >
+            <div className="absolute top-2 left-2">
+              <Skeleton className="w-4 h-4 rounded-full" />
+            </div>
+            <Skeleton className="w-12 h-12 md:w-15 md:h-15 rounded-xl" />
+            <Skeleton className="h-6 w-3/4" />
+          </div>
         ))}
       </div>
     );

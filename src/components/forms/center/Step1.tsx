@@ -202,20 +202,13 @@ export function Step1BasicInfo({
                 {t("phone.label")}
                 <span className="text-red-500">*</span>
               </FormLabel>
-              <FormControl>
-                <PhoneInput
-                  {...field}
-                  value={field.value?.replace(/^\+966/, "")}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    const local = e.target.value
-                      .replace(/^\+?966|^00966|^966/, "")
-                      .replace(/^0+/, "");
-                    field.onChange(`+966${local}`);
-                  }}
-                  readOnly={disabled}
-                  locale={locale as any}
-                />
-              </FormControl>
+                <FormControl>
+                  <PhoneInput
+                    {...field}
+                    readOnly={disabled}
+                    onChange={field.onChange}
+                  />
+                </FormControl>
               <FormMessage />
             </FormItem>
           )}

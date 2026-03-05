@@ -11,7 +11,7 @@ const FieldSkeleton = ({ fullWidth = false }: { fullWidth?: boolean }) => (
 
 export default function BranchFormSkeleton() {
   return (
-    <div className="space-y-10 animate-pulse">
+    <div className="space-y-10">
       {/* Step 1: Basic Info */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 gap-x-10 md:gap-y-4">
         <FieldSkeleton />
@@ -53,6 +53,7 @@ export default function BranchFormSkeleton() {
 
       {/* Buttons */}
       <div className="flex justify-center gap-5 lg:gap-x-10">
+        <Skeleton className="h-8 w-32 rounded-md" />
         <Skeleton className="h-8 w-32 rounded-md" />
       </div>
     </div>

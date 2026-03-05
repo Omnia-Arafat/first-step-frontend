@@ -23,8 +23,11 @@ export default function ParentDashboardHome() {
   const t = useTranslations("dashboard.parent.homePage");
   const router = useRouter();
 
-  // Children count is currently dummy data as per user request due to API error
-  const childrenCount = 3;
+  const { data: childrenCountData, isLoading: isChildrenCountLoading } =
+    useQuery({
+      queryKey: ["parent-children-count"],
+      queryFn: parentService.getChildrenCount,
+    });
 
   const { data: enrollmentsCountData, isLoading: isEnrollmentsCountLoading } =
     useQuery({
@@ -49,6 +52,7 @@ export default function ParentDashboardHome() {
   });
 
   // Parse data based on the provided structure
+  const childrenCount = childrenCountData?.data?.children_count ?? 0;
   const enrollmentsCount =
     enrollmentsCountData?.data?.count_of_enrollments ?? 0;
 
@@ -81,9 +85,13 @@ export default function ParentDashboardHome() {
           {/* Children Count Card */}
           <Card className="border-none shadow-[0_2px_80px_rgba(34,34,34,0.08)] flex flex-col items-center justify-center p-6">
             <dashboardIcons.files className="mb-4 h-12 w-12 text-secondary-mint-green" />
-            <div className="text-4xl font-bold text-secondary-mint-green">
-              {childrenCount}
-            </div>
+            {isChildrenCountLoading ? (
+              <Skeleton className="h-10 w-16 rounded-md" />
+            ) : (
+              <div className="text-4xl font-bold text-secondary-mint-green">
+                {childrenCount}
+              </div>
+            )}
             <div className="mt-2 text-xl font-bold text-primary">
               {t("childrenCount")}
             </div>

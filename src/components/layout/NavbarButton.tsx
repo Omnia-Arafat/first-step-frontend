@@ -12,6 +12,11 @@ const NavbarButton = () => {
   const pathname = usePathname();
   const t = useTranslations("navbar");
   const isSignInPage = pathname === "/sign-in";
+  const isSignUpPage =
+    pathname === "/sign-up" ||
+    pathname === "/sign-up/center" ||
+    pathname === "/sign-up/nursery" ||
+    pathname === "/sign-up/parent";
   const logout = useLogout();
 
   // Determine dashboard path based on user role
@@ -34,10 +39,7 @@ const NavbarButton = () => {
     <div className="flex gap-4 items-center ltr:ml-2 rtl:mr-2">
       {!token ? (
         <>
-          {pathname === "/sign-up" ||
-          pathname === "/sign-up/center" ||
-          pathname === "/sign-up/nursery" ||
-          pathname === "/sign-up/parent" ? (
+          {isSignUpPage ? (
             <Button
               size={"sm"}
               className="font-semibold px-6"
@@ -45,24 +47,37 @@ const NavbarButton = () => {
             >
               {t("buttons.sign-in")}
             </Button>
-          ) : (
-            <Button asChild size={"sm"} className="font-semibold px-6">
+          ) : null}
+
+          {isSignInPage ? (
+            <Button
+              asChild
+              size={"sm"}
+              variant="outline"
+              className="font-semibold px-6"
+            >
               <Link href="/sign-up">{t("buttons.sign-up")}</Link>
             </Button>
+          ) : null}
+
+          {!isSignUpPage && !isSignInPage && (
+            <>
+              <Button
+                asChild
+                size={"sm"}
+                variant="outline"
+                className="font-semibold px-6"
+              >
+                <Link href="/sign-in">{t("buttons.sign-in")}</Link>
+              </Button>
+              <Button asChild size={"sm"} className="font-semibold px-6">
+                <Link href="/sign-up">{t("buttons.sign-up")}</Link>
+              </Button>
+            </>
           )}
         </>
       ) : (
         <>
-          <Button
-            size="sm"
-            variant="ghost"
-            onClick={() => logout()}
-            title={t("buttons.logout")}
-          >
-            <LogOut className="size-4" />
-            {/* {t("buttons.logout")} */}
-          </Button>
-
           {dashboardPath && (
             <Button size="sm" variant="default" asChild>
               <Link href={dashboardPath} title={t("buttons.dashboard")}>
@@ -71,6 +86,16 @@ const NavbarButton = () => {
               </Link>
             </Button>
           )}
+
+          <Button
+            size="sm"
+            variant="ghost"
+            onClick={() => logout()}
+            title={t("buttons.logout")}
+          >
+            <LogOut className="size-4 rtl:rotate-180" />
+            {/* {t("buttons.logout")} */}
+          </Button>
         </>
       )}
     </div>

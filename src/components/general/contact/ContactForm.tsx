@@ -127,14 +127,7 @@ const ContactForm: React.FC = () => {
                 <FormControl>
                   <PhoneInput
                     {...field}
-                    value={field.value?.replace(/^\+966/, "")}
-                    onChange={(e) => {
-                      const local = e.target.value
-                        .replace(/^\+?966|^00966|^966/, "")
-                        .replace(/^0+/, "");
-                      field.onChange(`+966${local}`);
-                    }}
-                    locale={locale}
+                    onChange={field.onChange}
                   />
                 </FormControl>
                 <FormMessage />

@@ -4,7 +4,11 @@ export const createSignUpParentSchema = (locale: "ar" | "en") => {
   return z.object({
     // Parent Information
     name: z.string().min(1, "Name is required"),
-    phone: z.string().min(1, "Phone number is required"),
+    phone: z
+      .string()
+      .regex(/^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/, {
+        message: "Please enter a valid phone number",
+      }),
     email: z.string().email("Invalid email address"),
     address: z.string().optional(),
     kinship: z.string().min(1, "Kinship is required"),

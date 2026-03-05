@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { Booking } from "@/components/tables/data/center-bookings";
-import { useReservationStatus } from "@/components/tables/data/shared/status";
+import { ReservationStatusBadge } from "@/components/shared/ReservationStatusBadge";
 import { useAuthUser } from "@/store/authStore";
 
 interface BookingCardProps {
@@ -30,15 +30,11 @@ export const BookingCard = ({
 }: BookingCardProps) => {
   const t = useTranslations("dashboard.tables.center-bookings");
   const tBookings = useTranslations("dashboard.center-bookings");
-  const { getStatusText, getStatusColorClass } = useReservationStatus();
 
   const user = useAuthUser();
 
   const firstChild = booking.childs[0];
   const status = firstChild?.status || "-";
-  const colorClasses = getStatusColorClass(status as any);
-  const statusText = getStatusText(status as any);
-  const isPending = status === "pending";
 
   const getTypeLabel = (type: string) => {
     const typeMap: Record<string, string> = {
@@ -128,9 +124,10 @@ export const BookingCard = ({
           {/* Left Column */}
           <div className="text-right space-y-3">
             <div className="flex justify-between items-center">
-              <div className={`text-xs px-3 py-1 rounded-md ${colorClasses}`}>
-                {statusText}
-              </div>
+              <ReservationStatusBadge
+                status={status}
+                className="rounded-md px-3"
+              />
               <span className="font-semibold text-primary">
                 {tBookings("fields.bookingStatus")}
               </span>

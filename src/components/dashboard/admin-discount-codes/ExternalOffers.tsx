@@ -21,6 +21,49 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 
+function ExternalOfferCardSkeleton() {
+  return (
+    <div className="relative overflow-hidden rounded-xl border border-gray-100 bg-white">
+      <div className="p-4 flex flex-col md:flex-row h-full gap-4">
+        <div className="absolute top-4 left-4 z-10">
+          <Skeleton className="h-10 w-10 rounded-full" />
+        </div>
+
+        <div className="rounded-xl overflow-hidden w-full h-full md:w-[120px] bg-gray-100 order-1 relative shrink-0">
+          <Skeleton className="h-full min-h-40 w-full rounded-xl" />
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+            <Skeleton className="h-2 w-2 rounded-full" />
+            <Skeleton className="h-2 w-2 rounded-full" />
+            <Skeleton className="h-2 w-2 rounded-full" />
+          </div>
+        </div>
+
+        <div className="flex-1 p-6 flex flex-col lg:grid lg:grid-cols-2 gap-4 text-start order-2">
+          <div className="space-y-2">
+            <Skeleton className="h-7 w-40" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-5/6" />
+          </div>
+
+          <div className="space-y-2 mt-auto">
+            <Skeleton className="h-4 w-36" />
+            <Skeleton className="h-4 w-48" />
+          </div>
+
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-4/5" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ExternalOffers() {
   const t = useTranslations("externalOffers");
   const queryClient = useQueryClient();
@@ -128,15 +171,18 @@ export default function ExternalOffers() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="flex gap-4">
-          <Skeleton className="h-10 w-24" />
-          <Skeleton className="h-10 w-24" />
-          <Skeleton className="h-10 w-24" />
+        <div className="flex gap-2">
+          <Skeleton className="h-10 w-24 rounded-full" />
+          <Skeleton className="h-10 w-24 rounded-full" />
+          <Skeleton className="h-10 w-24 rounded-full" />
         </div>
-        <Skeleton className="h-12 w-full" />
+        <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+          <Skeleton className="h-9 w-28 rounded-md" />
+          <Skeleton className="h-10 w-full sm:w-96 rounded-lg" />
+        </div>
         <div className="grid gap-4">
-          <Skeleton className="h-64 w-full" />
-          <Skeleton className="h-64 w-full" />
+          <ExternalOfferCardSkeleton />
+          <ExternalOfferCardSkeleton />
         </div>
       </div>
     );

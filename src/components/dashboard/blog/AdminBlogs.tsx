@@ -13,6 +13,7 @@ import EmptyState from "@/components/common/EmptyState";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { toastSuccess, toastError } from "@/lib/toast";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const AdminBlogs = () => {
   const t = useTranslations("dashboard.admin.blog");
@@ -55,7 +56,6 @@ const AdminBlogs = () => {
     }
   };
 
-  if (isLoading) return <div>{t("loading")}</div>;
   if (error) return <div className="text-red-500">{t("error")}</div>;
 
   // Extract blogs array from paginated response
@@ -81,7 +81,32 @@ const AdminBlogs = () => {
         </Button>
       </div>
 
-      {mappedBlogs.length === 0 ? (
+      {isLoading ? (
+        <div className="grid lg:grid-cols-3 items-start gap-10">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div
+              key={index}
+              className="bg-white shadow-card min-w-60 p-2 pb-4 flex flex-col items-start gap-y-2 rounded-2xl"
+            >
+              <Skeleton className="h-40 w-full rounded-xl" />
+              <Skeleton className="h-6 w-3/4" />
+              <div className="w-full space-y-2">
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+              <div className="w-full flex items-center justify-between pt-2">
+                <div className="flex gap-2">
+                  <Skeleton className="h-8 w-8 rounded-md" />
+                  <Skeleton className="h-8 w-8 rounded-md" />
+                  <Skeleton className="h-8 w-8 rounded-md" />
+                </div>
+                <Skeleton className="h-4 w-24" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : mappedBlogs.length === 0 ? (
         <EmptyState
           icon="📝"
           size="lg"

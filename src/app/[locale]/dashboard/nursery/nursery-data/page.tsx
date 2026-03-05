@@ -48,7 +48,6 @@ export default function CenterProfilePage() {
     services: [],
     delete_service_ids: [],
     admin_option_ids: [],
-    delete_center_options: [],
     licenses: [],
     delete_license_ids: [],
     contact_info: {
@@ -75,6 +74,19 @@ export default function CenterProfilePage() {
   useEffect(() => {
     const p = initialData?.portofilo || initialData?.data;
     if (p) {
+      const normalizedActivities = (p.images_activities || []).map(
+        (item: any, index: number) =>
+          typeof item === "string"
+            ? { image: item, server_index: index }
+            : {
+                ...item,
+                server_index:
+                  typeof item.server_index === "number"
+                    ? item.server_index
+                    : index,
+              },
+      );
+
       setFormData({
         title_of_hero: p.hero_section?.title_of_hero || p.title_of_hero || "",
         subtitle_of_hero:
@@ -87,7 +99,7 @@ export default function CenterProfilePage() {
           linkedIn: p.contact_info?.linkedIn || p.linkedin || "",
           website: p.contact_info?.website || p.website || "",
         },
-        images_activities: p.images_activities || [],
+        images_activities: normalizedActivities,
         delete_images_activities: [],
         services: p.services || [],
         delete_service_ids: [],
@@ -204,9 +216,6 @@ export default function CenterProfilePage() {
     if (formData.delete_license_ids?.length) {
       dirtyData.delete_license_ids = formData.delete_license_ids;
     }
-    if (formData.delete_center_options?.length) {
-      dirtyData.delete_center_options = formData.delete_center_options;
-    }
     if (formData.delete_images_activities?.length) {
       dirtyData.delete_images_activities = formData.delete_images_activities;
     }
@@ -218,7 +227,6 @@ export default function CenterProfilePage() {
     if (
       Object.keys(dirtyData).length === 0 &&
       !formData.delete_license_ids?.length &&
-      !formData.delete_center_options?.length &&
       !formData.delete_images_activities?.length &&
       !formData.delete_service_ids?.length
     ) {
@@ -255,7 +263,7 @@ export default function CenterProfilePage() {
     },
     {
       id: "activities",
-      title: t("sections.activities"),
+      title: t("sections.nurseryActivities"),
     },
     {
       id: "licenses",

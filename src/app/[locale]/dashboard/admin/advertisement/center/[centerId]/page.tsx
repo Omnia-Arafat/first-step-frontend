@@ -8,6 +8,60 @@ import { useQuery } from "@tanstack/react-query";
 import { adminService } from "@/services/dashboardApi";
 import AdDetailsWrapper from "@/components/dashboard/advertisement/AdDetailsWrapper";
 import { AdRequestFormData } from "@/lib/schemas";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function CenterAdvertisementsSkeleton() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-10 w-64 mx-auto" />
+      <div className="flex flex-col gap-y-12">
+        {Array.from({ length: 3 }).map((_, sectionIndex) => (
+          <div key={sectionIndex} className="space-y-4">
+            <Skeleton className="h-8 w-40" />
+            <div className="flex flex-col gap-y-6 lg:px-5 xl:px-9">
+              {Array.from({ length: 2 }).map((__, cardIndex) => (
+                <div key={cardIndex} className="grid sm:grid-cols-2 items-start gap-4">
+                  <div className="sm:col-span-2 space-y-3">
+                    <Skeleton className="h-5 w-24" />
+                    <Skeleton className="aspect-[720/340] w-full rounded-xl" />
+                  </div>
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-28" />
+                    <Skeleton className="h-10 w-full rounded-xl" />
+                  </div>
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-28" />
+                    <Skeleton className="h-10 w-full rounded-xl" />
+                  </div>
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-32" />
+                    <Skeleton className="h-10 w-full rounded-xl" />
+                  </div>
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-32" />
+                    <Skeleton className="h-10 w-full rounded-xl" />
+                  </div>
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-28" />
+                    <Skeleton className="h-10 w-full rounded-xl" />
+                  </div>
+                  <div className="space-y-3">
+                    <Skeleton className="h-5 w-28" />
+                    <Skeleton className="h-10 w-full rounded-xl" />
+                  </div>
+                  <div className="sm:col-span-2 flex gap-3 justify-end">
+                    <Skeleton className="h-10 w-28 rounded-lg" />
+                    <Skeleton className="h-10 w-28 rounded-lg" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CenterAdvertisementsPage({
   params,
@@ -24,7 +78,7 @@ export default function CenterAdvertisementsPage({
 
   const t = useTranslations("dashboard.admin.advertisement.center");
 
-  if (isLoading) return <div>{t("loading")}</div>;
+  if (isLoading) return <CenterAdvertisementsSkeleton />;
   if (error) return <div className="text-red-500">{t("errorLoading")}</div>;
 
   // Defensive: handle empty or missing ads

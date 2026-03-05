@@ -6,6 +6,10 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import {
+  ListSkeleton,
+  SelectFieldSkeleton,
+} from "@/components/loading/LoadingSkeletons";
+import {
   ChevronLeft,
   Search,
   LoaderCircle,
@@ -15,12 +19,12 @@ import {
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
-  getNurseriesAction,
   getBranchesForCenterAction,
   getBranchPricingAction,
   createExistingEnrollmentAction,
 } from "@/actions/nurseryActions";
 import { EstablishmentResponse } from "@/types";
+import { establishmentService } from "@/services/api";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { toastError, toastSuccess } from "@/lib/toast";
@@ -74,7 +78,7 @@ export default function EnrollmentModal({
   // Fetch centers using React Query
   const { data: centers = [], isLoading: centersLoading } = useQuery({
     queryKey: ["centers", locale],
-    queryFn: () => getNurseriesAction(locale),
+    queryFn: () => establishmentService.getEstablishments(locale),
     enabled: step === "search" && open,
     staleTime: 5 * 60 * 1000,
   });
@@ -295,9 +299,7 @@ export default function EnrollmentModal({
               </div>
 
               {isLoading ? (
-                <div className="flex justify-center py-8">
-                  <LoaderCircle className="w-8 h-8 animate-spin text-secondary-mint-green" />
-                </div>
+                <ListSkeleton count={5} />
               ) : (
                 <div className="space-y-3">
                   {filteredCenters.map((center: EstablishmentResponse) => (
@@ -324,11 +326,9 @@ export default function EnrollmentModal({
                           {typeof center.city === "object"
                             ? center.city?.name[locale as "ar"]
                             : center.city}
-                          {typeof center.neighborhood === "object" &&
-                          center.neighborhood !== null
-                            ? ", " + center.neighborhood[locale as "ar"]
-                            : ", " + center.neighborhood}{" "}
-                          {center.address ? ", " + center.address : null}
+                          {center.neighborhood
+                            ? ", " + center.neighborhood
+                            : null}
                         </span>
                       </div>
                     </button>
@@ -442,9 +442,7 @@ export default function EnrollmentModal({
                   {t("enrollment.selectBranch")}
                 </label>
                 {branchesLoading ? (
-                  <div className="flex justify-center py-4">
-                    <LoaderCircle className="w-6 h-6 animate-spin text-secondary-mint-green" />
-                  </div>
+                  <SelectFieldSkeleton className="space-y-0" />
                 ) : (
                   <select
                     value={selectedBranch}
@@ -468,9 +466,7 @@ export default function EnrollmentModal({
                   {t("enrollment.selectProgram")}
                 </label>
                 {plansLoading ? (
-                  <div className="flex justify-center py-4">
-                    <LoaderCircle className="w-6 h-6 animate-spin text-secondary-mint-green" />
-                  </div>
+                  <SelectFieldSkeleton className="space-y-0" />
                 ) : (
                   <select
                     value={selectedPlan}

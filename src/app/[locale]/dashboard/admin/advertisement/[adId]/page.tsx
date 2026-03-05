@@ -8,6 +8,49 @@ import { useQuery } from "@tanstack/react-query";
 import AdDetailsWrapper from "@/components/dashboard/advertisement/AdDetailsWrapper";
 import { AdRequestFormData } from "@/lib/schemas";
 import { adminService } from "@/services/dashboardApi";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function AdvertisementDetailsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <Skeleton className="h-10 w-48" />
+      <div className="grid sm:grid-cols-2 items-start gap-4">
+        <div className="sm:col-span-2 space-y-3">
+          <Skeleton className="h-5 w-24" />
+          <Skeleton className="aspect-[720/340] w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-32" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="space-y-3">
+          <Skeleton className="h-5 w-28" />
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </div>
+        <div className="sm:col-span-2 flex gap-3 justify-end">
+          <Skeleton className="h-10 w-28 rounded-lg" />
+          <Skeleton className="h-10 w-28 rounded-lg" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function AdvertisementDetails({
   params,
@@ -26,7 +69,7 @@ export default function AdvertisementDetails({
 
   const t = useTranslations("dashboard.admin.advertisement.details");
 
-  if (isLoading) return <div>{t("loading")}</div>;
+  if (isLoading) return <AdvertisementDetailsSkeleton />;
   if (error) return <div className="text-red-500">{t("errorLoading")}</div>;
   if (!data) return null;
 

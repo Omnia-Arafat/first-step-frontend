@@ -21,6 +21,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import EmptyState from "@/components/common/EmptyState";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DailyReportResponse {
   id: number;
@@ -120,6 +121,16 @@ interface Child {
   reportCount: number;
 }
 
+function ChildReportSkeleton() {
+  return (
+    <div className="flex flex-col items-center p-4 border border-gray-100 rounded-2xl bg-white">
+      <Skeleton className="w-10 h-6 rounded mb-2" />
+      <Skeleton className="w-[84px] h-[120px] rounded-xl mb-2" />
+      <Skeleton className="w-16 h-6 rounded" />
+    </div>
+  );
+}
+
 export default function DailyReports() {
   const router = useRouter();
   const { isAuthenticated } = useAuthStore();
@@ -194,17 +205,13 @@ export default function DailyReports() {
       <div className="lg:p-4 space-y-6">
         <div className="flex flex-wrap gap-4 justify-center">
           {Array.from({ length: 3 }).map((_, index) => (
-            <div key={index} className="flex flex-col items-center p-4 border-2 rounded-2xl border-light-gray">
-              <div className="w-16 h-6 bg-gray-200 animate-pulse rounded mb-2"></div>
-              <div className="w-20 h-24 bg-gray-200 animate-pulse rounded mb-2"></div>
-              <div className="w-16 h-6 bg-gray-200 animate-pulse rounded"></div>
-            </div>
+            <ChildReportSkeleton key={index} />
           ))}
         </div>
-        <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mx-auto"></div>
+        <Skeleton className="h-8 w-48 rounded mx-auto" />
         <div className="space-y-4">
           {Array.from({ length: 5 }).map((_, index) => (
-            <div key={index} className="h-12 bg-gray-200 animate-pulse rounded"></div>
+            <Skeleton key={index} className="h-12 rounded" />
           ))}
         </div>
       </div>

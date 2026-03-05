@@ -30,11 +30,27 @@ export default function EditTeamMember({
         <Skeleton className="h-8 w-[200px] mx-auto" />
         <div className="grid sm:grid-cols-2 items-start gap-4 gap-y-6">
           <div className="flex flex-col gap-y-4">
-            <Skeleton className="h-[72px]" />
-            <Skeleton className="h-[72px]" />
-            <Skeleton className="h-[72px]" />
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="h-12 w-full rounded-xl" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="h-12 w-full rounded-xl" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="h-12 w-full rounded-xl" />
+            </div>
           </div>
-          <Skeleton className="h-[240px] w-[240px]" />
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-24" />
+            <Skeleton className="h-[240px] w-[240px] rounded-xl" />
+          </div>
+        </div>
+        <div className="flex justify-end gap-2">
+          <Skeleton className="h-9 w-24 rounded-md" />
+          <Skeleton className="h-9 w-24 rounded-md" />
         </div>
       </div>
     );

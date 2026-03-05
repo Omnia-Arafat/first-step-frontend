@@ -196,7 +196,7 @@ export interface EstablishmentResponse extends Omit<
     nursery_name_branch: string;
   }>;
   city: string | { name: { ar: string; en: string } };
-  neighborhood?: string | { ar: string; en: string } | null;
+  neighborhood?: string | null;
   address?: string;
   nursery?: {
     center_id: number;
@@ -425,6 +425,7 @@ export interface PortfolioFormData {
   // Activities (Success Stories)
   images_activities?: {
     id?: number;
+    server_index?: number;
     image?: File | string;
     summary?: string;
     kind?: string;
@@ -459,7 +460,6 @@ export interface PortfolioFormData {
 
   // Facilities / Options
   admin_option_ids?: number[];
-  delete_center_options?: number[];
 
   // Licenses
   licenses?: {

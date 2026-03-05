@@ -18,7 +18,6 @@ const CentersAdvertisements = () => {
 
   const columns = useCenterAdsColumns();
 
-  if (isLoading) return <div>{t("loading")}</div>;
   if (error) return <div className="text-red-500">{t("errorLoading")}</div>;
 
   // Map backend data to table format
@@ -38,7 +37,12 @@ const CentersAdvertisements = () => {
         <p className="heading-4 font-medium text-primary text-center">
           {t("reservations")}
         </p>
-        <DataTable columns={columns} data={rows} pagination={true} />
+        <DataTable
+          columns={columns}
+          data={rows}
+          pagination={true}
+          isLoading={isLoading}
+        />
       </div>
     </div>
   );

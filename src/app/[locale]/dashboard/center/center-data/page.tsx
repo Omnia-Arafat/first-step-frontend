@@ -20,6 +20,7 @@ import { useAuthUser } from "@/store/authStore";
 
 // Section Components
 import { BasicInfoSection } from "./_components/BasicInfoSection";
+import { PlansSection } from "./_components/PlansSection";
 import { ServicesSection } from "./_components/ServicesSection";
 import { SuccessStoriesSection } from "./_components/SuccessStoriesSection";
 import { TeamsSection } from "./_components/TeamsSection";
@@ -236,6 +237,10 @@ export default function CenterProfilePage() {
       title: t("sections.basicInfo"),
     },
     {
+      id: "plans",
+      title: t("sections.plans"),
+    },
+    {
       id: "services",
       title: t("sections.services"),
     },
@@ -269,6 +274,8 @@ export default function CenterProfilePage() {
             onLogoChange={(file: File) => logoMutation.mutate(file)}
           />
         );
+      case "plans":
+        return <PlansSection />;
       case "services":
         return (
           <ServicesSection

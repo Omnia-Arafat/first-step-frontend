@@ -55,6 +55,15 @@ export default function SignUpPage() {
       soon: true,
       color: "border-gray-100",
     },
+    {
+      id: "provider",
+      title: t("provider.title"),
+      features: t.raw("provider.features") as string[],
+      image: "/assets/illustrations/signup/provider.jpg",
+      href: "#",
+      soon: true,
+      color: "border-gray-100",
+    },
   ];
 
   return (
@@ -111,8 +120,9 @@ function RoleCard({ role, t }: { role: any; t: any }) {
         "relative flex flex-col items-center p-5 bg-white rounded-xl border transition-all duration-300 h-full",
         "border-gray/10 shadow-[0_2px_4px_-2px_rgba(0,0,0,0.10)]",
         // Hover effects
-        !role.soon && "hover:border-transparent hover:shadow-[0_4px_6px_-1px_rgba(43,57,144,0.24)] hover:bg-linear-to-b hover:from-white hover:to-secondary-mint-green/24",
-        role.soon && "cursor-default shadow-none opacity-80"
+        !role.soon &&
+          "hover:border-transparent hover:shadow-[0_4px_6px_-1px_rgba(43,57,144,0.24)] hover:bg-linear-to-b hover:from-white hover:to-secondary-mint-green/24",
+        role.soon && "cursor-default shadow-none opacity-80",
       )}
     >
       {/* Soon Ribbon */}
@@ -132,7 +142,7 @@ function RoleCard({ role, t }: { role: any; t: any }) {
           width={110}
           height={100}
           className="object-contain"
-        // priority={false} // Removed priority to avoid LCP warnings on multiple images if needed
+          // priority={false} // Removed priority to avoid LCP warnings on multiple images if needed
         />
       </div>
 

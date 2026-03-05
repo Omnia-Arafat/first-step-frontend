@@ -16,20 +16,23 @@ import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 import { useTranslations, useLocale } from "next-intl";
 import EmptyState from "@/components/common/EmptyState";
 import { useAuthUser } from "@/store/authStore";
-import {
-  enrollmentService,
-  parentService as apiParentService,
-  paymentService,
-  establishmentService,
-} from "@/services/api";
+import { paymentService, establishmentService } from "@/services/api";
 import { promoCodeService } from "@/services/dashboardApi";
 import { Input } from "@/components/ui/input";
-import { X, RotateCw, Ticket, CheckCircle2, AlertCircle } from "lucide-react";
+import {
+  X,
+  RotateCw,
+  Ticket,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 import ReservationForm from "@/components/general/nurseries/ReservationForm";
 import BookingCard from "@/components/bookings/BookingCard";
 import { FilterButtons } from "@/components/common/FilterButtons";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
+import { ListItemSkeleton } from "@/components/loading/LoadingSkeletons";
 
 const Bookings = () => {
   const [showDetails, setShowDetails] = useState(false);
@@ -348,12 +351,12 @@ const Bookings = () => {
     const planList =
       apiPlans.length > 0
         ? apiPlans.map((apiPlan: any) => ({
-          id: apiPlan.id,
-          type: apiPlan.enrollment_type,
-          name: apiPlan.title,
-          price: `${apiPlan.price_amount} ${locale === "ar" ? "ر.س" : "SAR"}`,
-          planId: apiPlan.id,
-        }))
+            id: apiPlan.id,
+            type: apiPlan.enrollment_type,
+            name: apiPlan.title,
+            price: `${apiPlan.price_amount} ${locale === "ar" ? "ر.س" : "SAR"}`,
+            planId: apiPlan.id,
+          }))
         : [];
 
     // Find the selected plan based on booking's branch_price_id
@@ -374,17 +377,8 @@ const Bookings = () => {
           <div className="flex-1 overflow-y-auto custom-scrollbar px-6 pb-4">
             {/* Plan Selection - Same style as ReservationForm */}
             {loadingPlans ? (
-              <div className="flex justify-center gap-4 mb-6">
-                {[1, 2, 3, 4].map((i) => (
-                  <div
-                    key={i}
-                    className="flex flex-col items-center py-3 px-4 rounded-xl border-2 border-gray-300 bg-gray-100 min-w-[120px]"
-                  >
-                    <div className="h-5 w-16 bg-gray-300 rounded mb-2 animate-pulse" />
-                    <div className="w-full h-px bg-gray-300 mb-2" />
-                    <div className="h-4 w-20 bg-gray-300 rounded animate-pulse" />
-                  </div>
-                ))}
+              <div className="mb-6">
+                <ListItemSkeleton className="rounded-xl" />
               </div>
             ) : planList.length > 0 ? (
               <div className="flex justify-center gap-4 mb-6">
@@ -512,13 +506,13 @@ const Bookings = () => {
                               </div>
                               {(isCouponExpired ||
                                 appliedCoupon !== originalCoupon) && (
-                                  <button
-                                    onClick={handleRemoveCoupon}
-                                    className="text-gray-400 hover:text-red-500 transition-colors p-1"
-                                  >
-                                    <X size={18} />
-                                  </button>
-                                )}
+                                <button
+                                  onClick={handleRemoveCoupon}
+                                  className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                                >
+                                  <X size={18} />
+                                </button>
+                              )}
                             </div>
                             <div className="flex justify-between items-center text-sm border-t border-purple-100 pt-2 mt-2">
                               <span className="text-purple-800">
@@ -633,9 +627,9 @@ const Bookings = () => {
                         <span className="font-bold">
                           {originalPrice > 0
                             ? `-${(
-                              (discountAmount / originalPrice) *
-                              100
-                            ).toFixed(0)}%`
+                                (discountAmount / originalPrice) *
+                                100
+                              ).toFixed(0)}%`
                             : ""}
                         </span>
                         <span className="font-bold">
@@ -659,7 +653,7 @@ const Bookings = () => {
                     <span className="font-bold text-lg text-primary">
                       {isAcceptedStatus
                         ? t("confirmReservation.finalAmount") ||
-                        "المبلغ المطلوب"
+                          "المبلغ المطلوب"
                         : t("total")}
                       :
                     </span>
@@ -704,7 +698,7 @@ const Bookings = () => {
                 className="w-full bg-linear-to-r from-primary to-primary text-white py-6 text-lg font-bold hover:opacity-90"
               >
                 {isConfirming ? (
-                  <Skeleton className="h-4 w-20" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   t("confirmReservation.payNow") || "ادفع الآن"
                 )}
@@ -749,9 +743,9 @@ const Bookings = () => {
         const childrenNames =
           booking.children?.length > 0
             ? booking.children
-              .map((child: any) => child.child_name || child.name)
-              .filter(Boolean)
-              .join("، ")
+                .map((child: any) => child.child_name || child.name)
+                .filter(Boolean)
+                .join("، ")
             : "";
 
         // Get program name - prefer enrollment_type_name or price_title, fallback to enrollment_type
@@ -853,9 +847,9 @@ const Bookings = () => {
       ) {
         toastError(
           t("cancelError") +
-          " - " +
-          "This enrollment is in 'waiting for confirmation' status. " +
-          "Please contact support if you need to cancel this enrollment.",
+            " - " +
+            "This enrollment is in 'waiting for confirmation' status. " +
+            "Please contact support if you need to cancel this enrollment.",
         );
       } else {
         toastError(errorMessage);

@@ -8,6 +8,62 @@ import { adminService } from "@/services/dashboardApi";
 import AdminBlogCard from "@/components/general/blog/AdminBlogCard";
 import { useTranslations } from "next-intl";
 import { toastSuccess, toastError } from "@/lib/toast";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function BlogCardSkeleton({ showActions = false }: { showActions?: boolean }) {
+  return (
+    <div className="bg-white shadow-card min-w-60 p-2 pb-4 flex flex-col items-start gap-y-2 rounded-2xl relative">
+      <div className="w-full h-40 rounded-xl overflow-hidden relative">
+        <Skeleton className="h-full w-full rounded-xl" />
+      </div>
+      <Skeleton className="h-6 w-3/4" />
+      <div className="w-full space-y-2">
+        <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-4 w-5/6" />
+        <Skeleton className="h-4 w-2/3" />
+      </div>
+      <div className="mt-auto w-full flex items-end justify-between">
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-24" />
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-5 w-5 rounded-full" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+        </div>
+        <Skeleton className="h-4 w-24" />
+      </div>
+      {showActions && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl bg-white/55 backdrop-blur-[1px] gap-y-2">
+          <Skeleton className="h-10 w-40 rounded-lg" />
+          <Skeleton className="h-10 w-40 rounded-lg" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CenterBlogsSkeleton() {
+  return (
+    <div className="space-y-4">
+      <Skeleton className="h-10 w-64 mx-auto" />
+      <div className="flex flex-col gap-y-12">
+        {Array.from({ length: 3 }).map((_, sectionIndex) => (
+          <div key={sectionIndex} className="space-y-4">
+            <Skeleton className="h-8 w-40" />
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 4 }).map((__, cardIndex) => (
+                <BlogCardSkeleton
+                  key={cardIndex}
+                  showActions={sectionIndex !== 1}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CenterBlogsPage({
   params,
@@ -62,7 +118,7 @@ export default function CenterBlogsPage({
 
   const isLoadingAction = isApproving || isRejecting;
 
-  if (isLoading) return <div>{t("loading")}</div>;
+  if (isLoading) return <CenterBlogsSkeleton />;
   if (error) return <div className="text-red-500">{t("error")}</div>;
 
   // Helper to map backend blog to AdminBlogCard props

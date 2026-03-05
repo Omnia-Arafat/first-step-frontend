@@ -17,6 +17,49 @@ import { Task, useTasks } from "@/hooks/useTasks";
 import { useOccasions, Occasion } from "@/hooks/useOccasions";
 import { useBirthdays, Birthday } from "@/hooks/useBirthdays";
 import { useSubscriptionRequired } from "@/store/subscriptionStore";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const SidebarSectionSkeleton = ({
+  variant = "cards",
+}: {
+  variant?: "cards" | "tasks";
+}) => {
+  return (
+    <div className="mt-2 flex flex-col items-center gap-y-2">
+      {Array.from({ length: 3 }).map((_, index) =>
+        variant === "tasks" ? (
+          <div
+            key={index}
+            className="relative w-full rounded-xl border border-gray-100 bg-white px-3 py-3"
+          >
+            <div className="flex items-center gap-3">
+              <Skeleton className="h-4 w-4 rounded-sm" />
+              <div className="flex-1 space-y-2">
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-3 w-20" />
+              </div>
+              <div className="flex items-center gap-1">
+                <Skeleton className="h-4 w-4 rounded-sm" />
+                <Skeleton className="h-4 w-4 rounded-sm" />
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div
+            key={index}
+            className="w-full rounded-xl border border-gray-100 bg-white px-4 py-3"
+          >
+            <div className="space-y-2 text-center">
+              <Skeleton className="mx-auto h-4 w-28" />
+              <Skeleton className="mx-auto h-3 w-18" />
+            </div>
+          </div>
+        ),
+      )}
+      <div className="h-px w-4/5 rounded-full bg-gray-100" />
+    </div>
+  );
+};
 
 const SecondarySidebar = () => {
   const locale = useLocale();
@@ -75,9 +118,7 @@ const SecondarySidebar = () => {
               </div>
 
               {occasionsLoading ? (
-                <div className="mt-4 text-center text-light-gray">
-                  {t("loading")}
-                </div>
+                <SidebarSectionSkeleton />
               ) : occasionsError ? (
                 <div className="mt-4 text-center text-error">
                   {occasionsError instanceof Error
@@ -125,9 +166,7 @@ const SecondarySidebar = () => {
               </div>
 
               {birthdaysLoading ? (
-                <div className="mt-4 text-center text-light-gray">
-                  {t("loading")}
-                </div>
+                <SidebarSectionSkeleton />
               ) : birthdaysError ? (
                 <div className="mt-4 text-center text-error">
                   {birthdaysError instanceof Error
@@ -183,9 +222,7 @@ const SecondarySidebar = () => {
               </div>
 
               {isLoading && tasks.length === 0 ? (
-                <div className="mt-4 text-center text-light-gray">
-                  {t("loading")}
-                </div>
+                <SidebarSectionSkeleton variant="tasks" />
               ) : error ? (
                 <div className="mt-4 text-center text-error">
                   {error instanceof Error ? error.message : t("error")}

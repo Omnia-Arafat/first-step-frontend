@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { ImageIcon, LoaderCircle } from "lucide-react";
+import { ImageIcon, Loader2 } from "lucide-react";
 import { createTeamMemberSchema, TeamMemberFormData } from "@/lib/schemas";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
@@ -37,10 +37,10 @@ const MemberForm = ({
   const locale = useLocale();
   const t = useTranslations("dashboard.center.team.form");
   const [preview, setPreview] = useState<string | null>(
-    (typeof initialData.image === "string" && initialData.image) || null
+    (typeof initialData.image === "string" && initialData.image) || null,
   );
   const [loadingButton, setLoadingButton] = useState<"save" | "delete" | null>(
-    null
+    null,
   );
 
   const teamMemberSchema = createTeamMemberSchema(locale as "ar" | "en");
@@ -58,17 +58,13 @@ const MemberForm = ({
       return (
         <>
           <Button size={"sm"} type="submit" disabled={isLoading}>
-            {isLoading && (
-              <span className="animate-spin mr-2.5">
-                <LoaderCircle className="h-4 w-4" />
-              </span>
-            )}
+            {isLoading && <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />}
             {t("buttons.add")}
           </Button>
           <Button
             size={"sm"}
             variant={"outline"}
-            className="!border-light-gray text-mid-gray"
+            className="border-light-gray! text-mid-gray"
             onClick={() => router.back()}
             disabled={isLoading}
           >
@@ -86,9 +82,7 @@ const MemberForm = ({
             onClick={() => setLoadingButton("save")}
           >
             {isLoading && loadingButton === "save" && (
-              <span className="animate-spin mr-2.5">
-                <LoaderCircle className="h-4 w-4" />
-              </span>
+              <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
             )}
             {t("buttons.save")}
           </Button>
@@ -103,9 +97,7 @@ const MemberForm = ({
             disabled={isLoading}
           >
             {isLoading && loadingButton === "delete" && (
-              <span className="animate-spin mr-2.5">
-                <LoaderCircle className="h-4 w-4" />
-              </span>
+              <Loader2 className="h-4 w-4 mr-2.5 animate-spin" />
             )}
             {t("buttons.delete")}
           </Button>
@@ -213,9 +205,9 @@ const MemberForm = ({
                   <label
                     htmlFor="image-upload"
                     className={clsx(
-                      "min-w-60 md:max-w-60 aspect-[200/240] border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center cursor-pointer transition-colors",
+                      "min-w-60 md:max-w-60 aspect-200/240 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center cursor-pointer transition-colors",
                       preview && "p-2",
-                      isLoading && "opacity-50 cursor-not-allowed"
+                      isLoading && "opacity-50 cursor-not-allowed",
                     )}
                   >
                     {preview ? (

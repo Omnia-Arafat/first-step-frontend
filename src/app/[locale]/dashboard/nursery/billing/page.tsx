@@ -21,6 +21,46 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { centerService } from "@/services/dashboardApi";
 import { SubscriptionWarningModal } from "@/components/modals/SubscriptionWarningModal";
+import { Loader2 } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+
+function BillingPageSkeleton() {
+  return (
+    <div className="container mx-auto px-4 space-y-8">
+      <Card>
+        <CardHeader className="border-b pb-4 space-y-2">
+          <Skeleton className="h-7 w-56" />
+          <Skeleton className="h-4 w-72" />
+        </CardHeader>
+        <CardContent className="space-y-6 pt-6">
+          <div className="flex flex-col md:flex-row md:justify-between gap-4">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={index} className="space-y-3">
+                <Skeleton className="h-5 w-32" />
+                <Skeleton className="h-5 w-40" />
+              </div>
+            ))}
+          </div>
+          <Skeleton className="h-10 w-full rounded-xl" />
+        </CardContent>
+      </Card>
+      <div className="space-y-4">
+        <Skeleton className="h-5 w-28" />
+        {Array.from({ length: 3 }).map((_, index) => (
+          <Card key={index} className="p-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+              <div className="space-y-2">
+                <Skeleton className="h-6 w-36" />
+                <Skeleton className="h-9 w-28" />
+              </div>
+              <Skeleton className="h-10 w-full md:w-36 rounded-xl" />
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CenterBillingPage() {
   const meta = usePageMetadata();
@@ -50,7 +90,7 @@ export default function CenterBillingPage() {
     }
   }, [t, setSubscriptionRequired]);
 
-  if (loading) return <div>{t("loading")}</div>;
+  if (loading) return <BillingPageSkeleton />;
   if (error) return <div>{t("errorLoading")}</div>;
 
   // Find the active plan
@@ -223,7 +263,7 @@ export default function CenterBillingPage() {
           >
             {isSubmitting === activePlan?.id ? (
               <div className="flex items-center justify-center gap-2">
-                <div className="w-4 h-4 bg-white/20 rounded animate-pulse"></div>
+                <Loader2 className="h-4 w-4 animate-spin" />
                 {tBase("plans.processing")}
               </div>
             ) : (
@@ -256,7 +296,7 @@ export default function CenterBillingPage() {
               >
                 {isSubmitting === plan.id ? (
                   <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 bg-white/20 rounded animate-pulse"></div>
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     {tBase("plans.processing")}
                   </div>
                 ) : (

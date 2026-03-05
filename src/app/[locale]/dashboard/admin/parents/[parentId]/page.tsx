@@ -68,9 +68,8 @@ export default function DashboardChildrenPage({
                 <span className="text-base">{t("form.phone")}</span>
               </Label>
               <PhoneInput
-                value={data?.parent.phone?.replace(/^\+966/, "") || ""}
+                value={data?.parent.phone || ""}
                 onChange={() => {}}
-                locale="ar"
                 readOnly
               />
             </div>

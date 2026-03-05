@@ -288,6 +288,15 @@
           "رفع محتوى تعليمي للأطفال"
         ],
         "soon": "قريباً"
+      },
+      "provider": {
+        "title": "مقدم خدمة فرد",
+        "features": [
+          "عرض خدماتك وأسعارك",
+          "تقييمات وأراء لخدماتك",
+          "وصول سريع للمراكز والحضانات"
+        ],
+        "soon": "قريباً"
       }
     },
     "buttons": {
@@ -2110,12 +2119,13 @@
         "basicInfo": "المعلومات الأساسية",
         "services": "الخدمات",
         "activities": "قصص النجاح",
+        "nurseryActivities": "ألبومات الصور",
         "teams": "فريق العمل",
         "statistics": "الإحصائيات",
         "licenses": "التراخيص",
         "socialMedia": "وسائل التواصل الاجتماعي",
         "plans": "البرامج",
-        "facilites": "المرافق"
+        "facilities": "المرافق"
       },
       "basicInfo": {
         "nurseryLogo": "شعار المركز",
@@ -2226,6 +2236,12 @@
         "startAge": "من عمر",
         "endAge": "إلى عمر",
         "count": "العدد",
+        "numberOfHours": "عدد الساعات",
+        "numberOfDays": "عدد الأيام",
+        "numberOfWeeks": "عدد الأسابيع",
+        "numberOfMonths": "عدد الأشهر",
+        "numberOfYears": "عدد السنوات",
+        "numberOfSessions": "عدد الجلسات",
         "branches": "الفروع",
         "selectBranchesPlaceholder": "اختر الفروع...",
         "cancel": "إلغاء",
@@ -2954,7 +2970,8 @@
       "placeholder": "انتظروا عروض وأنشطة رائعة"
     },
     "ratings": {
-      "title": "تقييمات ({count} تقييم)",
+      "title": "تقييمات",
+      "count": "({count} تقييم)",
       "placeholder": "ساهم في تحسين الخدمة وكن أول تقييم",
       "bookNow": "احجز الآن"
     },
