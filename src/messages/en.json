@@ -868,6 +868,105 @@
       "content": "We aim to be more than a platform — a trusted companion for every family seeking the best care. We connect families with top nurseries and rehab centers, offering a smooth, reassuring experience that makes finding the right environment easier, safer, and more comforting."
     }
   },
+  "about": {
+    "hero": {
+      "title": "Your Smart Platform for Your Child's Future",
+      "brand": "First Step",
+      "description": "A smart platform that brings families, educational centers, and rehabilitation centers together to facilitate choosing the most suitable environment for children's growth through reliable information and smart tools.",
+      "features": {
+        "centers": "Nurseries",
+        "growth": "Growth",
+        "safety": "Safety"
+      }
+    },
+    "vision": {
+      "title": "Our Vision",
+      "description": "We strive to be the leading digital destination in the Kingdom to support the early childhood sector, providing a perfect start for every child towards a bright future."
+    },
+    "story": {
+      "title": "Our Story",
+      "cards": {
+        "centers": {
+          "title": "For Centers",
+          "description": "We provide a unified platform that enables centers to focus on education quality while we handle administrative and marketing aspects."
+        },
+        "children": {
+          "title": "For Children",
+          "description": "We believe in the right of every child to have a safe, stimulating educational environment that contributes to their comprehensive growth and integrated development."
+        },
+        "families": {
+          "title": "For Families",
+          "description": "We help parents find the best educational centers suited to their children's needs through comprehensive and reliable information."
+        }
+      },
+      "footer": "First Step was founded with a clear vision: to transform the experience of searching for educational centers from a complex, confusing process into a smooth, reliable journey. We strive to build a bridge of trust between families and educational centers across the Kingdom."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "Empowering centers and families through a unified smart platform that provides advanced administrative tools and reliable information to support making the best educational decisions.",
+      "points": {
+        "empowerment": {
+          "title": "Empowering Families",
+          "subtitle": "to make informed decisions"
+        },
+        "platform": {
+          "title": "Unified Smart Platform",
+          "subtitle": "connecting all parties"
+        },
+        "info": {
+          "title": "Reliable Information",
+          "subtitle": "to support the right decisions"
+        }
+      }
+    },
+    "stats": {
+      "number": "+9000",
+      "label": "Educational Destination",
+      "tagline1": "Step by step,",
+      "tagline2": "We reshape",
+      "tagline3": "the future with them!"
+    },
+    "whyUs": {
+      "title": "Why Choose Us?",
+      "subtitle": "We understand the challenges faced by families and educational centers",
+      "cards": {
+        "movement": {
+          "title": "Children Moving Between Centers",
+          "description": "A lack of clear information causes children to move between centers multiple times. Between 25% and 40% of children transfer within the first two years due to a gap between expectations and reality. This significantly affects the child's psychological and social development."
+        },
+        "transfer": {
+          "title": "Transfer Rates",
+          "description": "25%-40% of children change centers in the first two years due to unmet expectations."
+        },
+        "confusion": {
+          "title": "Parents' Confusion",
+          "description": "Choosing the first educational center is a major decision for many families, often made amidst unclear information and incomplete reviews. Over 70% of families search online and fail to find enough information to decide for their child."
+        },
+        "challenges": {
+          "title": "Centers' Challenges",
+          "description": "On the other hand, distinguished centers struggle to reach suitable families, wasting substantial time on administrative work rather than focusing on the quality of care."
+        }
+      }
+    },
+    "bridge": {
+      "title": "The Bridge Connecting Families to Educational Centers",
+      "description": "We build a bridge of trust and transparency between families and centers through clear information, smart tools, and a professional digital experience. This empowers centers to provide the best possible care and gives families the confidence that their educational decision is based on true understanding and complete clarity.",
+      "items": {
+        "families": {
+          "title": "For Families",
+          "description": "Comprehensive and reliable information to make the right decision"
+        },
+        "platform": {
+          "title": "The Platform",
+          "description": "A bridge of trust and transparency between all parties"
+        },
+        "centers": {
+          "title": "For Centers",
+          "description": "Smart solutions and a focus on educational quality"
+        }
+      }
+    }
+  },
   "error": {
     "title": "Oops! Something went wrong.",
     "default-message": "We couldn't process your request.",
