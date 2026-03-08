@@ -1,10 +1,11 @@
 import { Metadata } from "next";
-import Headline from "@/components/general/Headline";
-import VisionMisson from "@/components/general/VisionMission";
-import Values from "@/components/general/Values";
-import WhyUs from "@/components/general/WhyUs";
-import SocialQR from "@/components/general/SocialQR";
-import OriginalPreviewVideo from "@/components/general/OriginalPreviewVideo";
+import Hero from "@/components/general/about/Hero";
+import Story from "@/components/general/about/Story";
+import Vision from "@/components/general/about/Vision";
+import Mission from "@/components/general/about/Mission";
+import StatsMap from "@/components/general/about/StatsMap";
+import WhyUs from "@/components/general/about/WhyUs";
+import Bridge from "@/components/general/about/Bridge";
 
 export const revalidate = 86400;
 
@@ -35,12 +36,13 @@ export default async function StoryPage({
 
   return (
     <div>
-      <Headline />
-      <OriginalPreviewVideo />
-      <VisionMisson />
-      <Values locale={locale} />
-      <WhyUs locale={locale} />
-      <SocialQR />
+      <Hero />
+      <Story />
+      <Vision />
+      <Mission />
+      <StatsMap />
+      <WhyUs />
+      <Bridge />
     </div>
   );
 }
