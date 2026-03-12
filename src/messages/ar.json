@@ -3123,6 +3123,7 @@
       "ageRange": "الفئة العمرية",
       "duration": "المدة",
       "price": "السعر",
+      "sessionCount": "{count, plural, zero {لا توجد جلسات} one {# جلسة} two {# جلستان} few {# جلسات} many {# جلسة} other {# جلسة}}",
       "units": {
         "hour": "ساعة",
         "hours": "ساعات",

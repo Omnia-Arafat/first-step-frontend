@@ -33,6 +33,7 @@ interface ReservationFormProps {
   nurseryName: string;
   selectedProgram: string;
   locale: "ar" | "en";
+  tNamespace?: "nurseryDetails" | "centerDetails";
   selectedBranch?: string;
   selectedPlan?: string;
   onClose?: () => void;
@@ -49,6 +50,7 @@ interface Plan {
   name: string;
   price: string;
   planId: number;
+  durationLabel?: string;
 }
 
 interface ApiPlan {
@@ -158,7 +160,7 @@ const PlanSelection = ({
         <p className="font-bold mb-6 text-primary text-base">{t("program")}</p>
         <ProgramCard
           title={p.name}
-          durationLabel={p.name}
+          durationLabel={p.durationLabel || p.name}
           price={parseFloat(p.price.replace(/[^\d.]/g, "") || "0")}
           isSelected={true}
         />
@@ -676,6 +678,7 @@ const ReservationForm = ({
   nurseryName,
   selectedProgram,
   locale,
+  tNamespace = "nurseryDetails",
   selectedBranch,
   selectedPlan,
   onClose,
@@ -684,6 +687,7 @@ const ReservationForm = ({
   adminOptions = [],
 }: ReservationFormProps) => {
   const t = useTranslations("reservationForm");
+  const tPlanCommon = useTranslations(`${tNamespace}.plans` as any);
   const router = useRouter();
   const searchParams = typeof window !== "undefined" ? useSearchParams() : null;
   const authUser = typeof window !== "undefined" ? useAuthUser() : null;
@@ -747,6 +751,16 @@ const ReservationForm = ({
   }, [realChildren, isChildrenLoading, childrenError, authUser, submitSuccess]);
 
   // -- Derived Data --
+  const getDurationLabel = (count: number, type: string) => {
+    if (tNamespace === "centerDetails") {
+      return tPlanCommon("sessionCount", { count });
+    }
+
+    const unitLabel =
+      tPlanCommon(`units.${count === 1 ? type : `${type}s`}`) || type;
+    return `${count} ${unitLabel}`;
+  };
+
   const defaultPlans: Plan[] = useMemo(() => {
     return [
       {
@@ -788,11 +802,12 @@ const ReservationForm = ({
         name: apiPlan.title,
         price: `${apiPlan.price_amount}`,
         planId: apiPlan.id,
+        durationLabel: getDurationLabel(apiPlan.count, apiPlan.enrollment_type),
       }));
     }
     if (!selectedBranch) return defaultPlans;
     return [];
-  }, [apiPlans, selectedBranch, defaultPlans, locale]);
+  }, [apiPlans, selectedBranch, defaultPlans, getDurationLabel]);
 
   const selectedPlanObj = useMemo(
     () =>
@@ -861,29 +876,17 @@ const ReservationForm = ({
     if (selectedApiPlan) {
       const { enrollment_type, count } = selectedApiPlan;
 
-      const getLabel = (c: number, type: string) => {
-        let unitKey = type;
-        if (locale === "ar") {
-          if (c >= 3 && c <= 10) {
-            unitKey = `${type}s`;
-          }
-        } else if (c > 1) {
-          unitKey = `${type}s`;
-        }
-        return t(`units.${unitKey as any}`);
-      };
-
       switch (enrollment_type) {
         case "hour":
           setFromTime("08:00");
-          setToTime("16:00");
+          setToTime(getDurationLabel(count, enrollment_type));
           break;
         case "day":
         case "week":
         case "month":
         case "year":
           setFromTime("09:00");
-          setToTime(`${count} ${getLabel(count, enrollment_type)}`);
+          setToTime(getDurationLabel(count, enrollment_type));
           break;
         default:
           setFromTime("");
@@ -893,7 +896,7 @@ const ReservationForm = ({
       setFromTime("");
       setToTime("");
     }
-  }, [selectedPlanId, selectedApiPlan, locale, t]);
+  }, [selectedPlanId, selectedApiPlan, getDurationLabel]);
 
   // Restore Auth after success redirect
   useEffect(() => {

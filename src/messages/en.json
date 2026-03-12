@@ -3123,6 +3123,7 @@
       "ageRange": "Age Range",
       "duration": "Duration",
       "price": "Price",
+      "sessionCount": "{count, plural, one {# session} other {# sessions}}",
       "units": {
         "hour": "Hour",
         "hours": "Hours",
