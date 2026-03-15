@@ -2673,8 +2673,28 @@
   },
   "HomePage": {
     "Features": {
-      "title": "First Step Features",
+      "title": "What First Step Offers",
       "comingSoon": "Coming Soon",
+      "centersTitle": "For Centers & Nurseries",
+      "parentsTitle": "For Parents",
+      "centersButton": "Join Now",
+      "parentsButton": "Find a Center",
+      "centerFeatures": [
+        "Manage child data, organize activities, update content",
+        "Digital presence in front of thousands of families",
+        "Comprehensive professional profile with all center details",
+        "Registration, payments, bookings, and daily reports",
+        "Dashboard for statistics, performance, and engagement growth",
+        "Educational and consultative support to improve quality"
+      ],
+      "parentFeatures": [
+        "Precise search by location, languages, and needs to find the best options",
+        "A profile for each center: photos, programs, and working hours",
+        "Experiences and reviews from mothers and fathers who tried before",
+        "Performance reports, activities, and daily records for the child",
+        "Educational courses that bring you closer to your children",
+        "Communicate with the center and get attendance notifications"
+      ],
       "childManagement": {
         "title": "Child File Management and Communication with Parents",
         "description": "Integrated database for child and parent files with the ability to send daily reports on the child's status within the nursery."
@@ -2798,6 +2818,37 @@
       "title": "Download the First Step App Now",
       "description": "Because you are not just choosing a nursery or educational center, you are building your child's future",
       "download": "Now available on"
+    },
+    "AppsSection": {
+      "title": "Download Our Apps",
+      "available": "Now available on",
+      "apps": [
+        {
+          "title": "Parents App"
+        },
+        {
+          "title": "Centers & Nurseries App"
+        },
+        {
+          "title": "Attendance Registration App"
+        }
+      ]
+    },
+    "NurseriesPreview": {
+      "title": "Book for Your Child",
+      "viewAll": "View All"
+    },
+    "PartnersCarousel": {
+      "title": "Partners of Success"
+    },
+    "VisionStats": {
+      "title": "Our Future Vision",
+      "stats": [
+        { "value": "6M+", "label": "Value of Achievements on Platform" },
+        { "value": "70,000+", "label": "Children in their First Journey" },
+        { "value": "1500+", "label": "Centers Across the Kingdom" },
+        { "value": "9", "label": "Electronic Products" }
+      ]
     }
   },
   "nurseryDetails": {
