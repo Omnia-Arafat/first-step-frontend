@@ -1045,7 +1045,11 @@ const ReservationForm = ({
         enrollmentPayload.day_string = bookingDate;
         enrollmentPayload.starting_time = fromTime || "09:00";
       } else if (bookingDate) {
-        enrollmentPayload.starting_date = bookingDate;
+        if (tNamespace === "centerDetails") {
+          enrollmentPayload.day_string = bookingDate;
+        } else {
+          enrollmentPayload.starting_date = bookingDate;
+        }
       }
 
       console.log("[ReservationForm] Enrollment payload:", enrollmentPayload);
