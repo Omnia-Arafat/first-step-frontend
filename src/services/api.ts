@@ -10,6 +10,7 @@ import {
   ParentRegisterPayload,
   Service,
   Value,
+  EstablishmentLogo,
   EstablishmentResponse,
   PortfolioResponse,
   ParentRegisterPayloadv2,
@@ -38,6 +39,7 @@ const isSubscriptionAllowed = (url: string): boolean => {
     "/common-question",
     "/our-value-keys",
     "/services",
+    "/logos",
     "/contact-us",
     "/subscripe",
     "/terms-and-condition",
@@ -369,6 +371,36 @@ export const websiteService = {
 
       const data = await res.json();
       return data.data as Service[];
+    } catch (error) {
+      throw ApiErrorHandler.handle(error);
+    }
+  },
+
+  getLogos: async (locale: string): Promise<EstablishmentLogo[]> => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/logos`, {
+        headers: {
+          "Content-Type": "application/json",
+          lang: locale,
+          "X-Authorization": process.env.NEXT_PUBLIC_X_AUTHORIZATION || "",
+          "X-Authorization-Secret":
+            process.env.NEXT_PUBLIC_X_AUTHORIZATION_SECRET || "",
+        },
+        next: {
+          revalidate: 86400,
+        },
+      });
+
+      if (!res.ok) {
+        throw {
+          message: "Failed to fetch logos",
+          errors: {},
+          status: res.status,
+        };
+      }
+
+      const data = await res.json();
+      return (data.logos || []) as EstablishmentLogo[];
     } catch (error) {
       throw ApiErrorHandler.handle(error);
     }
