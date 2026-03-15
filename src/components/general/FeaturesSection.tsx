@@ -58,7 +58,7 @@ const FeaturesSection = () => {
           </div>
           <div className="flex justify-center mt-8">
             <Link
-              href="/subscription"
+              href="/sign-up"
               className="inline-flex items-center justify-center text-white font-semibold"
               style={{
                 background: GRADIENT,
