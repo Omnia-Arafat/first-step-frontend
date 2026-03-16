@@ -25,6 +25,10 @@
         "title": "Consultations",
         "path": "/consultations"
       },
+      "courses": {
+        "title": "Courses",
+        "path": "/courses"
+      },
       "blog": {
         "title": "Blog",
         "path": "/blog"
@@ -121,6 +125,10 @@
       "help": {
         "title": "Help",
         "path": "/help"
+      },
+      "courses": {
+        "title": "Courses",
+        "path": "/courses"
       },
       "privacy-policy": {
         "title": "Privacy",
@@ -3772,5 +3780,47 @@
         }
       ]
     }
+  },
+  "courses": {
+    "pageTitle": "Our Courses",
+    "pageSubtitle": "Explore our online courses and enroll today",
+    "viewDetails": "View Details",
+    "bookNow": "Book Now",
+    "descriptionTitle": "Course Description",
+    "goalTitle": "Course Goal",
+    "timelineTitle": "Course Content & Timeline",
+    "requirementsTitle": "Course Requirements",
+    "durationTitle": "Course Duration",
+    "priceTitle": "Price",
+    "registerNow": "Register Now",
+    "contactTitle": "Contact Information",
+    "bookingTitle": "Book This Course",
+    "bookingSubtitle": "Fill in the form below to reserve your spot",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email address",
+      "childrenNames": "Children Names",
+      "childNamePlaceholder": "Enter child's name",
+      "addChild": "Add Another Child",
+      "removeChild": "Remove",
+      "submit": "Submit Booking",
+      "submitting": "Submitting...",
+      "cancel": "Cancel",
+      "success": "Booking submitted successfully! We will contact you soon.",
+      "error": "An error occurred. Please try again.",
+      "errors": {
+        "required": "This field is required",
+        "invalidEmail": "Invalid email address",
+        "invalidPhone": "Invalid phone number",
+        "minChildren": "Please add at least one child name"
+      }
+    },
+    "noCourses": "No courses available at the moment.",
+    "courseNotFound": "Course not found.",
+    "backToCourses": "Back to Courses"
   }
 }

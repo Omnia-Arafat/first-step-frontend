@@ -25,6 +25,10 @@
         "title": "الاستشارات",
         "path": "/consultations"
       },
+      "courses": {
+        "title": "الدورات",
+        "path": "/courses"
+      },
       "blog": {
         "title": "المدونة",
         "path": "/blog"
@@ -118,6 +122,10 @@
       "help": {
         "title": "المساعدة",
         "path": "/help"
+      },
+      "courses": {
+        "title": "الدورات",
+        "path": "/courses"
       },
       "privacy-policy": {
         "title": "الخصوصية",
@@ -3787,5 +3795,47 @@
         }
       ]
     }
+  },
+  "courses": {
+    "pageTitle": "دوراتنا",
+    "pageSubtitle": "استكشف دوراتنا عبر الإنترنت وسجّل اليوم",
+    "viewDetails": "عرض التفاصيل",
+    "bookNow": "احجز الآن",
+    "descriptionTitle": "وصف الدورة",
+    "goalTitle": "هدف الدورة",
+    "timelineTitle": "محتوى الدورة والجدول الزمني",
+    "requirementsTitle": "متطلبات الدورة",
+    "durationTitle": "مدة الدورة",
+    "priceTitle": "السعر",
+    "registerNow": "سجّل الآن",
+    "contactTitle": "معلومات التواصل",
+    "bookingTitle": "احجز هذه الدورة",
+    "bookingSubtitle": "املأ النموذج أدناه لحجز مقعدك",
+    "form": {
+      "name": "الاسم الكامل",
+      "namePlaceholder": "أدخل اسمك الكامل",
+      "phone": "رقم الهاتف",
+      "phonePlaceholder": "أدخل رقم هاتفك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "childrenNames": "أسماء الأطفال",
+      "childNamePlaceholder": "أدخل اسم الطفل",
+      "addChild": "إضافة طفل آخر",
+      "removeChild": "حذف",
+      "submit": "إرسال الحجز",
+      "submitting": "جاري الإرسال...",
+      "cancel": "إلغاء",
+      "success": "تم إرسال الحجز بنجاح! سنتواصل معك قريباً.",
+      "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "errors": {
+        "required": "هذا الحقل مطلوب",
+        "invalidEmail": "البريد الإلكتروني غير صالح",
+        "invalidPhone": "رقم الهاتف غير صالح",
+        "minChildren": "يرجى إضافة اسم طفل واحد على الأقل"
+      }
+    },
+    "noCourses": "لا توجد دورات متاحة حالياً.",
+    "courseNotFound": "الدورة غير موجودة.",
+    "backToCourses": "العودة إلى الدورات"
   }
 }
