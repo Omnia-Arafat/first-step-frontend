@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import {
   ArrowLeft,
   ArrowRight,
+  ChevronDown,
   Clock,
   Mail,
   MapPin,
@@ -74,7 +75,7 @@ export default function CourseDetailClient({
 
       {/* Course Header */}
       <div className="container mx-auto px-4 py-8">
-        <div className="relative w-full h-64 md:h-80 lg:h-96 rounded-2xl overflow-hidden bg-primary-blue-50 mb-8">
+        <div className="relative w-full h-72 md:h-[22rem] lg:h-[28rem] rounded-2xl overflow-hidden bg-primary-blue-50">
           <Image
             src={course.image}
             alt={course.name[locale]}
@@ -86,32 +87,33 @@ export default function CourseDetailClient({
             }}
           />
           <div className="absolute inset-0 bg-linear-to-t from-primary-blue/90 via-primary-blue/40 to-transparent" />
-        </div>
 
-        {/* Course name + CTA row */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 -mt-4">
-          <div>
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-primary-blue mb-3">
-              {course.name[locale]}
-            </h1>
-            {/* Duration & Price badges */}
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 bg-primary-green-50 text-primary-green-700 text-sm font-medium px-4 py-1.5 rounded-full">
-                <Clock className="w-4 h-4" />
-                {course.duration[locale].split("\n")[0]}
-              </span>
-              <span className="inline-flex items-center gap-1.5 bg-primary-blue-50 text-primary-blue text-sm font-medium px-4 py-1.5 rounded-full">
-                {course.price[locale]}
-              </span>
+          {/* Overlay: name, badges & CTA */}
+          <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+              <div>
+                <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 drop-shadow-md">
+                  {course.name[locale]}
+                </h1>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-sm font-medium px-4 py-1.5 rounded-full border border-white/30">
+                    <Clock className="w-4 h-4" />
+                    {course.duration[locale].split("\n")[0]}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-sm text-white text-sm font-medium px-4 py-1.5 rounded-full border border-white/30">
+                    {course.price[locale]}
+                  </span>
+                </div>
+              </div>
+              <Button
+                asChild
+                size="sm"
+                className="blue-gradient shrink-0 text-base px-8 shadow-lg"
+              >
+                <a href="#booking">{t("registerNow")}</a>
+              </Button>
             </div>
           </div>
-          <Button
-            asChild
-            size="sm"
-            className="blue-gradient shrink-0 md:mt-2 text-base px-8"
-          >
-            <a href="#booking">{t("registerNow")}</a>
-          </Button>
         </div>
       </div>
 
@@ -143,42 +145,14 @@ export default function CourseDetailClient({
           icon={<ListOrdered className="w-6 h-6" />}
           title={t("timelineTitle")}
         >
-          <div className="space-y-4">
+          <div className="max-h-[480px] overflow-y-auto space-y-3 pe-1">
             {course.timeline[locale].map((item, index) => (
-              <div
+              <TimelineItem
                 key={index}
-                className="flex gap-4 items-start group"
-              >
-                {/* Step number */}
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary-blue text-white flex items-center justify-center font-bold text-lg">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-
-                {/* Content */}
-                <div className="flex-1 bg-white rounded-xl border border-gray-200 p-4 group-hover:border-primary-blue-200 transition-colors">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1">
-                    <h4 className="font-bold text-primary-blue">
-                      {item.title}
-                    </h4>
-                    <span className="text-xs font-medium text-secondary-mint-green bg-primary-green-50 px-3 py-1 rounded-full w-fit">
-                      {item.day}
-                    </span>
-                  </div>
-                  {item.topics && item.topics.length > 0 && (
-                    <ul className="mt-2 space-y-1">
-                      {item.topics.map((topic, topicIndex) => (
-                        <li
-                          key={topicIndex}
-                          className="text-sm text-gray flex items-start gap-2"
-                        >
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-secondary-mint-green flex-shrink-0" />
-                          {topic}
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </div>
+                item={item}
+                index={index}
+                colorIndex={index % 2}
+              />
             ))}
           </div>
         </Section>
@@ -273,6 +247,83 @@ function Section({
       </div>
       {children}
     </section>
+  );
+}
+
+// --- Timeline accordion item ---
+const TIMELINE_COLORS = [
+  { bg: "bg-primary-blue-50", accent: "bg-primary-blue", text: "text-primary-blue" },
+  { bg: "bg-primary-green-50", accent: "bg-secondary-mint-green", text: "text-secondary-mint-green" },
+] as const;
+
+function TimelineItem({
+  item,
+  index,
+  colorIndex,
+}: {
+  item: { day: string; title: string; topics?: string[] };
+  index: number;
+  colorIndex: number;
+}) {
+  const [open, setOpen] = useState(false);
+  const color = TIMELINE_COLORS[colorIndex];
+
+  return (
+    <div
+      className={cn(
+        "rounded-2xl transition-all duration-300",
+        color.bg,
+        open && "shadow-md"
+      )}
+    >
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-3 p-4 text-start"
+      >
+        <div
+          className={cn(
+            "flex-shrink-0 w-10 h-10 rounded-xl text-white flex items-center justify-center font-bold text-sm",
+            color.accent
+          )}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </div>
+        <div className="flex-1 min-w-0">
+          <span className={cn("text-xs font-semibold", color.text)}>
+            {item.day}
+          </span>
+          <h4 className="font-bold text-gray-800 truncate">{item.title}</h4>
+        </div>
+        <ChevronDown
+          className={cn(
+            "w-5 h-5 text-gray-400 transition-transform duration-300 flex-shrink-0",
+            open && "rotate-180"
+          )}
+        />
+      </button>
+
+      {open && item.topics && item.topics.length > 0 && (
+        <div className="px-4 pb-4">
+          <ul className="ms-[52px] space-y-1.5">
+            {item.topics.map((topic, ti) => (
+              <li
+                key={ti}
+                className="text-sm text-gray-600 flex items-start gap-2"
+              >
+                <span
+                  className={cn(
+                    "mt-1.5 w-2 h-2 rounded-full flex-shrink-0",
+                    color.accent
+                  )}
+                />
+                {topic}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
   );
 }
 
