@@ -579,7 +579,6 @@
       }
     },
     "center-signup": {
-      "title": "Create Center/Nursery Account",
       "1": {
         "title": "Basic Information",
         "form": {
@@ -728,7 +727,8 @@
             "placeholder": "Enter any additional comments"
           }
         }
-      }
+      },
+      "title": "Create Center/Nursery Account"
     },
     "forgot-password": {
       "title": "Reset Password",
@@ -1113,7 +1113,8 @@
         "advertisement": "Advertisement",
         "blog": "Blog",
         "notifications": "Notifications",
-        "chat": "Chat"
+        "chat": "Chat",
+        "courses": "Educational Courses"
       },
       "center": {
         "home": "Home",
@@ -2652,6 +2653,226 @@
         "sending": "Sending...",
         "noChildSelected": "Please select at least one child"
       }
+    },
+    "admin-courses": {
+      "title": "Educational Courses",
+      "breadcrumb": {
+        "courses": "Educational Courses",
+        "new": "New Course",
+        "edit": "Edit"
+      },
+      "stats": {
+        "total": "Total Courses",
+        "published": "Published",
+        "draft": "Draft",
+        "totalViews": "Total Views"
+      },
+      "card": {
+        "published": "Published",
+        "draft": "Draft",
+        "ageRange": "Aged {from}-{to} years",
+        "views": "{count} views",
+        "lesson": "lesson",
+        "lessons": "lessons"
+      },
+      "listing": {
+        "addNew": "Add New Course",
+        "searchPlaceholder": "Search for a course...",
+        "filters": {
+          "status": "Status",
+          "published": "Published",
+          "draft": "Draft",
+          "ageGroup": "Age Group",
+          "ageGroup_3_7": "3-7 years",
+          "ageGroup_7_12": "7-12 years",
+          "ageGroup_12_18": "12-18 years",
+          "sortBy": "Sort By",
+          "newest": "Newest",
+          "oldest": "Oldest",
+          "title": "Title"
+        },
+        "empty": {
+          "title": "No courses yet",
+          "description": "Start by adding your first educational course now to help parents raise better children",
+          "cta": "Add First Course"
+        },
+        "error": "Error loading courses",
+        "delete": {
+          "title": "Delete Course",
+          "description": "Are you sure you want to delete this course? This action cannot be undone.",
+          "success": "Course deleted successfully",
+          "error": "Error deleting course"
+        }
+      },
+      "detail": {
+        "backButton": "Back",
+        "pageTitle": "Course Details",
+        "actions": {
+          "delete": "Delete Course",
+          "edit": "Edit Course",
+          "publish": "Publish Course",
+          "unpublish": "Unpublish"
+        },
+        "stats": {
+          "completedUsers": "Completed Beneficiaries",
+          "completedUsersNote": "Finished the entire course",
+          "completionRate": "Completion Rate",
+          "completionRateNote": "Of all participants",
+          "avgScore": "Avg. Score",
+          "avgScoreNote": "Average correct answers",
+          "lastModified": "Last Modified"
+        },
+        "content": {
+          "sectionLabel": "Section {n}",
+          "pointsCount": "{count} points",
+          "questionsCount": "{count} quiz questions",
+          "sectionTitle": "Section Title & Points",
+          "questionLabel": "Question {n}",
+          "questionText": "Question Text *"
+        },
+        "status": {
+          "published": "Published",
+          "draft": "Draft",
+          "readings": "lessons",
+          "ageRange": "Aged {from}-{to} years",
+          "views": "{count} views"
+        },
+        "dialogs": {
+          "deleteTitle": "Delete Course",
+          "deleteDescription": "Are you sure you want to delete this course? This action cannot be undone.",
+          "unpublishTitle": "Unpublish Course",
+          "unpublishDescription": "Are you sure you want to unpublish this course? It will not be visible to users."
+        },
+        "toasts": {
+          "deleteSuccess": "Course deleted successfully",
+          "deleteError": "Error deleting course",
+          "publishSuccess": "Course published successfully",
+          "unpublishSuccess": "Course unpublished",
+          "publishError": "Error changing publish status",
+          "loadError": "Error loading course details"
+        }
+      },
+      "form": {
+        "pageTitle": "Add New Course",
+        "steps": {
+          "step1Label": "Step 1",
+          "step1Title": "Card Info",
+          "step2Label": "Step 2",
+          "step2Title": "Content & Quiz",
+          "tabStep1": "1 - Card Info",
+          "tabStep2": "2 - Content & Quiz",
+          "stepCounter": "Step {step} of 2"
+        },
+        "cover": {
+          "title": "Cover Image",
+          "subtitle": "The image that will appear on the card",
+          "upload": "Upload Image",
+          "uploadHint": "Max 5MB – PNG, JPG, WEBP",
+          "sizeError": "Image size must not exceed 5MB"
+        },
+        "fields": {
+          "cardDetailsTitle": "Card Details",
+          "cardDetailsSubtitle": "Basic information for the course",
+          "titleLabel": "Course Title *",
+          "titlePlaceholder": "e.g., Programming for Beginners",
+          "descLabel": "Short Description *",
+          "descPlaceholder": "Write a brief description of the course...",
+          "ageRangeLabel": "Age Group *",
+          "ageUnit": "years",
+          "readingTimeLabel": "Reading Time (mins) *"
+        },
+        "content": {
+          "mainTitle": "Main Content",
+          "mainSubtitle": "Introductory text for the course",
+          "mainPlaceholder": "Content text *"
+        },
+        "sections": {
+          "sectionLabel": "Section {n}",
+          "saved": "✓ Saved",
+          "failed": "✗ Failed",
+          "saving": "Saving...",
+          "titleAndPoints": "Section Title & Points",
+          "sectionTitleLabel": "Section Title *",
+          "sectionTitlePlaceholder": "Section Title",
+          "pointPlaceholder": "Point {n}",
+          "addPoint": "Add Point",
+          "addQuestion": "Add Question",
+          "addSection": "Add New Section",
+          "questionLabel": "Question {n}",
+          "questionPlaceholder": "Type question text here...",
+          "choicePlaceholder": "Choice {n}",
+          "typeMultiple": "Multiple Choice",
+          "typeFree": "Free Text",
+          "partialFailureTitle": "Some sections were not saved",
+          "partialFailureBody": "An error occurred while saving some sections. Saved sections are marked with ✓. You can retry them now or edit them later."
+        },
+        "buttons": {
+          "next": "Next",
+          "save": "Save Course",
+          "saving": "Saving...",
+          "cancel": "Cancel",
+          "back": "Back"
+        },
+        "toasts": {
+          "requiredFields": "Please fill out all required fields",
+          "createSuccess": "Course created – complete the content & sections",
+          "createError": "Error creating course",
+          "saveSuccess": "All sections saved successfully",
+          "saveError": "Failed to save sections. You can edit the course later from details page.",
+          "contentError": "Error saving content"
+        }
+      },
+      "edit": {
+        "pageTitle": "Edit Course",
+        "viewCourse": "View Course",
+        "allCourses": "All Courses",
+        "backToDetail": "Back to Details",
+        "cardSection": {
+          "title": "Card Info",
+          "subtitle": "Title, Image, and Description",
+          "saveButton": "Save Changes",
+          "coverLabel": "Cover Image",
+          "uploadHint": "Click to upload new image",
+          "uploadSubHint": "PNG, JPG, WEBP – Max 5MB"
+        },
+        "sections": {
+          "sectionLabel": "Section {n}",
+          "newBadge": "New – Not saved yet",
+          "addSection": "Add New Section",
+          "addButton": "Save Section",
+          "updateButton": "Update Section",
+          "pointsLabel": "Points",
+          "questionsLabel": "Questions",
+          "addPoint": "Add Point",
+          "addQuestion": "Add Question",
+          "sectionTitleLabel": "Section Title *",
+          "questionLabel": "Question {n}"
+        },
+        "dialogs": {
+          "deleteSectionTitle": "Delete Section",
+          "deleteSectionDescription": "Are you sure you want to delete this section and all its contents? This cannot be undone.",
+          "deletePointTitle": "Delete Point",
+          "deletePointDescription": "Do you want to delete this point?",
+          "deleteQuestionTitle": "Delete Question",
+          "deleteQuestionDescription": "Do you want to delete this question and its choices?"
+        },
+        "toasts": {
+          "cardSuccess": "Course information updated",
+          "cardError": "Failed to update course information",
+          "cardTitleRequired": "Course title is required",
+          "sectionAddSuccess": "Section added successfully",
+          "sectionUpdateSuccess": "Section updated successfully",
+          "sectionError": "Failed to update section",
+          "sectionTitleRequired": "Section title is required",
+          "deleteSection": "Section deleted",
+          "deleteSectionError": "Failed to delete section",
+          "deletePoint": "Point deleted",
+          "deletePointError": "Failed to delete point",
+          "deleteQuestion": "Question deleted",
+          "deleteQuestionError": "Failed to delete question",
+          "imageSizeError": "Image size must not exceed 5MB"
+        }
+      }
     }
   },
   "common": {
@@ -2844,10 +3065,22 @@
     "VisionStats": {
       "title": "Our Future Vision",
       "stats": [
-        { "value": "6M+", "label": "Value of Achievements on Platform" },
-        { "value": "70,000+", "label": "Children in their First Journey" },
-        { "value": "1500+", "label": "Centers Across the Kingdom" },
-        { "value": "9", "label": "Electronic Products" }
+        {
+          "value": "6M+",
+          "label": "Value of Achievements on Platform"
+        },
+        {
+          "value": "70,000+",
+          "label": "Children in their First Journey"
+        },
+        {
+          "value": "1500+",
+          "label": "Centers Across the Kingdom"
+        },
+        {
+          "value": "9",
+          "label": "Electronic Products"
+        }
       ]
     }
   },
@@ -3547,7 +3780,227 @@
     },
     "forLimitedTime": "For Limited Time",
     "location": "Location",
-    "noImage": "No Image"
+    "noImage": "No Image",
+    "admin-courses": {
+      "title": "Educational Courses",
+      "breadcrumb": {
+        "courses": "Educational Courses",
+        "new": "New Course",
+        "edit": "Edit"
+      },
+      "stats": {
+        "total": "Total Courses",
+        "published": "Published",
+        "draft": "Draft",
+        "totalViews": "Total Views"
+      },
+      "card": {
+        "published": "Published",
+        "draft": "Draft",
+        "ageRange": "Aged {from}-{to} years",
+        "views": "{count} views",
+        "lesson": "lesson",
+        "lessons": "lessons"
+      },
+      "listing": {
+        "addNew": "Add New Course",
+        "searchPlaceholder": "Search for a course...",
+        "filters": {
+          "status": "Status",
+          "published": "Published",
+          "draft": "Draft",
+          "ageGroup": "Age Group",
+          "ageGroup_3_7": "3-7 years",
+          "ageGroup_7_12": "7-12 years",
+          "ageGroup_12_18": "12-18 years",
+          "sortBy": "Sort By",
+          "newest": "Newest",
+          "oldest": "Oldest",
+          "title": "Title"
+        },
+        "empty": {
+          "title": "No courses yet",
+          "description": "Start by adding your first educational course now to help parents raise better children",
+          "cta": "Add First Course"
+        },
+        "error": "Error loading courses",
+        "delete": {
+          "title": "Delete Course",
+          "description": "Are you sure you want to delete this course? This action cannot be undone.",
+          "success": "Course deleted successfully",
+          "error": "Error deleting course"
+        }
+      },
+      "detail": {
+        "backButton": "Back",
+        "pageTitle": "Course Details",
+        "actions": {
+          "delete": "Delete Course",
+          "edit": "Edit Course",
+          "publish": "Publish Course",
+          "unpublish": "Unpublish"
+        },
+        "stats": {
+          "completedUsers": "Completed Beneficiaries",
+          "completedUsersNote": "Finished the entire course",
+          "completionRate": "Completion Rate",
+          "completionRateNote": "Of all participants",
+          "avgScore": "Avg. Score",
+          "avgScoreNote": "Average correct answers",
+          "lastModified": "Last Modified"
+        },
+        "content": {
+          "sectionLabel": "Section {n}",
+          "pointsCount": "{count} points",
+          "questionsCount": "{count} quiz questions",
+          "sectionTitle": "Section Title & Points",
+          "questionLabel": "Question {n}",
+          "questionText": "Question Text *"
+        },
+        "status": {
+          "published": "Published",
+          "draft": "Draft",
+          "readings": "lessons",
+          "ageRange": "Aged {from}-{to} years",
+          "views": "{count} views"
+        },
+        "dialogs": {
+          "deleteTitle": "Delete Course",
+          "deleteDescription": "Are you sure you want to delete this course? This action cannot be undone.",
+          "unpublishTitle": "Unpublish Course",
+          "unpublishDescription": "Are you sure you want to unpublish this course? It will not be visible to users."
+        },
+        "toasts": {
+          "deleteSuccess": "Course deleted successfully",
+          "deleteError": "Error deleting course",
+          "publishSuccess": "Course published successfully",
+          "unpublishSuccess": "Course unpublished",
+          "publishError": "Error changing publish status",
+          "loadError": "Error loading course details"
+        }
+      },
+      "form": {
+        "pageTitle": "Add New Course",
+        "steps": {
+          "step1Label": "Step 1",
+          "step1Title": "Card Info",
+          "step2Label": "Step 2",
+          "step2Title": "Content & Quiz",
+          "tabStep1": "1 - Card Info",
+          "tabStep2": "2 - Content & Quiz",
+          "stepCounter": "Step {step} of 2"
+        },
+        "cover": {
+          "title": "Cover Image",
+          "subtitle": "The image that will appear on the card",
+          "upload": "Upload Image",
+          "uploadHint": "Max 5MB – PNG, JPG, WEBP",
+          "sizeError": "Image size must not exceed 5MB"
+        },
+        "fields": {
+          "cardDetailsTitle": "Card Details",
+          "cardDetailsSubtitle": "Basic information for the course",
+          "titleLabel": "Course Title *",
+          "titlePlaceholder": "e.g., Programming for Beginners",
+          "descLabel": "Short Description *",
+          "descPlaceholder": "Write a brief description of the course...",
+          "ageRangeLabel": "Age Group *",
+          "ageUnit": "years",
+          "readingTimeLabel": "Reading Time (mins) *"
+        },
+        "content": {
+          "mainTitle": "Main Content",
+          "mainSubtitle": "Introductory text for the course",
+          "mainPlaceholder": "Content text *"
+        },
+        "sections": {
+          "sectionLabel": "Section {n}",
+          "saved": "✓ Saved",
+          "failed": "✗ Failed",
+          "saving": "Saving...",
+          "titleAndPoints": "Section Title & Points",
+          "sectionTitleLabel": "Section Title *",
+          "sectionTitlePlaceholder": "Section Title",
+          "pointPlaceholder": "Point {n}",
+          "addPoint": "Add Point",
+          "addQuestion": "Add Question",
+          "addSection": "Add New Section",
+          "questionLabel": "Question {n}",
+          "questionPlaceholder": "Type question text here...",
+          "choicePlaceholder": "Choice {n}",
+          "typeMultiple": "Multiple Choice",
+          "typeFree": "Free Text",
+          "partialFailureTitle": "Some sections were not saved",
+          "partialFailureBody": "An error occurred while saving some sections. Saved sections are marked with ✓. You can retry them now or edit them later."
+        },
+        "buttons": {
+          "next": "Next",
+          "save": "Save Course",
+          "saving": "Saving...",
+          "cancel": "Cancel",
+          "back": "Back"
+        },
+        "toasts": {
+          "requiredFields": "Please fill out all required fields",
+          "createSuccess": "Course created – complete the content & sections",
+          "createError": "Error creating course",
+          "saveSuccess": "All sections saved successfully",
+          "saveError": "Failed to save sections. You can edit the course later from details page.",
+          "contentError": "Error saving content"
+        }
+      },
+      "edit": {
+        "pageTitle": "Edit Course",
+        "viewCourse": "View Course",
+        "allCourses": "All Courses",
+        "backToDetail": "Back to Details",
+        "cardSection": {
+          "title": "Card Info",
+          "subtitle": "Title, Image, and Description",
+          "saveButton": "Save Changes",
+          "coverLabel": "Cover Image",
+          "uploadHint": "Click to upload new image",
+          "uploadSubHint": "PNG, JPG, WEBP – Max 5MB"
+        },
+        "sections": {
+          "sectionLabel": "Section {n}",
+          "newBadge": "New – Not saved yet",
+          "addSection": "Add New Section",
+          "addButton": "Save Section",
+          "updateButton": "Update Section",
+          "pointsLabel": "Points",
+          "questionsLabel": "Questions",
+          "addPoint": "Add Point",
+          "addQuestion": "Add Question",
+          "sectionTitleLabel": "Section Title *",
+          "questionLabel": "Question {n}"
+        },
+        "dialogs": {
+          "deleteSectionTitle": "Delete Section",
+          "deleteSectionDescription": "Are you sure you want to delete this section and all its contents? This cannot be undone.",
+          "deletePointTitle": "Delete Point",
+          "deletePointDescription": "Do you want to delete this point?",
+          "deleteQuestionTitle": "Delete Question",
+          "deleteQuestionDescription": "Do you want to delete this question and its choices?"
+        },
+        "toasts": {
+          "cardSuccess": "Course information updated",
+          "cardError": "Failed to update course information",
+          "cardTitleRequired": "Course title is required",
+          "sectionAddSuccess": "Section added successfully",
+          "sectionUpdateSuccess": "Section updated successfully",
+          "sectionError": "Failed to update section",
+          "sectionTitleRequired": "Section title is required",
+          "deleteSection": "Section deleted",
+          "deleteSectionError": "Failed to delete section",
+          "deletePoint": "Point deleted",
+          "deletePointError": "Failed to delete point",
+          "deleteQuestion": "Question deleted",
+          "deleteQuestionError": "Failed to delete question",
+          "imageSizeError": "Image size must not exceed 5MB"
+        }
+      }
+    }
   },
   "wallet": {
     "title": "My Wallet",
