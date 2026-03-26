@@ -1,11 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { quizService, type Quiz, type Partition } from "@/services/quizService";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
@@ -98,16 +94,18 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
 
   const quiz: Quiz | null = data?.data || null;
   const stats = statsData?.data || { total_attempts: 0, completed_count: 0 };
-  
-  const completionRate = stats.total_attempts > 0 
-    ? Math.round((stats.completed_count / stats.total_attempts) * 100) 
-    : 0;
 
-  const avgScore = stats.average_score !== undefined
-    ? Math.round(Number(stats.average_score))
-    : stats.avg_score !== undefined
-      ? Math.round(Number(stats.avg_score))
+  const completionRate =
+    stats.total_attempts > 0
+      ? Math.round((stats.completed_count / stats.total_attempts) * 100)
       : 0;
+
+  const avgScore =
+    stats.average_score !== undefined
+      ? Math.round(Number(stats.average_score))
+      : stats.avg_score !== undefined
+        ? Math.round(Number(stats.avg_score))
+        : 0;
 
   const toggleSection = (sectionId: number) => {
     setExpandedSections((prev) => ({
@@ -263,7 +261,9 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
               {quiz.reading_time && (
                 <div className="flex items-center gap-1">
                   <BookOpen className="w-3.5 h-3.5" />
-                  <span>{quiz.reading_time} {t("status.readings")}</span>
+                  <span>
+                    {quiz.reading_time} {t("status.readings")}
+                  </span>
                 </div>
               )}
               {quiz.from && quiz.to && (
@@ -281,10 +281,10 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
                 </div>
               )}
             </div>
-            {quiz.created_at && (
+            {quiz.updated_at && (
               <div className="flex items-center gap-1 mt-2 text-xs text-white/60">
                 <Calendar className="w-3.5 h-3.5" />
-                <span>{formatDate(quiz.created_at)}</span>
+                <span>{formatDate(quiz.updated_at)}</span>
               </div>
             )}
           </div>
@@ -310,7 +310,9 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
             <BarChart3 className="w-5 h-5 text-emerald-500" />
           </div>
           <p className="text-xs text-gray-500">{t("stats.completionRate")}</p>
-          <p className="text-2xl font-bold text-emerald-600 mt-1">{completionRate}%</p>
+          <p className="text-2xl font-bold text-emerald-600 mt-1">
+            {completionRate}%
+          </p>
           <p className="text-[10px] text-gray-400 mt-0.5">
             {t("stats.completionRateNote")}
           </p>
@@ -331,7 +333,7 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
           </div>
           <p className="text-xs text-gray-500">{t("stats.lastModified")}</p>
           <p className="text-[10px] text-gray-400 mt-3">
-            {formatDate(quiz.created_at)}
+            {formatDate(quiz.updated_at)}
           </p>
         </div>
       </div>
@@ -363,10 +365,12 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
                   </div>
                   <div className="text-start">
                     <h3 className="font-bold text-gray-900">
-                      {t("content.sectionLabel", { n: index + 1 })}: {partition.name}
+                      {t("content.sectionLabel", { n: index + 1 })}:{" "}
+                      {partition.name}
                     </h3>
                     <p className="text-xs text-gray-400 mt-0.5">
-                      {t("content.pointsCount", { count: points.length })} - {t("content.questionsCount", { count: questions.length })}
+                      {t("content.pointsCount", { count: points.length })} -{" "}
+                      {t("content.questionsCount", { count: questions.length })}
                     </p>
                   </div>
                 </button>
@@ -484,8 +488,6 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
         isLoading={archiveMutation.isPending}
         variant="default"
       />
-
-
     </div>
   );
 };

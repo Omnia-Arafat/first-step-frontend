@@ -13,6 +13,7 @@ export interface Quiz {
   to: string;
   status?: string;
   created_at?: string;
+  updated_at?: string;
   views_count?: number;
   content?: QuizContent;
 }

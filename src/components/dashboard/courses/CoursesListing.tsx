@@ -16,6 +16,7 @@ import { toastSuccess, toastError } from "@/lib/toast";
 import Image from "next/image";
 
 type StatusFilter = "all" | "published" | "draft";
+type AgeGroupFilter = "" | "3-7" | "7-12" | "12-18";
 type SortOption = "newest" | "oldest" | "title";
 
 const CoursesListing = () => {
@@ -25,6 +26,7 @@ const CoursesListing = () => {
 
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [ageGroup, setAgeGroup] = useState<AgeGroupFilter>("");
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<Quiz | null>(null);
@@ -90,25 +92,34 @@ const CoursesListing = () => {
       result = result.filter((c: Quiz) => c.status !== "published");
     }
 
-    // Sort
+    // Age group filter — overlap: course range intersects the selected bucket
+    if (ageGroup === "3-7") {
+      result = result.filter((c: Quiz) => Number(c.from) <= 7 && Number(c.to) >= 3);
+    } else if (ageGroup === "7-12") {
+      result = result.filter((c: Quiz) => Number(c.from) <= 12 && Number(c.to) >= 7);
+    } else if (ageGroup === "12-18") {
+      result = result.filter((c: Quiz) => Number(c.from) <= 18 && Number(c.to) >= 12);
+    }
+
+    // Sort — API returns updated_at, not created_at
     if (sortBy === "newest") {
       result.sort(
         (a, b) =>
-          new Date(b.created_at || "").getTime() -
-          new Date(a.created_at || "").getTime(),
+          new Date(b.updated_at || b.created_at || "").getTime() -
+          new Date(a.updated_at || a.created_at || "").getTime(),
       );
     } else if (sortBy === "oldest") {
       result.sort(
         (a, b) =>
-          new Date(a.created_at || "").getTime() -
-          new Date(b.created_at || "").getTime(),
+          new Date(a.updated_at || a.created_at || "").getTime() -
+          new Date(b.updated_at || b.created_at || "").getTime(),
       );
     } else if (sortBy === "title") {
       result.sort((a, b) => (a.title || "").localeCompare(b.title || "", "ar"));
     }
 
     return result;
-  }, [courses, searchQuery, statusFilter, sortBy]);
+  }, [courses, searchQuery, statusFilter, ageGroup, sortBy]);
 
   if (error) {
     return (
@@ -171,11 +182,12 @@ const CoursesListing = () => {
             <ChevronDown className="absolute end-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
           </div>
 
-          {/* Age Group (visual placeholder – API doesn't have age group filter) */}
+          {/* Age Group */}
           <div className="relative">
             <select
+              value={ageGroup}
+              onChange={(e) => setAgeGroup(e.target.value as AgeGroupFilter)}
               className="w-full h-10 px-3 rounded-md border border-gray-200 bg-white text-sm text-start appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
-              defaultValue=""
             >
               <option value="">{t("filters.ageGroup")}</option>
               <option value="3-7">{t("filters.ageGroup_3_7")}</option>
@@ -192,7 +204,7 @@ const CoursesListing = () => {
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="w-full h-10 px-3 rounded-md border border-gray-200 bg-white text-sm text-start appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
             >
-              <option value="newest">{t("filters.sortBy")}</option>
+              <option value="" disabled>{t("filters.sortBy")}</option>
               <option value="newest">{t("filters.newest")}</option>
               <option value="oldest">{t("filters.oldest")}</option>
               <option value="title">{t("filters.title")}</option>
