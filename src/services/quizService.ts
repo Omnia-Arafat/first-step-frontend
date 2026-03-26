@@ -17,6 +17,12 @@ export interface Quiz {
   content?: QuizContent;
 }
 
+export interface QuizStats {
+  quiz_id: number;
+  total_attempts: number;
+  completed_count: number;
+}
+
 export interface QuizContent {
   id: number;
   description: string;
@@ -121,6 +127,17 @@ export const quizService = {
     }
   },
 
+  getCompletedCount: async (id: string | number) => {
+    try {
+      const response = await apiClient.get(
+        `/dashboard/quizzes/${id}/completed-count`,
+      );
+      return response.data;
+    } catch (error) {
+      throw ApiErrorHandler.handle(error);
+    }
+  },
+
   create: async (payload: CreateQuizPayload) => {
     try {
       const formData = new FormData();
@@ -187,10 +204,10 @@ export const quizService = {
     }
   },
 
-  unpublish: async (id: string | number) => {
+  archive: async (id: string | number) => {
     try {
       const response = await apiClient.patch(
-        `/dashboard/quizzes/${id}/publish`,
+        `/dashboard/quizzes/${id}/archive`,
       );
       return response.data;
     } catch (error) {
@@ -229,9 +246,7 @@ export const quizService = {
 
   deleteContent: async (id: string | number) => {
     try {
-      const response = await apiClient.delete(
-        `/dashboard/quiz-contents/${id}`,
-      );
+      const response = await apiClient.delete(`/dashboard/quiz-contents/${id}`);
       return response.data;
     } catch (error) {
       throw ApiErrorHandler.handle(error);
@@ -242,20 +257,14 @@ export const quizService = {
 
   createPartition: async (payload: CreatePartitionPayload) => {
     try {
-      const response = await apiClient.post(
-        "/dashboard/partitions",
-        payload,
-      );
+      const response = await apiClient.post("/dashboard/partitions", payload);
       return response.data;
     } catch (error) {
       throw ApiErrorHandler.handle(error);
     }
   },
 
-  updatePartition: async (
-    id: string | number,
-    payload: { name: string },
-  ) => {
+  updatePartition: async (id: string | number, payload: { name: string }) => {
     try {
       const response = await apiClient.post(
         `/dashboard/partitions/${id}`,
@@ -290,10 +299,7 @@ export const quizService = {
     }
   },
 
-  updatePoint: async (
-    id: string | number,
-    payload: { point: string },
-  ) => {
+  updatePoint: async (id: string | number, payload: { point: string }) => {
     try {
       const response = await apiClient.post(
         `/dashboard/partition-points/${id}`,
@@ -320,10 +326,7 @@ export const quizService = {
 
   createQuestion: async (payload: CreateQuestionPayload) => {
     try {
-      const response = await apiClient.post(
-        "/dashboard/questions",
-        payload,
-      );
+      const response = await apiClient.post("/dashboard/questions", payload);
       return response.data;
     } catch (error) {
       throw ApiErrorHandler.handle(error);

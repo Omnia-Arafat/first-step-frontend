@@ -2711,7 +2711,8 @@
           "delete": "Delete Course",
           "edit": "Edit Course",
           "publish": "Publish Course",
-          "unpublish": "Unpublish"
+          "unpublish": "Unpublish",
+          "archive": "Archive"
         },
         "stats": {
           "completedUsers": "Completed Beneficiaries",
@@ -2741,7 +2742,9 @@
           "deleteTitle": "Delete Course",
           "deleteDescription": "Are you sure you want to delete this course? This action cannot be undone.",
           "unpublishTitle": "Unpublish Course",
-          "unpublishDescription": "Are you sure you want to unpublish this course? It will not be visible to users."
+          "unpublishDescription": "Are you sure you want to unpublish this course? It will not be visible to users.",
+          "archiveTitle": "Archive Course",
+          "archiveDescription": "Are you sure you want to archive this course?"
         },
         "toasts": {
           "deleteSuccess": "Course deleted successfully",
@@ -2749,7 +2752,9 @@
           "publishSuccess": "Course published successfully",
           "unpublishSuccess": "Course unpublished",
           "publishError": "Error changing publish status",
-          "loadError": "Error loading course details"
+          "loadError": "Error loading course details",
+          "archiveSuccess": "Course archived successfully",
+          "archiveError": "Error archiving course"
         }
       },
       "form": {

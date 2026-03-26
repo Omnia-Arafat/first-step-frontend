@@ -11,10 +11,10 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/navigation";
 import {
   ArrowLeft,
+  Archive,
   Trash2,
   Edit,
   Eye,
-  EyeOff,
   Calendar,
   Clock,
   BookOpen,
@@ -42,7 +42,7 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
   const queryClient = useQueryClient();
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [unpublishDialogOpen, setUnpublishDialogOpen] = useState(false);
+  const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const [expandedSections, setExpandedSections] = useState<
     Record<number, boolean>
   >({});
@@ -50,6 +50,12 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["quiz", courseId],
     queryFn: () => quizService.getOne(courseId),
+    enabled: !!courseId,
+  });
+
+  const { data: statsData } = useQuery({
+    queryKey: ["quiz-stats", courseId],
+    queryFn: () => quizService.getCompletedCount(courseId),
     enabled: !!courseId,
   });
 
@@ -65,17 +71,25 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
     },
   });
 
+  const archiveMutation = useMutation({
+    mutationFn: () => quizService.archive(courseId),
+    onSuccess: () => {
+      toastSuccess(t("toasts.archiveSuccess"));
+      queryClient.invalidateQueries({ queryKey: ["quiz", courseId] });
+      queryClient.invalidateQueries({ queryKey: ["quizzes"] });
+      setArchiveDialogOpen(false);
+    },
+    onError: () => {
+      toastError(t("toasts.archiveError"));
+    },
+  });
+
   const publishMutation = useMutation({
     mutationFn: () => quizService.publish(courseId),
     onSuccess: () => {
-      toastSuccess(
-        quiz?.status === "published"
-          ? t("toasts.unpublishSuccess")
-          : t("toasts.publishSuccess"),
-      );
+      toastSuccess(t("toasts.publishSuccess"));
       queryClient.invalidateQueries({ queryKey: ["quiz", courseId] });
       queryClient.invalidateQueries({ queryKey: ["quizzes"] });
-      setUnpublishDialogOpen(false);
     },
     onError: () => {
       toastError(t("toasts.publishError"));
@@ -83,6 +97,17 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
   });
 
   const quiz: Quiz | null = data?.data || null;
+  const stats = statsData?.data || { total_attempts: 0, completed_count: 0 };
+  
+  const completionRate = stats.total_attempts > 0 
+    ? Math.round((stats.completed_count / stats.total_attempts) * 100) 
+    : 0;
+
+  const avgScore = stats.average_score !== undefined
+    ? Math.round(Number(stats.average_score))
+    : stats.avg_score !== undefined
+      ? Math.round(Number(stats.avg_score))
+      : 0;
 
   const toggleSection = (sectionId: number) => {
     setExpandedSections((prev) => ({
@@ -176,18 +201,18 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
           size="sm"
           onClick={() => {
             if (isPublished) {
-              setUnpublishDialogOpen(true);
+              setArchiveDialogOpen(true);
             } else {
               publishMutation.mutate();
             }
           }}
-          disabled={publishMutation.isPending}
+          disabled={publishMutation.isPending || archiveMutation.isPending}
           className="gap-1.5"
         >
           {isPublished ? (
             <>
-              <EyeOff className="w-4 h-4" />
-              {t("actions.unpublish")}
+              <Archive className="w-4 h-4" />
+              {t("actions.archive")}
             </>
           ) : (
             <>
@@ -285,7 +310,7 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
             <BarChart3 className="w-5 h-5 text-emerald-500" />
           </div>
           <p className="text-xs text-gray-500">{t("stats.completionRate")}</p>
-          <p className="text-2xl font-bold text-emerald-600 mt-1">68%</p>
+          <p className="text-2xl font-bold text-emerald-600 mt-1">{completionRate}%</p>
           <p className="text-[10px] text-gray-400 mt-0.5">
             {t("stats.completionRateNote")}
           </p>
@@ -295,7 +320,7 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
             <CheckCircle className="w-5 h-5 text-amber-500" />
           </div>
           <p className="text-xs text-gray-500">{t("stats.avgScore")}</p>
-          <p className="text-2xl font-bold text-amber-600 mt-1">74%</p>
+          <p className="text-2xl font-bold text-amber-600 mt-1">{avgScore}%</p>
           <p className="text-[10px] text-gray-400 mt-0.5">
             {t("stats.avgScoreNote")}
           </p>
@@ -449,16 +474,18 @@ const CourseDetail = ({ courseId }: CourseDetailProps) => {
         isLoading={deleteMutation.isPending}
       />
 
-      {/* Unpublish Confirmation */}
+      {/* Archive Confirmation */}
       <ConfirmationDialog
-        isOpen={unpublishDialogOpen}
-        onClose={() => setUnpublishDialogOpen(false)}
-        onConfirm={() => publishMutation.mutate()}
-        title={t("dialogs.unpublishTitle")}
-        description={t("dialogs.unpublishDescription")}
-        isLoading={publishMutation.isPending}
+        isOpen={archiveDialogOpen}
+        onClose={() => setArchiveDialogOpen(false)}
+        onConfirm={() => archiveMutation.mutate()}
+        title={t("dialogs.archiveTitle")}
+        description={t("dialogs.archiveDescription")}
+        isLoading={archiveMutation.isPending}
         variant="default"
       />
+
+
     </div>
   );
 };
