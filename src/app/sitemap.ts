@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { blogService, establishmentService } from "@/services/api";
