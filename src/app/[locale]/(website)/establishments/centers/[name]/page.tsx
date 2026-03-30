@@ -161,7 +161,7 @@ export default async function CenterPage({
                   height: "280px",
                 }}
               >
-                {/* Offer Alert Illustration - Bottom Right (LTR) / Bottom Left (RTL) */}
+                // Offer Alert Illustration - Bottom Right (LTR) / Bottom Left (RTL)
                 <div className="absolute ltr:right-0 rtl:left-0 bottom-0 w-48 h-48 ltr:translate-x-4 rtl:-translate-x-4 translate-y-4 pointer-events-none select-none">
                   <img
                     src="/assets/illustrations/offer-alert.png"
@@ -170,7 +170,7 @@ export default async function CenterPage({
                   />
                 </div>
 
-                {/* Center Text */}
+                // Center Text
                 <div className="relative z-10 text-center px-8">
                   <p
                     className="text-xl md:text-2xl font-bold leading-relaxed"
