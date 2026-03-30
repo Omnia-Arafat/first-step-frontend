@@ -147,7 +147,7 @@ export default async function CenterPage({
               )}
 
             {/* Advertisement Section */}
-            <section id="advertisement" className="py-0 scroll-mt-20">
+            {/* <section id="advertisement" className="py-0 scroll-mt-20">
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-1 h-8 bg-primary rounded-full" />
                 <h2 className="heading-4 font-bold text-primary">
@@ -182,7 +182,7 @@ export default async function CenterPage({
                   </p>
                 </div>
               </div>
-            </section>
+            </section> */}
           </div>
 
           {/* Left Column (Sidebar): Our Numbers → Coupons → Our Team → Evaluations → Recommended → Blog */}

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Nurseries from "@/components/general/nurseries/Nurseries";
-import TopAdSection from "@/components/general/establishments/TopAdSection";
-import BottomAdSection from "@/components/general/establishments/BottomAdSection";
+// import TopAdSection from "@/components/general/establishments/TopAdSection";
+// import BottomAdSection from "@/components/general/establishments/BottomAdSection";
 import { establishmentService, authService } from "@/services/api";
 import { getCitiesAction, City } from "@/actions/getCitiesAction";
 
@@ -100,7 +100,7 @@ export default async function EstablishmentsPage({
   return (
     <div>
       {/* Top Advertising Space - Two horizontal ads */}
-      <TopAdSection />
+      {/* <TopAdSection /> */}
 
       {/* Main Establishments Content */}
       <Nurseries
@@ -114,7 +114,7 @@ export default async function EstablishmentsPage({
       />
 
       {/* Bottom Advertising Space - Three ads in custom layout */}
-      <BottomAdSection />
+      {/* <BottomAdSection /> */}
     </div>
   );
 }
