@@ -1140,8 +1140,8 @@
         "discount-coupons": "Discount Coupons"
       },
       "actions": {
-        "createParentAccounts": "Create Parent Accounts",
-        "registerChildrenNow": "Register Children Now",
+        "createParentAccounts":"Register center children" ,
+        "registerChildrenNow": "Register your center children",
         "haveSubscription": "Have a subscription?",
         "findNursery": "Find your child's nursery or center",
         "findNurseryShort": "Find a nursery"
@@ -3243,7 +3243,7 @@
     "viewAll": "View all notifications"
   },
   "parentAccounts": {
-    "createParentAccounts": "Create Parent Accounts",
+    "createParentAccounts": "Register center children",
     "createParentAccount": "Create Parent Account",
     "parentAndChildrenData": "Parent and Children Data",
     "parentDetails": "Parent Details",
@@ -3821,6 +3821,20 @@
     },
     "noCourses": "No courses available at the moment.",
     "courseNotFound": "Course not found.",
-    "backToCourses": "Back to Courses"
+    "backToCourses": "Back to Courses",
+    "payment": {
+      "title": "Booking Summary",
+      "backToCourse": "Back to Course",
+      "bookingConfirmed": "Booking request submitted successfully",
+      "bookingConfirmedSub": "We will contact you shortly to confirm your spot",
+      "course": "Course",
+      "parentName": "Parent Name",
+      "email": "Email",
+      "phone": "Phone",
+      "children": "Children",
+      "price": "Price",
+      "browseCourses": "Browse Courses",
+      "goHome": "Go to Home"
+    }
   }
 }

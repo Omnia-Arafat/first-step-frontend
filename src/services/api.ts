@@ -557,6 +557,98 @@ export const websiteService = {
   },
 };
 
+// ─── Course Types ────────────────────────────────────────────────────────────
+export interface ApiCourse {
+  id: number;
+  title: string;
+  image: string;
+  hours: number;
+  goal: string;
+  description: string;
+  price: string;
+  duration: number;
+  duration_description: string;
+  requirements: string[];
+  contents: { title: string; topics?: string[] }[];
+}
+
+export interface CourseBookingPayload {
+  course_id: number;
+  name: string;
+  phone: string;
+  email: string;
+  children: string[];
+}
+
+// ─── Course Service ───────────────────────────────────────────────────────────
+export const courseService = {
+  getCourses: async (): Promise<ApiCourse[]> => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Authorization": process.env.X_AUTHORIZATION || "",
+            "X-Authorization-Secret": process.env.X_AUTHORIZATION_SECRET || "",
+          },
+          next: { revalidate: 3600 },
+        },
+      );
+      if (!res.ok) throw { message: "Failed to fetch courses", status: res.status };
+      const data = await res.json();
+      return data.data as ApiCourse[];
+    } catch (error) {
+      throw ApiErrorHandler.handle(error);
+    }
+  },
+
+  getCourseById: async (id: string | number): Promise<ApiCourse> => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/${id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-Authorization": process.env.X_AUTHORIZATION || "",
+            "X-Authorization-Secret": process.env.X_AUTHORIZATION_SECRET || "",
+          },
+          next: { revalidate: 3600 },
+        },
+      );
+      if (!res.ok) throw { message: "Failed to fetch course", status: res.status };
+      const data = await res.json();
+      return data.data as ApiCourse;
+    } catch (error) {
+      throw ApiErrorHandler.handle(error);
+    }
+  },
+
+  startPayment: async (payload: CourseBookingPayload): Promise<{ payment_url: string }> => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/payment/start`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-Authorization": process.env.X_AUTHORIZATION || "",
+            "X-Authorization-Secret": process.env.X_AUTHORIZATION_SECRET || "",
+          },
+          body: JSON.stringify(payload),
+        },
+      );
+      if (!res.ok) {
+        const err = await res.json();
+        throw { message: err?.message || "Payment failed", errors: err?.errors || {}, status: res.status };
+      }
+      return await res.json();
+    } catch (error) {
+      throw ApiErrorHandler.handle(error);
+    }
+  },
+};
+
 export const blogService = {
   getBlogs: async (locale: string): Promise<Blog[]> => {
     try {

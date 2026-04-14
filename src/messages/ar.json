@@ -1136,8 +1136,8 @@
         "discount-coupons": "كوبونات الخصم"
       },
       "actions": {
-        "createParentAccounts": "إنشاء حسابات أولياء الأمور",
-        "registerChildrenNow": "سجل الأطفال الآن",
+        "createParentAccounts":"سجل أطفال مركزك",
+        "registerChildrenNow": "حسابات لأولياء الأمور",
         "haveSubscription": "لديك إشتراك؟",
         "findNursery": "اعثر على حضانة أو مركز طفلك",
         "findNurseryShort": "اعثر على حضانة"
@@ -3836,6 +3836,20 @@
     },
     "noCourses": "لا توجد دورات متاحة حالياً.",
     "courseNotFound": "الدورة غير موجودة.",
-    "backToCourses": "العودة إلى الدورات"
+    "backToCourses": "العودة إلى الدورات",
+    "payment": {
+      "title": "ملخص الحجز",
+      "backToCourse": "العودة إلى الدورة",
+      "bookingConfirmed": "تم إرسال طلب الحجز بنجاح",
+      "bookingConfirmedSub": "سنتواصل معك قريباً لتأكيد مقعدك",
+      "course": "الدورة",
+      "parentName": "اسم ولي الأمر",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "children": "الأطفال",
+      "price": "السعر",
+      "browseCourses": "تصفح الدورات",
+      "goHome": "الصفحة الرئيسية"
+    }
   }
 }

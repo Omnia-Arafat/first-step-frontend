@@ -49,6 +49,11 @@ const nextConfig: NextConfig = {
         hostname: "development.firststep-app.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
+        port: "",
+      },
     ],
   },
   // Enable webpack optimizations
