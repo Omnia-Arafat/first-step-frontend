@@ -3,7 +3,7 @@
 import React, { useState, useTransition } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -13,7 +13,6 @@ import {
   ArrowRight,
   ChevronDown,
   Clock,
-  Phone,
   Plus,
   Trash2,
   Loader2,
@@ -21,7 +20,6 @@ import {
   BookOpen,
   CheckCircle2,
   ListOrdered,
-  Mail,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -236,8 +234,9 @@ function TimelineItem({
 
 function BookingForm({ course, locale }: { course: ApiCourse; locale: "ar" | "en" }) {
   const t = useTranslations("courses");
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  // Generated once per form session — same key on retries, new key on fresh mount
+  const idempotencyKey = React.useRef(crypto.randomUUID());
 
   const form = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
@@ -247,18 +246,25 @@ function BookingForm({ course, locale }: { course: ApiCourse; locale: "ar" | "en
   const { fields, append, remove } = useFieldArray({ control: form.control, name: "children" });
 
   const onSubmit = (data: BookingFormData) => {
+    // Rotate key on every new submission attempt
+    idempotencyKey.current = crypto.randomUUID();
     startTransition(async () => {
       try {
-        const result = await startCoursePaymentAction({
-          course_id: course.id,
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          children: data.children.map((c) => c.name),
-        });
+        const result = await startCoursePaymentAction(
+          {
+            course_id: course.id,
+            name: data.name,
+            phone: data.phone,
+            email: data.email,
+            children: data.children.map((c) => c.name),
+          },
+          idempotencyKey.current,
+        );
+
+        console.log("[onSubmit] result:", result);
 
         if (result.success && result.payment_url) {
-          window.location.href = result.payment_url;
+          window.location.replace(result.payment_url);
         } else {
           toast.error(result.error || t("form.error"));
         }
@@ -274,7 +280,7 @@ function BookingForm({ course, locale }: { course: ApiCourse; locale: "ar" | "en
         <h2 className="text-2xl md:text-3xl font-bold text-primary-blue mb-2">{t("bookingTitle")}</h2>
         <p className="text-gray-500 mb-8">{t("bookingSubtitle")}</p>
 
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={(e) => { e.preventDefault(); form.handleSubmit(onSubmit)(e); }} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Name */}
             <div className="space-y-2">
@@ -314,8 +320,7 @@ function BookingForm({ course, locale }: { course: ApiCourse; locale: "ar" | "en
               </label>
               <PhoneInput
                 value={form.watch("phone")}
-                onChange={(val: string) => form.setValue("phone", val)}
-                placeholder={t("form.phonePlaceholder")}
+                onChange={(val: string) => form.setValue("phone", val, { shouldValidate: true })}
                 className={cn(form.formState.errors.phone && "border-destructive")}
               />
               {form.formState.errors.phone && (

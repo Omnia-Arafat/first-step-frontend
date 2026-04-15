@@ -624,8 +624,16 @@ export const courseService = {
     }
   },
 
-  startPayment: async (payload: CourseBookingPayload): Promise<{ payment_url: string }> => {
+  startPayment: async (payload: CourseBookingPayload, idempotencyKey: string): Promise<{ payment_url: string; transaction_id?: number }> => {
     try {
+      console.log("[startPayment] payload:", JSON.stringify(payload));
+      console.log("[startPayment] idempotencyKey:", idempotencyKey);
+      // Backend expects phone without leading +
+      const sanitizedPayload = {
+        ...payload,
+        phone: payload.phone.replace(/^\+/, ""),
+        callback_url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/payment/start`,
+      };
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/courses/payment/start`,
         {
@@ -634,12 +642,14 @@ export const courseService = {
             "Content-Type": "application/json",
             "X-Authorization": process.env.X_AUTHORIZATION || "",
             "X-Authorization-Secret": process.env.X_AUTHORIZATION_SECRET || "",
+            "Idempotency-Key": idempotencyKey,
           },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(sanitizedPayload),
         },
       );
       if (!res.ok) {
         const err = await res.json();
+        console.error("[startPayment] validation errors:", JSON.stringify(err, null, 2));
         throw { message: err?.message || "Payment failed", errors: err?.errors || {}, status: res.status };
       }
       return await res.json();
