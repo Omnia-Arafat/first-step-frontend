@@ -1,7 +1,7 @@
 import {
   EstablishmentHeader,
   AboutSection,
-  AdsSection,
+  // AdsSection,
   RatingsSection,
   BlogsSection,
   CouponsSection,
@@ -137,7 +137,7 @@ export default async function NurseryPage({
             />
 
             {/* Ads Section */}
-            <AdsSection centerId={centerIdStr} />
+            {/* <AdsSection centerId={centerIdStr} /> */}
 
             {/* Albums Section */}
             {portfolio.images_activities &&

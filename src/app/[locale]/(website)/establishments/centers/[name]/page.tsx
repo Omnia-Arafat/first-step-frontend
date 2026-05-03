@@ -147,7 +147,7 @@ export default async function CenterPage({
               )}
 
             {/* Advertisement Section */}
-            <section id="advertisement" className="py-0 scroll-mt-20">
+            {/* <section id="advertisement" className="py-0 scroll-mt-20">
               <div className="flex items-center gap-3 mb-8">
                 <div className="w-1 h-8 bg-primary rounded-full" />
                 <h2 className="heading-4 font-bold text-primary">
@@ -161,7 +161,7 @@ export default async function CenterPage({
                   height: "280px",
                 }}
               >
-                {/* Offer Alert Illustration - Bottom Right (LTR) / Bottom Left (RTL) */}
+                // Offer Alert Illustration - Bottom Right (LTR) / Bottom Left (RTL)
                 <div className="absolute ltr:right-0 rtl:left-0 bottom-0 w-48 h-48 ltr:translate-x-4 rtl:-translate-x-4 translate-y-4 pointer-events-none select-none">
                   <img
                     src="/assets/illustrations/offer-alert.png"
@@ -170,7 +170,7 @@ export default async function CenterPage({
                   />
                 </div>
 
-                {/* Center Text */}
+                // Center Text
                 <div className="relative z-10 text-center px-8">
                   <p
                     className="text-xl md:text-2xl font-bold leading-relaxed"
@@ -182,7 +182,7 @@ export default async function CenterPage({
                   </p>
                 </div>
               </div>
-            </section>
+            </section> */}
           </div>
 
           {/* Left Column (Sidebar): Our Numbers → Coupons → Our Team → Evaluations → Recommended → Blog */}
