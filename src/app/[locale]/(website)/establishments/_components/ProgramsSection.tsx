@@ -141,6 +141,10 @@ const ProgramsSection = ({
   }, [allPlans, filters]);
 
   const getDurationLabel = (count: number, type: string) => {
+    if (tNamespace === "centerDetails") {
+      return tCommon("sessionCount", { count });
+    }
+
     const unitLabel =
       tCommon(`units.${count === 1 ? type : type + "s"}`) || type;
     return `${count} ${unitLabel}`;
@@ -288,6 +292,7 @@ const ProgramsSection = ({
         selectedBranch={reservationBranch}
         selectedPlanId={reservationPlanId}
         locale={locale as "ar" | "en"}
+        tNamespace={tNamespace as "nurseryDetails" | "centerDetails"}
         adminOptions={adminOptions}
       />
     </section>
@@ -295,3 +300,5 @@ const ProgramsSection = ({
 };
 
 export default ProgramsSection;
+
+

@@ -35,7 +35,7 @@ const EducationAwarenessSection = () => {
   }, [guides.length]);
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-secondary-mint-green/10">
+    <section className="py-16 bg-linear-to-b from-white to-secondary-mint-green/10">
       <div className="container mx-auto px-4 mb-12">
         <h2 className="text-3xl md:text-4xl font-bold text-primary-blue text-center">
           {t("tipsTitle")}
@@ -76,7 +76,7 @@ const EducationAwarenessSection = () => {
                     "w-[260px] sm:w-[320px] md:w-[480px] lg:w-[540px] rounded-3xl border py-11 px-4 sm:px-6 md:px-8 flex flex-col items-center text-center transition-all duration-500",
                     isActive
                       ? "border-secondary-mint-green bg-white bg-linear-to-b from-white/15 via-secondary-mint-green/12 to-secondary-mint-green/24"
-                      : "bg-white border-light-gray"
+                      : "bg-white border-light-gray",
                   )}
                 >
                   <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-64 md:h-64 lg:w-80 lg:h-80 mb-3 sm:mb-4 md:mb-6 pointer-events-none">
@@ -111,7 +111,7 @@ const EducationAwarenessSection = () => {
               "w-2 h-2 rounded-full transition-all duration-300",
               index === selectedIndex
                 ? "bg-primary-blue w-6"
-                : "bg-primary-blue/30"
+                : "bg-primary-blue/30",
             )}
           />
         ))}

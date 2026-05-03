@@ -41,6 +41,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "storage.googleapis.com",
+        port: "",
+      },
+      {
+        protocol: "https",
         hostname: "back.firststep-app.com",
         port: "",
       },
@@ -51,7 +56,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "storage.googleapis.com",
+        hostname: "api-dev.firststep-app.com",
         port: "",
       },
     ],

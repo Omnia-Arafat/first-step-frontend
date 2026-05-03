@@ -296,6 +296,12 @@ export interface Value {
   image: string;
 }
 
+export interface EstablishmentLogo {
+  logo: string;
+  center_id: number;
+  name: string;
+}
+
 export interface CategoryService {
   id: number;
   name: {

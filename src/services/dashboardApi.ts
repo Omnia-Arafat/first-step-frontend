@@ -525,7 +525,7 @@ export const parentService = {
 export const centerService = {
   getBranches: async () => {
     try {
-      const response = await apiClient.get("branches/");
+      const response = await apiClient.get("branches");
       return response.data;
     } catch (error) {
       throw ApiErrorHandler.handle(error);
@@ -1112,7 +1112,11 @@ export const centerService = {
       // Activities
       payload.images_activities?.forEach((activity, index) => {
         const imageFile =
-          activity instanceof File ? activity : activity.image instanceof File ? activity.image : null;
+          activity instanceof File
+            ? activity
+            : activity.image instanceof File
+              ? activity.image
+              : null;
 
         if (imageFile) {
           formData.append(`images_activities[${index}]`, imageFile);

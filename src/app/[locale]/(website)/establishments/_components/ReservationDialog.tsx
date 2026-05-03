@@ -12,6 +12,7 @@ interface ReservationDialogProps {
   selectedBranch?: string;
   selectedPlanId?: number;
   locale: "ar" | "en";
+  tNamespace?: "nurseryDetails" | "centerDetails";
   adminOptions?: AdminOption[];
 }
 
@@ -22,6 +23,7 @@ const ReservationDialog = ({
   selectedBranch,
   selectedPlanId,
   locale,
+  tNamespace = "nurseryDetails",
   adminOptions = [],
 }: ReservationDialogProps) => {
   return (
@@ -34,6 +36,7 @@ const ReservationDialog = ({
             nurseryName={nurseryName}
             selectedProgram=""
             locale={locale}
+            tNamespace={tNamespace}
             selectedBranch={selectedBranch}
             selectedPlan=""
             onClose={onClose}
@@ -48,3 +51,4 @@ const ReservationDialog = ({
 };
 
 export default ReservationDialog;
+

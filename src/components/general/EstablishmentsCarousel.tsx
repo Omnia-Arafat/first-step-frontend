@@ -1,79 +1,65 @@
 "use client";
 
 import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { useEffect, useRef } from "react";
-
-// Placeholder partner logos - replace with real partner logos
-const PARTNER_LOGOS = [
-  { src: "/assets/logos/complete_logo.svg", alt: "First Step" },
-  { src: "/assets/logos/complete_logo.svg", alt: "Partner 2" },
-  { src: "/assets/logos/complete_logo.svg", alt: "Partner 3" },
-  { src: "/assets/logos/complete_logo.svg", alt: "Partner 4" },
-  { src: "/assets/logos/complete_logo.svg", alt: "Partner 5" },
-  { src: "/assets/logos/complete_logo.svg", alt: "Partner 6" },
-  { src: "/assets/logos/complete_logo.svg", alt: "Partner 7" },
-  { src: "/assets/logos/complete_logo.svg", alt: "Partner 8" },
-];
+import { useLocale, useTranslations } from "next-intl";
+import { useQuery } from "@tanstack/react-query";
+import { websiteService } from "@/services/api";
+import { EstablishmentLogo } from "@/types";
+import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 const EstablishmentsCarousel = () => {
   const t = useTranslations("HomePage.PartnersCarousel");
-  const trackRef = useRef<HTMLDivElement>(null);
+  const locale = useLocale() as "ar" | "en";
+  const isRtl = locale === "ar";
 
-  // Duplicate logos for infinite scroll effect
-  const allLogos = [...PARTNER_LOGOS, ...PARTNER_LOGOS];
+  const { data: logos = [], isLoading } = useQuery({
+    queryKey: ["website-logos", locale],
+    queryFn: () => websiteService.getLogos(locale),
+    select: (data: EstablishmentLogo[]) =>
+      data.filter((item) => item.logo && item.name),
+  });
 
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
+  if (!isLoading && logos.length === 0) return null;
 
-    let animationId: number;
-    let position = 0;
-    const speed = 0.5;
-
-    const itemWidth = 180; // px per item including gap
-    const totalWidth = PARTNER_LOGOS.length * itemWidth;
-
-    const animate = () => {
-      position -= speed;
-      if (Math.abs(position) >= totalWidth) {
-        position = 0;
-      }
-      track.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(animationId);
-  }, []);
+  const items = isLoading ? Array.from({ length: 8 }) : [...logos, ...logos];
 
   return (
-    <section className="py-12 overflow-hidden">
-      <div className="container mx-auto px-4 mb-8">
+    <section className="py-16 overflow-hidden">
+      {/* Label */}
+      <div className="container mx-auto px-4 mb-12">
         <h2 className="text-primary-blue text-center">{t("title")}</h2>
       </div>
 
-      <div className="relative overflow-hidden">
+      {/* Marquee */}
+      <div className="relative">
         {/* Fade edges */}
-        <div className="absolute inset-y-0 start-0 w-24 bg-gradient-to-e from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 end-0 w-24 bg-gradient-to-s from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 start-0 w-28 z-10 pointer-events-none bg-linear-to-r from-white to-transparent dark:from-background" />
+        <div className="absolute inset-y-0 end-0 w-28 z-10 pointer-events-none bg-linear-to-l from-white to-transparent dark:from-background" />
 
-        <div ref={trackRef} className="flex gap-10 w-max">
-          {allLogos.map((logo, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-center w-40 h-24 bg-white rounded-2xl shadow-[0_2px_20px_0_rgba(34,34,34,0.06)] shrink-0 px-4"
-            >
+        {/* Track */}
+        <div
+          className={cn(
+            "flex items-center gap-20 w-max",
+            "animate-[marquee_75s_linear_infinite]",
+            "hover:paused",
+            isRtl && "direction-reverse",
+          )}
+        >
+          {items.map((logo, index) =>
+            isLoading || !logo ? (
+              <Skeleton key={index} className="h-16 w-24 rounded shrink-0" />
+            ) : (
               <Image
-                src={logo.src}
-                alt={logo.alt}
+                key={`${(logo as EstablishmentLogo).center_id}-${index}`}
+                src={(logo as EstablishmentLogo).logo}
+                alt={(logo as EstablishmentLogo).name}
                 width={120}
-                height={60}
-                className="object-contain max-h-14 w-auto"
+                height={120}
+                className="object-contain h-16 w-auto shrink-0 transition-all duration-300"
               />
-            </div>
-          ))}
+            ),
+          )}
         </div>
       </div>
     </section>

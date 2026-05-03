@@ -179,6 +179,11 @@ const getAdminNavbar = (t: any): NavbarItem[] => [
     url: "/dashboard/admin/blog",
     icon: dashboardIcons.blog,
   },
+  // {
+  //   title: t("admin.courses"),
+  //   url: "/dashboard/admin/courses",
+  //   icon: dashboardIcons.courses,
+  // },
   {
     title: t("admin.notifications"),
     url: "/dashboard/admin/notifications",
