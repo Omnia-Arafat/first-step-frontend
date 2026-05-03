@@ -155,7 +155,7 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
     "establishments",
     "coupon-codes",
     "consultations",
-    "courses",
+    // "courses",
     "who-are-we",
   ];
   const links = keys.map((key, index) => {

@@ -49,13 +49,13 @@ const TopLeftSection = () => {
     onSuccess: () => {
       toastSuccess(
         t("newsletter.successTitle"),
-        t("newsletter.successMessage")
+        t("newsletter.successMessage"),
       );
     },
     onError: (error: any) => {
       toastError(
         t("newsletter.errorTitle"),
-        error.message || t("newsletter.errorMessage")
+        error.message || t("newsletter.errorMessage"),
       );
     },
   });
@@ -152,7 +152,7 @@ const TopRightSection = () => {
     "home",
     "services",
     "establishments",
-    "courses",
+    // "courses",
     "blog",
     "story",
     "contact",
