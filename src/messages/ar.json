@@ -25,6 +25,10 @@
         "title": "الاستشارات",
         "path": "/consultations"
       },
+      "courses": {
+        "title": "الدورات",
+        "path": "/courses"
+      },
       "blog": {
         "title": "المدونة",
         "path": "/blog"
@@ -118,6 +122,10 @@
       "help": {
         "title": "المساعدة",
         "path": "/help"
+      },
+      "courses": {
+        "title": "الدورات",
+        "path": "/courses"
       },
       "privacy-policy": {
         "title": "الخصوصية",
@@ -575,7 +583,6 @@
       }
     },
     "center-signup": {
-      "title": "إنشاء حساب مركز/حضانة",
       "1": {
         "title": "المعلومات الأساسية",
         "form": {
@@ -724,7 +731,8 @@
             "placeholder": "أدخل أي تعليقات إضافية"
           }
         }
-      }
+      },
+      "title": "إنشاء حساب مركز/حضانة"
     },
     "forgot-password": {
       "title": "إعادة تعيين كلمة السر",
@@ -1109,7 +1117,8 @@
         "advertisement": "إعلان",
         "blog": "مدونة",
         "notifications": "الإشعارات",
-        "chat": "المحادثات"
+        "chat": "المحادثات",
+        "courses": "الدورات التربوية"
       },
       "center": {
         "home": "الرئيسية",
@@ -1128,8 +1137,8 @@
         "discount-coupons": "كوبونات الخصم"
       },
       "actions": {
-        "createParentAccounts": "إنشاء حسابات أولياء الأمور",
-        "registerChildrenNow": "سجل الأطفال الآن",
+        "createParentAccounts":"سجل أطفال مركزك",
+        "registerChildrenNow": "حسابات لأولياء الأمور",
         "haveSubscription": "لديك إشتراك؟",
         "findNursery": "اعثر على حضانة أو مركز طفلك",
         "findNurseryShort": "اعثر على حضانة"
@@ -2652,6 +2661,231 @@
         "sending": "جاري الإرسال...",
         "noChildSelected": "الرجاء اختيار طفل واحد على الأقل"
       }
+    },
+    "admin-courses": {
+      "title": "الدورات التربوية",
+      "breadcrumb": {
+        "courses": "الدورات التربوية",
+        "new": "دورة جديدة",
+        "edit": "تعديل"
+      },
+      "stats": {
+        "total": "إجمالي الدورات",
+        "published": "منشورة",
+        "draft": "مسودة",
+        "totalViews": "إجمالي المشاهدات"
+      },
+      "card": {
+        "published": "منشورة",
+        "draft": "مسودة",
+        "ageRange": "من عمر {from}-{to} سنوات",
+        "views": "{count} مشاهدة",
+        "lesson": "درس",
+        "lessons": "دروس"
+      },
+      "listing": {
+        "addNew": "إضافة دورة جديدة",
+        "searchPlaceholder": "ابحث عن دورة...",
+        "filters": {
+          "status": "حالة النشر",
+          "published": "منشورة",
+          "draft": "مسودة",
+          "ageGroup": "الفئة العمرية",
+          "ageGroup_3_7": "3-7 سنوات",
+          "ageGroup_7_12": "7-12 سنوات",
+          "ageGroup_12_18": "12-18 سنوات",
+          "sortBy": "ترتيب حسب",
+          "newest": "الأحدث",
+          "oldest": "الأقدم",
+          "title": "العنوان"
+        },
+        "empty": {
+          "title": "لا توجد دورات بعد",
+          "description": "ابدأ بإضافة أول دورة تربوية الآن وساعد الآباء في تربية أطفالهم بشكل أفضل",
+          "cta": "إضافة أول دورة"
+        },
+        "error": "حدث خطأ أثناء تحميل الدورات",
+        "delete": {
+          "title": "حذف الدورة",
+          "description": "هل أنت متأكد من حذف هذه الدورة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "success": "تم حذف الدورة بنجاح",
+          "error": "حدث خطأ أثناء حذف الدورة"
+        }
+      },
+      "detail": {
+        "backButton": "رجوع",
+        "pageTitle": "تفاصيل الدورة",
+        "actions": {
+          "delete": "حذف الدورة",
+          "edit": "تعديل الدورة",
+          "publish": "نشر الدورة",
+          "unpublish": "إلغاء النشر",
+          "archive": "أرشفة"
+        },
+        "stats": {
+          "completedUsers": "المستفيدون المكتملون",
+          "completedUsersNote": "اكملوا الدورة بالكامل",
+          "completionRate": "نسبة الإكتمال",
+          "completionRateNote": "من إجمالي المشتركين",
+          "avgScore": "متوسط التقرير",
+          "avgScoreNote": "متوسط الإجابات الصح",
+          "lastModified": "آخر تعديل"
+        },
+        "content": {
+          "sectionLabel": "القسم {n}",
+          "pointsCount": "{count} نقاط",
+          "questionsCount": "{count} سؤال كويز",
+          "sectionTitle": "عنوان القسم والنقاط",
+          "questionLabel": "سؤال {n}",
+          "questionText": "نص السؤال *"
+        },
+        "status": {
+          "published": "منشورة",
+          "draft": "مسودة",
+          "readings": "دروس",
+          "ageRange": "من عمر {from}-{to} سنوات",
+          "views": "{count} مشاهدة"
+        },
+        "dialogs": {
+          "deleteTitle": "حذف الدورة",
+          "deleteDescription": "هل أنت متأكد من حذف هذه الدورة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "unpublishTitle": "إلغاء نشر الدورة",
+          "unpublishDescription": "هل أنت متأكد من إلغاء نشر هذه الدورة؟ لن تكون مرئية للمستخدمين.",
+          "archiveTitle": "أرشفة الدورة",
+          "archiveDescription": "هل أنت متأكد من أرشفة هذه الدورة؟"
+        },
+        "toasts": {
+          "deleteSuccess": "تم حذف الدورة بنجاح",
+          "deleteError": "حدث خطأ أثناء حذف الدورة",
+          "publishSuccess": "تم نشر الدورة بنجاح",
+          "unpublishSuccess": "تم إلغاء نشر الدورة",
+          "publishError": "حدث خطأ أثناء تغيير حالة النشر",
+          "loadError": "حدث خطأ أثناء تحميل تفاصيل الدورة",
+          "archiveSuccess": "تمت أرشفة الدورة بنجاح",
+          "archiveError": "حدث خطأ أثناء أرشفة الدورة"
+        }
+      },
+      "form": {
+        "pageTitle": "إضافة دورة جديدة",
+        "steps": {
+          "step1Label": "الخطوة 1",
+          "step1Title": "معلومات الكارد",
+          "step2Label": "الخطوة 2",
+          "step2Title": "المحتوى والكويز",
+          "tabStep1": "١ - معلومات الكارد",
+          "tabStep2": "٢ - المحتوى والكويز",
+          "stepCounter": "الخطوة {step} من 2"
+        },
+        "cover": {
+          "title": "صورة الغلاف",
+          "subtitle": "الصورة اللي هتظهر في الكارد",
+          "upload": "تحميل صوره",
+          "uploadHint": "بحد أقصى 5 ميجابايت – PNG, JPG, WEBP",
+          "sizeError": "حجم الصورة يجب أن لا يتجاوز 5 ميجابايت"
+        },
+        "fields": {
+          "cardDetailsTitle": "تفاصيل الكارد",
+          "cardDetailsSubtitle": "المعلومات الأساسية للدورة",
+          "titleLabel": "عنوان الدورة *",
+          "titlePlaceholder": "مثال: دورة البرمجة للمبتدئين",
+          "descLabel": "وصف مختصر *",
+          "descPlaceholder": "اكتب وصفاً موجزاً عن الدورة...",
+          "ageRangeLabel": "الفئة العمرية *",
+          "ageUnit": "سنوات",
+          "readingTimeLabel": "وقت القراءة (دقائق) *"
+        },
+        "content": {
+          "mainTitle": "المحتوى الرئيسي",
+          "mainSubtitle": "نص المحتوى التعريفي للدورة",
+          "mainPlaceholder": "نص المحتوى *"
+        },
+        "sections": {
+          "sectionLabel": "القسم {n}",
+          "saved": "✓ تم الحفظ",
+          "failed": "✗ فشل الحفظ",
+          "saving": "جارٍ الحفظ...",
+          "titleAndPoints": "عنوان القسم والنقاط",
+          "sectionTitleLabel": "عنوان القسم *",
+          "sectionTitlePlaceholder": "عنوان القسم",
+          "pointPlaceholder": "النقطة {n}",
+          "addPoint": "إضافة نقطة",
+          "addQuestion": "إضافة سؤال",
+          "addSection": "إضافة قسم جديد",
+          "questionLabel": "سؤال {n}",
+          "questionPlaceholder": "اكتب نص السؤال هنا...",
+          "choicePlaceholder": "الخيار {n}",
+          "typeMultiple": "اختيار متعدد",
+          "typeFree": "نص حر",
+          "partialFailureTitle": "بعض الأقسام لم تُحفظ",
+          "partialFailureBody": "صادف خطأ أثناء حفظ بعض الأقسام. الأقسام التي تمّ حفظها موضحة بعلامة ✓. يمكنك إعادة المحاولة مباشرةً أو تعديل الأقسام الفاشلة من صفحة التعديل لاحقاً."
+        },
+        "buttons": {
+          "next": "التالي",
+          "save": "حفظ الدورة",
+          "saving": "جارٍ الحفظ...",
+          "cancel": "إلغاء",
+          "back": "السابق"
+        },
+        "toasts": {
+          "requiredFields": "يرجى ملء جميع الحقول المطلوبة",
+          "createSuccess": "تم إنشاء الدورة – أكمل المحتوى والأقسام",
+          "createError": "حدث خطأ أثناء إنشاء الدورة",
+          "saveSuccess": "تم حفظ جميع الأقسام بنجاح",
+          "saveError": "فشل حفظ الأقسام. يمكنك تعديل الدورة لاحقاً من صفحة التفاصيل.",
+          "contentError": "حدث خطأ أثناء حفظ المحتوى"
+        }
+      },
+      "edit": {
+        "pageTitle": "تعديل الدورة",
+        "viewCourse": "عرض الدورة",
+        "allCourses": "كل الدورات",
+        "backToDetail": "العودة للتفاصيل",
+        "cardSection": {
+          "title": "معلومات الكارد",
+          "subtitle": "العنوان والصورة والوصف",
+          "saveButton": "حفظ التغييرات",
+          "coverLabel": "صورة الغلاف",
+          "uploadHint": "انقر لرفع صورة جديدة",
+          "uploadSubHint": "PNG, JPG, WEBP – حد أقصى 5MB"
+        },
+        "sections": {
+          "sectionLabel": "القسم {n}",
+          "newBadge": "جديد – لم يُحفظ بعد",
+          "addSection": "إضافة قسم جديد",
+          "addButton": "إضافة القسم",
+          "updateButton": "حفظ التعديلات",
+          "pointsLabel": "النقاط",
+          "questionsLabel": "الأسئلة",
+          "addPoint": "إضافة نقطة",
+          "addQuestion": "إضافة سؤال",
+          "sectionTitleLabel": "عنوان القسم *",
+          "questionLabel": "سؤال {n}"
+        },
+        "dialogs": {
+          "deleteSectionTitle": "حذف القسم",
+          "deleteSectionDescription": "هل أنت متأكد من حذف هذا القسم ومحتواه كاملاً؟ لا يمكن التراجع.",
+          "deletePointTitle": "حذف النقطة",
+          "deletePointDescription": "هل تريد حذف هذه النقطة؟",
+          "deleteQuestionTitle": "حذف السؤال",
+          "deleteQuestionDescription": "هل تريد حذف هذا السؤال وخياراته؟"
+        },
+        "toasts": {
+          "cardSuccess": "تم تحديث معلومات الدورة",
+          "cardError": "فشل تحديث معلومات الدورة",
+          "cardTitleRequired": "عنوان الدورة مطلوب",
+          "sectionAddSuccess": "تم إضافة القسم بنجاح",
+          "sectionUpdateSuccess": "تم تحديث القسم بنجاح",
+          "sectionError": "فشل تحديث القسم",
+          "sectionTitleRequired": "عنوان القسم مطلوب",
+          "deleteSection": "تم حذف القسم",
+          "deleteSectionError": "فشل حذف القسم",
+          "deletePoint": "تم حذف النقطة",
+          "deletePointError": "فشل حذف النقطة",
+          "deleteQuestion": "تم حذف السؤال",
+          "deleteQuestionError": "فشل حذف السؤال",
+          "imageSizeError": "حجم الصورة يجب أن لا يتجاوز 5 ميجابايت"
+        }
+      }
     }
   },
   "common": {
@@ -2673,8 +2907,28 @@
   },
   "HomePage": {
     "Features": {
-      "title": "مميزات First Step",
+      "title": "ماذا تقدم First Step",
       "comingSoon": "قريبًا",
+      "centersTitle": "للمراكز والحضانات",
+      "parentsTitle": "لأولياء الأمور",
+      "centersButton": "انضم الآن",
+      "parentsButton": "ابحث عن منشأة",
+      "centerFeatures": [
+        "إدارة بيانات الأطفال، تنظيم الأنشطة، تحديث المحتوى",
+        "ظهور رقمي أمام آلاف الأسر",
+        "بروفايل احترافي شامل لكل تفاصيل المركز",
+        "تسجيل، دفع، حجوزات، وتقارير يومية",
+        "لوحة تحكم للإحصائيات، الأداء، ونمو التفاعل",
+        "دعم تربوي واستشاري لتحسين الجودة"
+      ],
+      "parentFeatures": [
+        "بحث دقيق حسب (الموقع، اللغات، والاحتياجات..) للوصول للأفضل الخيارات",
+        "ملف لكل مركز: صور، برامج، وساعات عمل",
+        "تجارب وآراء لأمهات وآباء سبقوا بالتجربة",
+        "تقارير أداء، أنشطة، وسجلات يومية للطفل",
+        "دورات تربوية تقربك أكثر لأطفالك",
+        "تواصل مع المركز وتنبيهات بالحضور والانصراف"
+      ],
       "childManagement": {
         "title": "إدارة ملفات الأطفال والتواصل مع أولياء الأمور",
         "description": "قاعدة بيانات متكاملة لملفات الأطفال وأولياء الأمور مع إمكانية إرسال تقارير يومية بحالة الطفل داخل الحضانة."
@@ -2798,6 +3052,49 @@
       "title": "حمل تطبيق First Step الآن",
       "description": "لأنك لا تختار حضانة أو مركز تعليمي فحسب، بل تبني مستقبل طفلك",
       "download": "متاح الآن على"
+    },
+    "AppsSection": {
+      "title": "حمل تطبيقاتنا",
+      "available": "متاح الآن على",
+      "apps": [
+        {
+          "title": "تطبيق أولياء الأمور"
+        },
+        {
+          "title": "تطبيق المراكز والحضانات"
+        },
+        {
+          "title": "تطبيق تسجيل الحضور والانصراف"
+        }
+      ]
+    },
+    "NurseriesPreview": {
+      "title": "احجز لطفلك",
+      "viewAll": "عرض الكل"
+    },
+    "PartnersCarousel": {
+      "title": "شركاء النجاح"
+    },
+    "VisionStats": {
+      "title": "رؤيتنا المستقبلية",
+      "stats": [
+        {
+          "value": "+6M",
+          "label": "قيمة التحصيلات عبر المنصة"
+        },
+        {
+          "value": "+70,000",
+          "label": "طفل في رحلتهم الأولى"
+        },
+        {
+          "value": "+1500",
+          "label": "مركز في جميع أنحاء المملكة"
+        },
+        {
+          "value": "9",
+          "label": "منتجات إلكترونية"
+        }
+      ]
     }
   },
   "nurseryDetails": {
@@ -3123,6 +3420,7 @@
       "ageRange": "الفئة العمرية",
       "duration": "المدة",
       "price": "السعر",
+      "sessionCount": "{count, plural, zero {لا توجد جلسات} one {# جلسة} two {# جلستان} few {# جلسات} many {# جلسة} other {# جلسة}}",
       "units": {
         "hour": "ساعة",
         "hours": "ساعات",
@@ -3510,7 +3808,227 @@
     },
     "forLimitedTime": "لفترة محدودة",
     "location": "الموقع",
-    "noImage": "لا توجد صورة"
+    "noImage": "لا توجد صورة",
+    "admin-courses": {
+      "title": "الدورات التربوية",
+      "breadcrumb": {
+        "courses": "الدورات التربوية",
+        "new": "دورة جديدة",
+        "edit": "تعديل"
+      },
+      "stats": {
+        "total": "إجمالي الدورات",
+        "published": "منشورة",
+        "draft": "مسودة",
+        "totalViews": "إجمالي المشاهدات"
+      },
+      "card": {
+        "published": "منشورة",
+        "draft": "مسودة",
+        "ageRange": "من عمر {from}-{to} سنوات",
+        "views": "{count} مشاهدة",
+        "lesson": "درس",
+        "lessons": "دروس"
+      },
+      "listing": {
+        "addNew": "إضافة دورة جديدة",
+        "searchPlaceholder": "ابحث عن دورة...",
+        "filters": {
+          "status": "حالة النشر",
+          "published": "منشورة",
+          "draft": "مسودة",
+          "ageGroup": "الفئة العمرية",
+          "ageGroup_3_7": "3-7 سنوات",
+          "ageGroup_7_12": "7-12 سنوات",
+          "ageGroup_12_18": "12-18 سنوات",
+          "sortBy": "ترتيب حسب",
+          "newest": "الأحدث",
+          "oldest": "الأقدم",
+          "title": "العنوان"
+        },
+        "empty": {
+          "title": "لا توجد دورات بعد",
+          "description": "ابدأ بإضافة أول دورة تربوية الآن وساعد الآباء في تربية أطفالهم بشكل أفضل",
+          "cta": "إضافة أول دورة"
+        },
+        "error": "حدث خطأ أثناء تحميل الدورات",
+        "delete": {
+          "title": "حذف الدورة",
+          "description": "هل أنت متأكد من حذف هذه الدورة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "success": "تم حذف الدورة بنجاح",
+          "error": "حدث خطأ أثناء حذف الدورة"
+        }
+      },
+      "detail": {
+        "backButton": "رجوع",
+        "pageTitle": "تفاصيل الدورة",
+        "actions": {
+          "delete": "حذف الدورة",
+          "edit": "تعديل الدورة",
+          "publish": "نشر الدورة",
+          "unpublish": "إلغاء النشر"
+        },
+        "stats": {
+          "completedUsers": "المستفيدون المكتملون",
+          "completedUsersNote": "اكملوا الدورة بالكامل",
+          "completionRate": "نسبة الإكتمال",
+          "completionRateNote": "من إجمالي المشتركين",
+          "avgScore": "متوسط التقرير",
+          "avgScoreNote": "متوسط الإجابات الصح",
+          "lastModified": "آخر تعديل"
+        },
+        "content": {
+          "sectionLabel": "القسم {n}",
+          "pointsCount": "{count} نقاط",
+          "questionsCount": "{count} سؤال كويز",
+          "sectionTitle": "عنوان القسم والنقاط",
+          "questionLabel": "سؤال {n}",
+          "questionText": "نص السؤال *"
+        },
+        "status": {
+          "published": "منشورة",
+          "draft": "مسودة",
+          "readings": "دروس",
+          "ageRange": "من عمر {from}-{to} سنوات",
+          "views": "{count} مشاهدة"
+        },
+        "dialogs": {
+          "deleteTitle": "حذف الدورة",
+          "deleteDescription": "هل أنت متأكد من حذف هذه الدورة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "unpublishTitle": "إلغاء نشر الدورة",
+          "unpublishDescription": "هل أنت متأكد من إلغاء نشر هذه الدورة؟ لن تكون مرئية للمستخدمين."
+        },
+        "toasts": {
+          "deleteSuccess": "تم حذف الدورة بنجاح",
+          "deleteError": "حدث خطأ أثناء حذف الدورة",
+          "publishSuccess": "تم نشر الدورة بنجاح",
+          "unpublishSuccess": "تم إلغاء نشر الدورة",
+          "publishError": "حدث خطأ أثناء تغيير حالة النشر",
+          "loadError": "حدث خطأ أثناء تحميل تفاصيل الدورة"
+        }
+      },
+      "form": {
+        "pageTitle": "إضافة دورة جديدة",
+        "steps": {
+          "step1Label": "الخطوة 1",
+          "step1Title": "معلومات الكارد",
+          "step2Label": "الخطوة 2",
+          "step2Title": "المحتوى والكويز",
+          "tabStep1": "١ - معلومات الكارد",
+          "tabStep2": "٢ - المحتوى والكويز",
+          "stepCounter": "الخطوة {step} من 2"
+        },
+        "cover": {
+          "title": "صورة الغلاف",
+          "subtitle": "الصورة اللي هتظهر في الكارد",
+          "upload": "تحميل صوره",
+          "uploadHint": "بحد أقصى 5 ميجابايت – PNG, JPG, WEBP",
+          "sizeError": "حجم الصورة يجب أن لا يتجاوز 5 ميجابايت"
+        },
+        "fields": {
+          "cardDetailsTitle": "تفاصيل الكارد",
+          "cardDetailsSubtitle": "المعلومات الأساسية للدورة",
+          "titleLabel": "عنوان الدورة *",
+          "titlePlaceholder": "مثال: دورة البرمجة للمبتدئين",
+          "descLabel": "وصف مختصر *",
+          "descPlaceholder": "اكتب وصفاً موجزاً عن الدورة...",
+          "ageRangeLabel": "الفئة العمرية *",
+          "ageUnit": "سنوات",
+          "readingTimeLabel": "وقت القراءة (دقائق) *"
+        },
+        "content": {
+          "mainTitle": "المحتوى الرئيسي",
+          "mainSubtitle": "نص المحتوى التعريفي للدورة",
+          "mainPlaceholder": "نص المحتوى *"
+        },
+        "sections": {
+          "sectionLabel": "القسم {n}",
+          "saved": "✓ تم الحفظ",
+          "failed": "✗ فشل الحفظ",
+          "saving": "جارٍ الحفظ...",
+          "titleAndPoints": "عنوان القسم والنقاط",
+          "sectionTitleLabel": "عنوان القسم *",
+          "sectionTitlePlaceholder": "عنوان القسم",
+          "pointPlaceholder": "النقطة {n}",
+          "addPoint": "إضافة نقطة",
+          "addQuestion": "إضافة سؤال",
+          "addSection": "إضافة قسم جديد",
+          "questionLabel": "سؤال {n}",
+          "questionPlaceholder": "اكتب نص السؤال هنا...",
+          "choicePlaceholder": "الخيار {n}",
+          "typeMultiple": "اختيار متعدد",
+          "typeFree": "نص حر",
+          "partialFailureTitle": "بعض الأقسام لم تُحفظ",
+          "partialFailureBody": "صادف خطأ أثناء حفظ بعض الأقسام. الأقسام التي تمّ حفظها موضحة بعلامة ✓. يمكنك إعادة المحاولة مباشرةً أو تعديل الأقسام الفاشلة من صفحة التعديل لاحقاً."
+        },
+        "buttons": {
+          "next": "التالي",
+          "save": "حفظ الدورة",
+          "saving": "جارٍ الحفظ...",
+          "cancel": "إلغاء",
+          "back": "السابق"
+        },
+        "toasts": {
+          "requiredFields": "يرجى ملء جميع الحقول المطلوبة",
+          "createSuccess": "تم إنشاء الدورة – أكمل المحتوى والأقسام",
+          "createError": "حدث خطأ أثناء إنشاء الدورة",
+          "saveSuccess": "تم حفظ جميع الأقسام بنجاح",
+          "saveError": "فشل حفظ الأقسام. يمكنك تعديل الدورة لاحقاً من صفحة التفاصيل.",
+          "contentError": "حدث خطأ أثناء حفظ المحتوى"
+        }
+      },
+      "edit": {
+        "pageTitle": "تعديل الدورة",
+        "viewCourse": "عرض الدورة",
+        "allCourses": "كل الدورات",
+        "backToDetail": "العودة للتفاصيل",
+        "cardSection": {
+          "title": "معلومات الكارد",
+          "subtitle": "العنوان والصورة والوصف",
+          "saveButton": "حفظ التغييرات",
+          "coverLabel": "صورة الغلاف",
+          "uploadHint": "انقر لرفع صورة جديدة",
+          "uploadSubHint": "PNG, JPG, WEBP – حد أقصى 5MB"
+        },
+        "sections": {
+          "sectionLabel": "القسم {n}",
+          "newBadge": "جديد – لم يُحفظ بعد",
+          "addSection": "إضافة قسم جديد",
+          "addButton": "إضافة القسم",
+          "updateButton": "حفظ التعديلات",
+          "pointsLabel": "النقاط",
+          "questionsLabel": "الأسئلة",
+          "addPoint": "إضافة نقطة",
+          "addQuestion": "إضافة سؤال",
+          "sectionTitleLabel": "عنوان القسم *",
+          "questionLabel": "سؤال {n}"
+        },
+        "dialogs": {
+          "deleteSectionTitle": "حذف القسم",
+          "deleteSectionDescription": "هل أنت متأكد من حذف هذا القسم ومحتواه كاملاً؟ لا يمكن التراجع.",
+          "deletePointTitle": "حذف النقطة",
+          "deletePointDescription": "هل تريد حذف هذه النقطة؟",
+          "deleteQuestionTitle": "حذف السؤال",
+          "deleteQuestionDescription": "هل تريد حذف هذا السؤال وخياراته؟"
+        },
+        "toasts": {
+          "cardSuccess": "تم تحديث معلومات الدورة",
+          "cardError": "فشل تحديث معلومات الدورة",
+          "cardTitleRequired": "عنوان الدورة مطلوب",
+          "sectionAddSuccess": "تم إضافة القسم بنجاح",
+          "sectionUpdateSuccess": "تم تحديث القسم بنجاح",
+          "sectionError": "فشل تحديث القسم",
+          "sectionTitleRequired": "عنوان القسم مطلوب",
+          "deleteSection": "تم حذف القسم",
+          "deleteSectionError": "فشل حذف القسم",
+          "deletePoint": "تم حذف النقطة",
+          "deletePointError": "فشل حذف النقطة",
+          "deleteQuestion": "تم حذف السؤال",
+          "deleteQuestionError": "فشل حذف السؤال",
+          "imageSizeError": "حجم الصورة يجب أن لا يتجاوز 5 ميجابايت"
+        }
+      }
+    }
   },
   "wallet": {
     "title": "محفظتي",
@@ -3735,6 +4253,62 @@
           "image": "/assets/illustrations/tips/boy-reading.png"
         }
       ]
+    }
+  },
+  "courses": {
+    "pageTitle": "دوراتنا",
+    "pageSubtitle": "استكشف دوراتنا عبر الإنترنت وسجّل اليوم",
+    "viewDetails": "عرض التفاصيل",
+    "bookNow": "احجز الآن",
+    "descriptionTitle": "وصف الدورة",
+    "goalTitle": "هدف الدورة",
+    "timelineTitle": "محتوى الدورة والجدول الزمني",
+    "requirementsTitle": "متطلبات الدورة",
+    "durationTitle": "مدة الدورة",
+    "priceTitle": "السعر",
+    "registerNow": "سجّل الآن",
+    "contactTitle": "معلومات التواصل",
+    "bookingTitle": "احجز هذه الدورة",
+    "bookingSubtitle": "املأ النموذج أدناه لحجز مقعدك",
+    "form": {
+      "name": "الاسم الكامل",
+      "namePlaceholder": "أدخل اسمك الكامل",
+      "phone": "رقم الهاتف",
+      "phonePlaceholder": "أدخل رقم هاتفك",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "أدخل بريدك الإلكتروني",
+      "childrenNames": "أسماء الأطفال",
+      "childNamePlaceholder": "أدخل اسم الطفل",
+      "addChild": "إضافة طفل آخر",
+      "removeChild": "حذف",
+      "submit": "إرسال الحجز",
+      "submitting": "جاري الإرسال...",
+      "cancel": "إلغاء",
+      "success": "تم إرسال الحجز بنجاح! سنتواصل معك قريباً.",
+      "error": "حدث خطأ. يرجى المحاولة مرة أخرى.",
+      "errors": {
+        "required": "هذا الحقل مطلوب",
+        "invalidEmail": "البريد الإلكتروني غير صالح",
+        "invalidPhone": "رقم الهاتف غير صالح",
+        "minChildren": "يرجى إضافة اسم طفل واحد على الأقل"
+      }
+    },
+    "noCourses": "لا توجد دورات متاحة حالياً.",
+    "courseNotFound": "الدورة غير موجودة.",
+    "backToCourses": "العودة إلى الدورات",
+    "payment": {
+      "title": "ملخص الحجز",
+      "backToCourse": "العودة إلى الدورة",
+      "bookingConfirmed": "تم إرسال طلب الحجز بنجاح",
+      "bookingConfirmedSub": "سنتواصل معك قريباً لتأكيد مقعدك",
+      "course": "الدورة",
+      "parentName": "اسم ولي الأمر",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "children": "الأطفال",
+      "price": "السعر",
+      "browseCourses": "تصفح الدورات",
+      "goHome": "الصفحة الرئيسية"
     }
   }
 }

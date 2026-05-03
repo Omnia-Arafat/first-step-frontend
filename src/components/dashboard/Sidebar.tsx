@@ -179,6 +179,11 @@ const getAdminNavbar = (t: any): NavbarItem[] => [
     url: "/dashboard/admin/blog",
     icon: dashboardIcons.blog,
   },
+  // {
+  //   title: t("admin.courses"),
+  //   url: "/dashboard/admin/courses",
+  //   icon: dashboardIcons.courses,
+  // },
   {
     title: t("admin.notifications"),
     url: "/dashboard/admin/notifications",
@@ -502,8 +507,8 @@ const DashboardSideBar = () => {
               {state === "collapsed" && (
                 <TooltipContent side="right" align="center">
                   {locale === "ar"
-                    ? "إنشاء حسابات أولياء الأمور"
-                    : "Create Parent Accounts"}
+                    ? "سجل أطفال مركزك "
+                    : "Register your center children"}
                 </TooltipContent>
               )}
             </Tooltip>

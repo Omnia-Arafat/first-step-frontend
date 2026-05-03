@@ -152,6 +152,7 @@ const TopRightSection = () => {
     "home",
     "services",
     "establishments",
+    "courses",
     "blog",
     "story",
     "contact",
