@@ -1,4 +1,0 @@
-gcloud artifacts repositories create first-step-images \
-    --repository-format=docker \
-    --location=europe-west1 \
-    --description="Docker repository for first-step images"
