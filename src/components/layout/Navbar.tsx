@@ -155,6 +155,7 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
     "establishments",
     "coupon-codes",
     "consultations",
+    "courses",
     "who-are-we",
   ];
   const links = keys.map((key, index) => {
@@ -203,10 +204,10 @@ const Navbar = ({ children }: { children?: React.ReactNode }) => {
               <Link className="inline-block w-fit" href={"/"}>
                 <div
                   className={`relative transition-all duration-300 ${
-                    isScrolled ? "w-[140px] " : "w-[236px] "
+                    isScrolled ? "w-[120px] " : "w-[180px] "
                   }`}
                   style={{
-                    height: isScrolled ? "35px" : "59.9px",
+                    height: isScrolled ? "30px" : "45.7px",
                     aspectRatio: "236/59.9",
                   }}
                 >

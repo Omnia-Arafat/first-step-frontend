@@ -507,8 +507,8 @@ const DashboardSideBar = () => {
               {state === "collapsed" && (
                 <TooltipContent side="right" align="center">
                   {locale === "ar"
-                    ? "إنشاء حسابات أولياء الأمور"
-                    : "Create Parent Accounts"}
+                    ? "سجل أطفال مركزك "
+                    : "Register your center children"}
                 </TooltipContent>
               )}
             </Tooltip>
